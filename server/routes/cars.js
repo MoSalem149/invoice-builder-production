@@ -1,0 +1,177 @@
+import express from "express";
+import Car from "../models/Car.js";
+import { authenticate, authorize } from "../middleware/auth.js";
+
+const router = express.Router();
+
+// @route   GET /api/cars
+// @desc    Get all cars with optional filters
+// @access  Public
+router.get("/", async (req, res) => {
+  try {
+    const filters = {};
+    const filterFields = [
+      "category",
+      "condition",
+      "brand",
+      "model",
+      "year",
+      "transmission",
+      "fuelType",
+      "color",
+      "doors",
+    ];
+
+    // Apply filters from query parameters
+    filterFields.forEach((field) => {
+      if (req.query[field]) {
+        filters[field] = req.query[field];
+      }
+    });
+
+    // Price range filter
+    if (req.query.minPrice || req.query.maxPrice) {
+      filters.price = {};
+      if (req.query.minPrice) filters.price.$gte = Number(req.query.minPrice);
+      if (req.query.maxPrice) filters.price.$lte = Number(req.query.maxPrice);
+    }
+
+    // Year range filter
+    if (req.query.minYear || req.query.maxYear) {
+      filters.year = {};
+      if (req.query.minYear) filters.year.$gte = Number(req.query.minYear);
+      if (req.query.maxYear) filters.year.$lte = Number(req.query.maxYear);
+    }
+
+    const cars = await Car.find(filters).sort({ createdAt: -1 });
+    res.json({ success: true, data: cars });
+  } catch (error) {
+    console.error("Get cars error:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Server error while fetching cars" });
+  }
+});
+
+// @route   GET /api/cars/featured
+// @desc    Get featured cars for slider
+// @access  Public
+router.get("/featured", async (req, res) => {
+  try {
+    const featuredCars = await Car.find({ isFeatured: true }).limit(5);
+    res.json({ success: true, data: featuredCars });
+  } catch (error) {
+    console.error("Get featured cars error:", error);
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Server error while fetching featured cars",
+      });
+  }
+});
+
+// @route   GET /api/cars/:id
+// @desc    Get single car details
+// @access  Public
+router.get("/:id", async (req, res) => {
+  try {
+    const car = await Car.findById(req.params.id);
+    if (!car) {
+      return res.status(404).json({
+        success: false,
+        message: "Car not found",
+      });
+    }
+    res.json({ success: true, data: car });
+  } catch (error) {
+    console.error("Get car details error:", error);
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Server error while fetching car details",
+      });
+  }
+});
+
+// @route   POST /api/cars
+// @desc    Create a new car listing
+// @access  Private (Admin only)
+router.post("/", authenticate, authorize("admin"), async (req, res) => {
+  try {
+    const car = new Car(req.body);
+    await car.save();
+    res.status(201).json({
+      success: true,
+      message: "Car created successfully",
+      data: car,
+    });
+  } catch (error) {
+    console.error("Create car error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while creating car",
+    });
+  }
+});
+
+// @route   PUT /api/cars/:id
+// @desc    Update a car listing
+// @access  Private (Admin only)
+router.put("/:id", authenticate, authorize("admin"), async (req, res) => {
+  try {
+    const car = await Car.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!car) {
+      return res.status(404).json({
+        success: false,
+        message: "Car not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Car updated successfully",
+      data: car,
+    });
+  } catch (error) {
+    console.error("Update car error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while updating car",
+    });
+  }
+});
+
+// @route   DELETE /api/cars/:id
+// @desc    Delete a car listing
+// @access  Private (Admin only)
+router.delete("/:id", authenticate, authorize("admin"), async (req, res) => {
+  try {
+    const car = await Car.findByIdAndDelete(req.params.id);
+
+    if (!car) {
+      return res.status(404).json({
+        success: false,
+        message: "Car not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Car deleted successfully",
+    });
+  } catch (error) {
+    console.error("Delete car error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while deleting car",
+    });
+  }
+});
+
+export default router;
