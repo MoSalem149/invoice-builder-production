@@ -269,55 +269,57 @@ const CreateInvoice: React.FC = () => {
         } transition-all duration-300 flex flex-col`}
       >
         {/* Toolbar - fixed below navbar - Always visible */}
-        <div className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between print:hidden space-y-3 sm:space-y-0 sticky top-16 z-40">
-          <div
-            className={`flex items-center space-x-4 ${
-              isRTL ? "space-x-reverse flex-row-reverse" : ""
-            }`}
-          >
-            <h1 className="text-lg sm:text-xl font-semibold text-gray-900">
-              {t("create.title")}
-            </h1>
-            <button
-              onClick={() => setShowPreview(!showPreview)}
-              className={`flex items-center space-x-2 px-3 py-1 text-sm bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors ${
+        {(!activePanel || !isMobile) && (
+          <div className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between print:hidden space-y-3 sm:space-y-0 sticky top-16 z-40 mb-16">
+            <div
+              className={`flex items-center space-x-4 ${
                 isRTL ? "space-x-reverse flex-row-reverse" : ""
               }`}
             >
-              <Eye className="h-4 w-4" />
-              <span>
-                {showPreview
-                  ? t("create.hidePreview")
-                  : t("create.showPreview")}{" "}
-                {t("create.preview")}
-              </span>
-            </button>
+              <h1 className="text-lg sm:text-xl font-semibold text-gray-900">
+                {t("create.title")}
+              </h1>
+              <button
+                onClick={() => setShowPreview(!showPreview)}
+                className={`flex items-center space-x-2 px-3 py-1 text-sm bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors ${
+                  isRTL ? "space-x-reverse flex-row-reverse" : ""
+                }`}
+              >
+                <Eye className="h-4 w-4" />
+                <span>
+                  {showPreview
+                    ? t("create.hidePreview")
+                    : t("create.showPreview")}{" "}
+                  {t("create.preview")}
+                </span>
+              </button>
+            </div>
+            <div
+              className={`flex items-center space-x-3 ${
+                isRTL ? "space-x-reverse flex-row-reverse" : ""
+              }`}
+            >
+              <button
+                onClick={handlePrint}
+                className={`flex items-center space-x-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors ${
+                  isRTL ? "space-x-reverse flex-row-reverse" : ""
+                }`}
+              >
+                <Print className="h-4 w-4" />
+                <span>{t("create.print")}</span>
+              </button>
+              <button
+                onClick={handleSave}
+                className={`flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${
+                  isRTL ? "space-x-reverse flex-row-reverse" : ""
+                }`}
+              >
+                <Save className="h-4 w-4" />
+                <span>{t("create.saveInvoice")}</span>
+              </button>
+            </div>
           </div>
-          <div
-            className={`flex items-center space-x-3 ${
-              isRTL ? "space-x-reverse flex-row-reverse" : ""
-            }`}
-          >
-            <button
-              onClick={handlePrint}
-              className={`flex items-center space-x-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors ${
-                isRTL ? "space-x-reverse flex-row-reverse" : ""
-              }`}
-            >
-              <Print className="h-4 w-4" />
-              <span>{t("create.print")}</span>
-            </button>
-            <button
-              onClick={handleSave}
-              className={`flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${
-                isRTL ? "space-x-reverse flex-row-reverse" : ""
-              }`}
-            >
-              <Save className="h-4 w-4" />
-              <span>{t("create.saveInvoice")}</span>
-            </button>
-          </div>
-        </div>
+        )}
 
         {/* Invoice Preview - Conditionally rendered */}
         {showPreview && (

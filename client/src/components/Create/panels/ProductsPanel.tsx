@@ -348,9 +348,9 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
   return (
     <div className="h-full bg-white border-r border-gray-200 flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="p-4 sm:p-6 border-b border-gray-200">
+      <div className="p-4 sm:p-6 border-b border-gray-200 relative">
         <div
-          className={`flex items-center justify-between mb-4 ${
+          className={`flex items-center pt-14 justify-between mb-4 ${
             isRTL ? "flex-row-reverse" : ""
           }`}
         >
@@ -359,7 +359,7 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
           </h2>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-1 hover:bg-gray-100 rounded-lg transition-colors z-50"
           >
             <X className="h-5 w-5 text-gray-500" />
           </button>

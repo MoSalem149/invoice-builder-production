@@ -282,9 +282,9 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
   }, [state.clients, state.products]);
 
   return (
-    <div className="h-full bg-white border-r border-gray-200 flex flex-col">
+    <div className="h-full bg-white border-r border-gray-200 flex flex-col pt-14">
       {/* Header */}
-      <div className="p-4 sm:p-6 border-b border-gray-200">
+      <div className="p-4 sm:p-6 border-b border-gray-200 relative">
         <div
           className={`flex items-center justify-between mb-4 ${
             isRTL ? "flex-row-reverse" : ""
@@ -295,9 +295,9 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
           </h2>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-1 rounded-lg transition-colors text-gray-500 hover:bg-gray-100 absolute top-4 right-4 z-50"
           >
-            <X className="h-5 w-5 text-gray-500" />
+            <X className="h-5 w-5" />
           </button>
         </div>
 

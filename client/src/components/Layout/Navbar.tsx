@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // Add useEffect import
 import {
   FileText,
   Home,
@@ -27,6 +27,21 @@ const Navbar: React.FC<NavbarProps> = ({
   const { t, isRTL } = useLanguage();
   const { state: authState, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false); // Add state for scroll detection
+
+  // Add scroll effect handler
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navItems = authState.isAuthenticated
     ? [
@@ -47,12 +62,15 @@ const Navbar: React.FC<NavbarProps> = ({
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  // Show mobile menu button only for authenticated admin users and not on landing page
   const showMobileMenuButton =
     !isLanding && authState.isAuthenticated && authState.user?.role === "admin";
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b border-gray-200 transition-all duration-300 ${
+        isScrolled ? "shadow-md" : ""
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className={`flex justify-between items-center h-16 ${
