@@ -1,4 +1,3 @@
-// Navbar.tsx
 import React, { useState } from "react";
 import {
   FileText,
@@ -17,7 +16,7 @@ import { useAuth } from "../../hooks/useAuth";
 interface NavbarProps {
   currentPage: string;
   onPageChange: (page: string) => void;
-  isLanding: boolean; // Add this line
+  isLanding: boolean;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
@@ -47,6 +46,10 @@ const Navbar: React.FC<NavbarProps> = ({
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
+
+  // Show mobile menu button only for authenticated admin users and not on landing page
+  const showMobileMenuButton =
+    !isLanding && authState.isAuthenticated && authState.user?.role === "admin";
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200">
@@ -148,8 +151,8 @@ const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Mobile menu button */}
-          {!isLanding && (
+          {/* Mobile menu button - Only show for admin users and not on landing page */}
+          {showMobileMenuButton && (
             <div className="md:hidden flex items-center">
               <button
                 onClick={toggleMobileMenu}
@@ -168,11 +171,11 @@ const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Mobile menu */}
-      <div className={`md:hidden ${mobileMenuOpen ? "block" : "hidden"}`}>
-        <div className="pt-2 pb-3 space-y-1">
-          {authState.isAuthenticated &&
-            navItems.map((item) => {
+      {/* Mobile menu - Only show for admin users */}
+      {authState.isAuthenticated && authState.user?.role === "admin" && (
+        <div className={`md:hidden ${mobileMenuOpen ? "block" : "hidden"}`}>
+          <div className="pt-2 pb-3 space-y-1">
+            {navItems.map((item) => {
               const IconComponent = item.icon;
               return (
                 <button
@@ -197,8 +200,7 @@ const Navbar: React.FC<NavbarProps> = ({
               );
             })}
 
-          {/* Mobile Auth Buttons */}
-          {authState.isAuthenticated && (
+            {/* Mobile Auth Buttons */}
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="space-y-3">
                 <div
@@ -222,9 +224,9 @@ const Navbar: React.FC<NavbarProps> = ({
                 </button>
               </div>
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 };
