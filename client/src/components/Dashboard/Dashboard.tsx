@@ -7,6 +7,8 @@ import {
   Plus,
   Settings,
   History,
+  RefreshCw,
+  AlertCircle,
 } from "lucide-react";
 import { useApp } from "../../hooks/useApp";
 import { useAuth } from "../../hooks/useAuth";
@@ -42,6 +44,8 @@ const Dashboard: React.FC<DashboardProps> = ({ onPageChange }) => {
     totalProducts: 0,
     totalRevenue: 0,
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const currencySymbol =
     state.company.currency === "USD"
@@ -54,6 +58,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onPageChange }) => {
   useEffect(() => {
     const loadStats = async () => {
       try {
+        setLoading(true);
+        setError(null);
+
         if (authState.isAuthenticated && authState.token) {
           const response = await fetch(
             `${import.meta.env.VITE_API_URL}/api/dashboard/stats`,
@@ -65,19 +72,38 @@ const Dashboard: React.FC<DashboardProps> = ({ onPageChange }) => {
             }
           );
 
-          if (!response.ok) throw new Error("Failed to fetch stats");
+          if (!response.ok) throw new Error("Failed to fetch user stats");
           const data = await response.json();
           setStats(data.data);
         }
 
-        const globalResponse = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/dashboard/global-stats`
-        );
-        if (!globalResponse.ok) throw new Error("Failed to fetch global stats");
-        const globalData = await globalResponse.json();
-        setGlobalStats(globalData.data);
+        // Load global stats with error handling
+        try {
+          const globalResponse = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/dashboard/global-stats`
+          );
+
+          if (!globalResponse.ok) {
+            throw new Error("Failed to fetch global stats");
+          }
+          const globalData = await globalResponse.json();
+          setGlobalStats(globalData.data);
+        } catch {
+          console.warn("Global stats not available, using defaults");
+          setGlobalStats({
+            totalInvoices: 0,
+            totalClients: 0,
+            totalProducts: 0,
+            totalRevenue: 0,
+          });
+        }
       } catch (error) {
         console.error("Error loading dashboard stats:", error);
+        setError(
+          error instanceof Error ? error.message : "Unknown error occurred"
+        );
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -143,6 +169,41 @@ const Dashboard: React.FC<DashboardProps> = ({ onPageChange }) => {
       color: "bg-green-600 hover:bg-green-700",
     },
   ];
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="flex flex-col items-center">
+          <RefreshCw className="animate-spin h-8 w-8 text-blue-600 mb-2" />
+          <p className="text-gray-600">{t("common.loading")}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-start">
+            <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 mr-2" />
+            <div>
+              <h3 className="text-red-800 font-medium text-lg mb-1">
+                {t("error.dashboardLoadFailed")}
+              </h3>
+              <p className="text-red-600">{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="mt-3 px-4 py-2 bg-red-100 text-red-800 rounded-md hover:bg-red-200 transition-colors"
+              >
+                {t("common.retry")}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">

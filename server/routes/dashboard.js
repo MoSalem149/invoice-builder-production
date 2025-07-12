@@ -7,6 +7,43 @@ import { authenticate } from "../middleware/auth.js";
 
 const router = express.Router();
 
+// @route   GET /api/dashboard/global-stats
+// @desc    Get global dashboard statistics (public)
+// @access  Public
+router.get("/global-stats", async (req, res) => {
+  try {
+    // Get counts from all users (for demo purposes)
+    const [totalInvoices, totalClients, totalProducts, invoices] =
+      await Promise.all([
+        Invoice.countDocuments(),
+        Client.countDocuments({ archived: { $ne: true } }),
+        Product.countDocuments({ archived: { $ne: true } }),
+        Invoice.find().select("total").lean(),
+      ]);
+
+    const totalRevenue = invoices.reduce(
+      (sum, invoice) => sum + (invoice.total || 0),
+      0
+    );
+
+    res.json({
+      success: true,
+      data: {
+        totalInvoices,
+        totalClients,
+        totalProducts,
+        totalRevenue,
+      },
+    });
+  } catch (error) {
+    console.error("Get global stats error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching global statistics",
+    });
+  }
+});
+
 // @route   GET /api/dashboard/stats
 // @desc    Get user dashboard statistics
 // @access  Private
@@ -23,7 +60,7 @@ router.get("/stats", authenticate, async (req, res) => {
       ]);
 
     const totalRevenue = invoices.reduce(
-      (sum, invoice) => sum + invoice.total,
+      (sum, invoice) => sum + (invoice.total || 0),
       0
     );
 
