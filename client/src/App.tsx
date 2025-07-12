@@ -40,6 +40,37 @@ const AppContent: React.FC = () => {
 
   const isLoginPage = location.pathname === "/login";
 
+  useEffect(() => {
+    if (authState.isLoading) return;
+
+    // If user is on login page but already authenticated, redirect to dashboard
+    if (isLoginPage && authState.isAuthenticated) {
+      document.title = `${t("navigation.dashboard")} - ${t(
+        "navigation.invoiceBuilder"
+      )}`;
+      navigate("/dashboard");
+      return;
+    }
+
+    // If user is not on login page but not authenticated, redirect to login
+    if (
+      !isLoginPage &&
+      !authState.isAuthenticated &&
+      location.pathname !== "/"
+    ) {
+      document.title = t("navigation.login");
+      navigate("/login");
+      return;
+    }
+  }, [
+    authState.isAuthenticated,
+    authState.isLoading,
+    isLoginPage,
+    location.pathname,
+    navigate,
+    t, // Add t to dependencies
+  ]);
+
   const handlePageChange = (page: string) => {
     if (!authState.isAuthenticated && page !== "landing") {
       navigate("/login");
@@ -49,14 +80,8 @@ const AppContent: React.FC = () => {
     navigate(page === "landing" ? "/" : `/${page}`);
   };
 
-  // In App.tsx, update the useEffect hook like this:
   useEffect(() => {
-    if (isLoginPage) {
-      document.title = t("navigation.login");
-      return;
-    }
-
-    // Don't update title if we're still loading auth state
+    // Don't update title if we're still loading auth state or during redirects
     if (authState.isLoading) return;
 
     const pageTitles = {
@@ -69,16 +94,27 @@ const AppContent: React.FC = () => {
         "navigation.invoiceBuilder"
       )}`,
       history: `${t("navigation.history")} - ${t("navigation.invoiceBuilder")}`,
+      login: t("navigation.login"),
     };
 
     // Get current path and map to page key
     const path = location.pathname.substring(1) || "landing";
     const pageKey = Object.keys(pageTitles).includes(path) ? path : "landing";
 
-    document.title =
-      pageTitles[pageKey as keyof typeof pageTitles] ||
-      t("navigation.invoiceBuilder");
-  }, [currentPage, t, isLoginPage, authState.isLoading, location.pathname]);
+    // Only update if we're not in a redirect situation
+    if (!(isLoginPage && authState.isAuthenticated)) {
+      document.title =
+        pageTitles[pageKey as keyof typeof pageTitles] ||
+        t("navigation.invoiceBuilder");
+    }
+  }, [
+    currentPage,
+    t,
+    isLoginPage,
+    authState.isLoading,
+    authState.isAuthenticated,
+    location.pathname,
+  ]);
 
   const renderPage = () => {
     if (selectedCar) {
@@ -117,73 +153,67 @@ const AppContent: React.FC = () => {
           <Route
             path="/login"
             element={
-              <LoginModal
-                isOpen={true}
-                onClose={() => navigate("/")}
-                onLoginSuccess={() => {
-                  setCurrentPage("dashboard");
-                  navigate("/dashboard");
-                }}
-              />
+              authState.isAuthenticated ? (
+                <Navigate to="/dashboard" />
+              ) : (
+                <LoginModal
+                  isOpen={true}
+                  onClose={() => navigate("/")}
+                  onLoginSuccess={() => {
+                    setCurrentPage("dashboard");
+                    navigate("/dashboard");
+                  }}
+                />
+              )
             }
           />
 
-          {/* Dashboard */}
+          {/* Protected routes */}
           <Route
             path="/dashboard"
             element={
               authState.isLoading ? (
                 <Loader fullScreen size="xl" />
-              ) : authState.isAuthenticated ? (
-                <Dashboard onPageChange={handlePageChange} />
               ) : (
-                <Navigate to="/login" />
+                <Dashboard onPageChange={handlePageChange} />
               )
             }
           />
 
-          {/* Create Invoice */}
           <Route
             path="/create"
             element={
               authState.isLoading ? (
                 <Loader fullScreen size="xl" />
-              ) : authState.isAuthenticated ? (
-                <CreateInvoice />
               ) : (
-                <Navigate to="/login" />
+                <CreateInvoice />
               )
             }
           />
 
-          {/* Settings */}
           <Route
             path="/settings"
             element={
               authState.isLoading ? (
                 <Loader fullScreen size="xl" />
-              ) : authState.isAuthenticated ? (
-                <Settings />
               ) : (
-                <Navigate to="/login" />
+                <Settings />
               )
             }
           />
 
-          {/* History */}
           <Route
             path="/history"
             element={
               authState.isLoading ? (
                 <Loader fullScreen size="xl" />
-              ) : authState.isAuthenticated ? (
-                <History />
               ) : (
-                <Navigate to="/login" />
+                <History />
               )
             }
           />
 
+          {/* Public route */}
           <Route path="/" element={renderPage()} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
