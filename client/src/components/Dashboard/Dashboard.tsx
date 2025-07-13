@@ -183,7 +183,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onPageChange }) => {
 
   if (error) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         <div className="bg-red-50 border border-red-200 rounded-lg p-6">
           <div className="flex items-start">
             <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 mr-2" />
@@ -206,7 +206,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onPageChange }) => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 mt-14">
       <div className="mb-6 sm:mb-8">
         <h1
           className={`text-2xl sm:text-3xl font-bold text-gray-900 mb-2 ${
