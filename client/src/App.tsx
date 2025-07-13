@@ -218,9 +218,7 @@ const AppContent: React.FC = () => {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
-      {!isLoginPage &&
-        currentPage === "landing" &&
-        authState.user?.role !== "admin" && <Footer />}
+      {!isLoginPage && currentPage === "landing" && <Footer />}
       <NotificationContainer
         notifications={notifications}
         onClose={removeNotification}

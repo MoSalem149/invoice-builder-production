@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Save, Upload, Building, Edit } from "lucide-react";
+import { Save, Upload, Building, Edit, RefreshCw } from "lucide-react";
 import { useApp } from "../../hooks/useApp";
 import { useAuth } from "../../hooks/useAuth";
 import { useLanguage } from "../../hooks/useLanguage";
@@ -20,6 +20,7 @@ const Settings: React.FC = () => {
   const { showSuccess, showError } = useNotificationContext();
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     ...state.company,
     language: state.company.language || "it",
@@ -68,6 +69,14 @@ const Settings: React.FC = () => {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
+
+  useEffect(() => {
+    // Add loading delay
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }, []);
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLanguage = e.target.value as "en" | "ar" | "it";
@@ -219,6 +228,17 @@ const Settings: React.FC = () => {
     setErrors({});
     setIsEditing(false);
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="flex flex-col items-center">
+          <RefreshCw className="animate-spin h-10 w-10 text-blue-600 mb-4" />
+          <p className="text-gray-600 text-lg">{t("common.loading")}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 mt-14">

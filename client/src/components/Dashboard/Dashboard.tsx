@@ -61,6 +61,8 @@ const Dashboard: React.FC<DashboardProps> = ({ onPageChange }) => {
         setLoading(true);
         setError(null);
 
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+
         if (authState.isAuthenticated && authState.token) {
           const response = await fetch(
             `${import.meta.env.VITE_API_URL}/api/dashboard/stats`,
@@ -172,10 +174,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onPageChange }) => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
+      <div className="flex justify-center items-center h-screen">
         <div className="flex flex-col items-center">
-          <RefreshCw className="animate-spin h-8 w-8 text-blue-600 mb-2" />
-          <p className="text-gray-600">{t("common.loading")}</p>
+          <RefreshCw className="animate-spin h-10 w-10 text-blue-600 mb-4" />
+          <p className="text-gray-600 text-lg">{t("common.loading")}</p>
         </div>
       </div>
     );

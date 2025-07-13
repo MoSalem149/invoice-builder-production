@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Download, Search, FileText, Edit } from "lucide-react";
+import { Download, Search, FileText, Edit, RefreshCw } from "lucide-react";
 import { useApp } from "../../hooks/useApp";
 import { useAuth } from "../../hooks/useAuth";
 import { useLanguage } from "../../hooks/useLanguage";
@@ -26,6 +26,8 @@ const History: React.FC = () => {
       }
 
       try {
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+
         const response = await fetch(
           `${import.meta.env.VITE_API_URL}/api/invoices`,
           {
@@ -93,7 +95,7 @@ const History: React.FC = () => {
     if (success) {
       setInvoices(
         invoices.map((inv) =>
-          inv.id === updatedInvoice.id ? updatedInvoice : inv
+          inv._id === updatedInvoice._id ? updatedInvoice : inv
         )
       );
       setEditingInvoice(null);
@@ -105,9 +107,10 @@ const History: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-        <div className="text-center py-8">
-          <p className="text-gray-500">Loading invoices...</p>
+      <div className="flex justify-center items-center h-screen">
+        <div className="flex flex-col items-center">
+          <RefreshCw className="animate-spin h-10 w-10 text-blue-600 mb-4" />
+          <p className="text-gray-600 text-lg">{t("common.loading")}</p>
         </div>
       </div>
     );
@@ -218,7 +221,7 @@ const History: React.FC = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredInvoices.map((invoice) => (
                   <tr
-                    key={`invoice-${invoice.id}`}
+                    key={`invoice-${invoice._id}`} // Changed to _id
                     className="hover:bg-gray-50"
                   >
                     <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
@@ -280,7 +283,7 @@ const History: React.FC = () => {
                         }`}
                       >
                         <button
-                          key={`edit-${invoice.id}`}
+                          key={`edit-${invoice._id}`} // Changed to _id
                           onClick={() => handleEdit(invoice)}
                           className={`bg-gray-200 text-gray-700 px-3 py-1 rounded-lg hover:bg-gray-300 transition-colors flex items-center space-x-1 ${
                             isRTL ? "space-x-reverse flex-row-reverse" : ""
@@ -290,7 +293,7 @@ const History: React.FC = () => {
                           <span>{t("common.edit")}</span>
                         </button>
                         <button
-                          key={`download-${invoice.id}`}
+                          key={`download-${invoice._id}`} // Changed to _id
                           onClick={() => handleDownload(invoice)}
                           className={`bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-1 ${
                             isRTL ? "space-x-reverse flex-row-reverse" : ""

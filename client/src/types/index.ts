@@ -33,7 +33,7 @@ export interface Car {
 
 // User and Auth Types
 export interface User {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   role: string;
@@ -77,8 +77,7 @@ export interface Company {
 }
 
 export interface Client {
-  id: string;
-  _id?: string;
+  _id: string;
   name: string;
   address?: string;
   phone?: string;
@@ -88,8 +87,7 @@ export interface Client {
 }
 
 export interface Product {
-  id: string;
-  _id?: string;
+  _id: string;
   name: string;
   description: string;
   discount: number;
@@ -100,21 +98,27 @@ export interface Product {
 }
 
 export interface InvoiceItem {
-  id: string;
+  id: string; // Can keep 'id' if not stored in DB
   name: string;
   description: string;
+  price: number;
   quantity: number;
   amount: number;
   discount: number;
 }
 
 export interface Invoice {
-  id: string;
-  _id?: string;
+  _id?: string; // Make optional for new invoices
+  userId?: string; // Add this
   number: string;
   date: string;
   dueDate: string;
-  client: Client;
+  client: {
+    _id: string;
+    name: string;
+    address?: string;
+    phone?: string;
+  };
   items: InvoiceItem[];
   subtotal: number;
   tax: number;

@@ -112,8 +112,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
       if (response.ok) {
         const data = await response.json();
         const client: Client = {
-          id: data.data._id, // Map _id to id
-          _id: data.data._id, // Also keep _id
+          _id: data.data._id, // Only use _id
           name: data.data.name,
           address: data.data.address,
           phone: data.data.phone,
@@ -140,7 +139,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
   };
 
   const handleUpdateClient = async () => {
-    if (!validateForm() || !editingClient?.id) {
+    if (!validateForm() || !editingClient?._id) {
       showError(
         t("validation.validationError"),
         t("validation.fixErrorsBelow")
@@ -155,7 +154,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/clients/${editingClient.id}`,
+        `${import.meta.env.VITE_API_URL}/api/clients/${editingClient._id}`,
         {
           method: "PUT",
           headers: {
@@ -173,8 +172,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
       if (response.ok) {
         const data = await response.json();
         const updatedClient: Client = {
-          id: data.data._id, // Map _id to id
-          _id: data.data._id, // Also keep _id
+          _id: data.data._id,
           name: data.data.name,
           address: data.data.address,
           phone: data.data.phone,
@@ -372,9 +370,9 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
         <div className="space-y-3">
           {filteredClients.map((client) => (
             <div
-              key={client._id || client.id} // Use _id first, fall back to id
+              key={client._id}
               className={`p-3 sm:p-4 border rounded-lg transition-colors ${
-                selectedClient?.id === client.id
+                selectedClient?._id === client._id
                   ? "border-blue-500 bg-blue-50"
                   : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
               } ${client.archived ? "opacity-60" : ""}`}
@@ -430,7 +428,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleArchiveToggle(client.id, client.archived || false);
+                      handleArchiveToggle(client._id, client.archived || false);
                     }}
                     disabled={isArchiving || isLoadingData}
                     className={`p-1 hover:bg-gray-100 rounded transition-colors ${

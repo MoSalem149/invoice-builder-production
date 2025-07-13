@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Save, Eye, Printer as Print } from "lucide-react";
+import { Save, Eye, Printer as Print, RefreshCw } from "lucide-react";
 import { useApp } from "../../hooks/useApp";
 import { useLanguage } from "../../hooks/useLanguage";
 import { useNotificationContext } from "../../hooks/useNotificationContext";
@@ -17,9 +17,9 @@ const CreateInvoice: React.FC = () => {
   const { t, isRTL } = useLanguage();
   const { showSuccess, showError } = useNotificationContext();
   const [activePanel, setActivePanel] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const [showPreview, setShowPreview] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-
   const [invoice, setInvoice] = useState<Partial<Invoice>>({
     number: `INV-${String(state.invoices.length + 1).padStart(4, "0")}`,
     date: new Date().toISOString().split("T")[0],
@@ -50,6 +50,14 @@ const CreateInvoice: React.FC = () => {
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500); // Same duration as other components
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const calculateTotals = (items: InvoiceItem[]) => {
     const subtotal = items.reduce((sum, item) => sum + item.amount, 0);
     const taxRate = state.company.taxRate || 0;
@@ -72,25 +80,43 @@ const CreateInvoice: React.FC = () => {
   };
 
   const handleSave = async () => {
-    if (invoice.client && invoice.items && invoice.items.length > 0) {
-      const invoiceData = {
+    try {
+      // Validate required fields before proceeding
+      if (!invoice.client) {
+        throw new Error(t("create.clientRequired"));
+      }
+      if (!invoice.items || invoice.items.length === 0) {
+        throw new Error(t("create.itemsRequired"));
+      }
+
+      // Prepare the invoice data for submission
+      const invoiceData: Partial<Invoice> = {
         number: invoice.number!,
         date: invoice.date!,
         dueDate: invoice.dueDate!,
         client: {
-          id: invoice.client.id,
+          _id: invoice.client._id, // Changed from 'id' to '_id' to match type
           name: invoice.client.name,
-          address: invoice.client.address || "",
-          phone: invoice.client.phone || "",
+          ...(invoice.client.address && { address: invoice.client.address }), // Optional field
+          ...(invoice.client.phone && { phone: invoice.client.phone }), // Optional field
         },
-        items: invoice.items,
+        items: invoice.items.map((item) => ({
+          id: item.id || Date.now().toString(),
+          name: item.name,
+          description: item.description || "",
+          quantity: item.quantity,
+          price: item.price || 0, // Make sure this matches your InvoiceItem type
+          discount: item.discount || 0,
+          amount: item.amount || 0,
+        })),
         subtotal: invoice.subtotal!,
         tax: invoice.tax!,
         total: invoice.total!,
-        notes: invoice.notes || "",
-        terms: invoice.terms || "",
+        ...(invoice.notes && { notes: invoice.notes }), // Optional field
+        ...(invoice.terms && { terms: invoice.terms }), // Optional field
       };
 
+      // Save the invoice
       const success = await saveInvoice(invoiceData);
 
       if (success) {
@@ -98,11 +124,12 @@ const CreateInvoice: React.FC = () => {
           t("create.invoiceSavedSuccess"),
           t("create.invoiceSavedMessage").replace(
             "{number}",
-            invoiceData.number
+            invoiceData.number!
           ),
           4000
         );
-        // Reset form
+
+        // Reset form with new invoice number
         setInvoice({
           number: `INV-${String(state.invoices.length + 2).padStart(4, "0")}`,
           date: new Date().toISOString().split("T")[0],
@@ -115,31 +142,32 @@ const CreateInvoice: React.FC = () => {
           total: 0,
           notes: "",
           terms: "",
+          client: undefined,
         });
       } else {
-        showError(
-          t("create.cannotSaveInvoice"),
-          "Failed to save invoice to server",
-          5000
-        );
+        throw new Error(t("create.saveFailedUnknown"));
       }
-    } else {
-      showError(
-        t("create.cannotSaveInvoice"),
-        t("create.cannotSaveMessage"),
-        5000
-      );
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : t("create.cannotSaveMessage");
+      showError(t("create.cannotSaveInvoice"), errorMessage, 5000);
+      console.error("Invoice save error:", error);
     }
   };
 
   const handlePrint = () => {
     if (invoice.client && invoice.items && invoice.items.length > 0) {
       const fullInvoice: Invoice = {
-        id: Date.now().toString(),
+        _id: Date.now().toString(), // Changed to _id
         number: invoice.number!,
         date: invoice.date!,
         dueDate: invoice.dueDate!,
-        client: invoice.client,
+        client: {
+          _id: invoice.client._id, // Changed to _id
+          name: invoice.client.name,
+          address: invoice.client.address || "",
+          phone: invoice.client.phone || "",
+        },
         items: invoice.items,
         subtotal: invoice.subtotal!,
         tax: invoice.tax!,
@@ -250,6 +278,17 @@ const CreateInvoice: React.FC = () => {
       setShowPreview(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="flex flex-col items-center">
+          <RefreshCw className="animate-spin h-10 w-10 text-blue-600 mb-4" />
+          <p className="text-gray-600 text-lg">{t("common.loading")}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col lg:flex-row h-screen bg-gray-100">

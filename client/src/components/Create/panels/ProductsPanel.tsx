@@ -47,7 +47,7 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
     Record<string, number>
   >({});
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({
+  const [newProduct, setNewProduct] = useState<Omit<Product, "_id">>({
     name: "",
     description: "",
     discount: 0,
@@ -141,7 +141,7 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
       if (response.ok) {
         const data = await response.json();
         const product: Product = {
-          id: data.data._id,
+          _id: data.data._id, // Changed to _id
           name: data.data.name,
           description: data.data.description,
           price: data.data.price,
@@ -171,7 +171,8 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
   };
 
   const handleUpdateProduct = async () => {
-    if (!validateForm() || !editingProduct?.id) {
+    if (!validateForm() || !editingProduct?._id) {
+      // Changed to _id
       showError(
         t("validation.validationError"),
         t("validation.fixErrorsBelow")
@@ -186,7 +187,7 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/products/${editingProduct.id}`,
+        `${import.meta.env.VITE_API_URL}/api/products/${editingProduct._id}`, // Changed to _id
         {
           method: "PUT",
           headers: {
@@ -205,7 +206,7 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
       if (response.ok) {
         const data = await response.json();
         const product: Product = {
-          id: data.data._id,
+          _id: data.data._id, // Changed to _id
           name: data.data.name,
           description: data.data.description,
           price: data.data.price,
@@ -287,7 +288,7 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
 
         dispatch({
           type: isArchived ? "UNARCHIVE_PRODUCT" : "ARCHIVE_PRODUCT",
-          payload: updatedProduct._id,
+          payload: updatedProduct._id, // Changed to _id
         });
 
         showSuccess(
@@ -316,13 +317,14 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
   const handleAddToInvoice = () => {
     const newItems: InvoiceItem[] = Array.from(selectedProducts).map(
       (productId) => {
-        const product = state.products.find((p) => p.id === productId)!;
+        const product = state.products.find((p) => p._id === productId)!;
         const quantity = productQuantities[productId] || 1;
         const amount = product.price * quantity * (1 - product.discount / 100);
         return {
           id: Date.now().toString() + productId,
           name: product.name,
           description: product.description,
+          price: product.price,
           discount: product.discount,
           quantity,
           amount,
@@ -414,7 +416,7 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
           />
         </div>
 
-        {/* Add Selected Button - Moved to top */}
+        {/* Add Selected Button */}
         {selectedProducts.size > 0 && (
           <button
             onClick={handleAddToInvoice}
@@ -454,9 +456,9 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
         <div className="space-y-3 mb-6">
           {filteredProducts.map((product) => (
             <div
-              key={product.id}
+              key={product._id} // Changed to _id
               className={`p-3 sm:p-4 border rounded-lg transition-colors ${
-                selectedProducts.has(product.id)
+                selectedProducts.has(product._id) // Changed to _id
                   ? "border-blue-500 bg-blue-50"
                   : "border-gray-200 hover:border-gray-300"
               } ${product.archived ? "opacity-60" : ""}`}
@@ -474,8 +476,8 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
                   {!product.archived && (
                     <input
                       type="checkbox"
-                      checked={selectedProducts.has(product.id)}
-                      onChange={() => handleProductToggle(product.id)}
+                      checked={selectedProducts.has(product._id)} // Changed to _id
+                      onChange={() => handleProductToggle(product._id)} // Changed to _id
                       className="mt-1 flex-shrink-0"
                     />
                   )}
@@ -498,29 +500,30 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
                       {t("product.discountRate")}: {product.discount}%
                     </p>
 
-                    {selectedProducts.has(product.id) && !product.archived && (
-                      <div className="mt-2">
-                        <label
-                          className={`block text-sm font-medium text-gray-700 mb-1 ${
-                            isRTL ? "text-right" : "text-left"
-                          }`}
-                        >
-                          {t("product.quantity")}
-                        </label>
-                        <input
-                          type="number"
-                          min="1"
-                          value={productQuantities[product.id] || 1}
-                          onChange={(e) =>
-                            handleQuantityChange(
-                              product.id,
-                              parseInt(e.target.value)
-                            )
-                          }
-                          className="w-20 px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        />
-                      </div>
-                    )}
+                    {selectedProducts.has(product._id) &&
+                      !product.archived && ( // Changed to _id
+                        <div className="mt-2">
+                          <label
+                            className={`block text-sm font-medium text-gray-700 mb-1 ${
+                              isRTL ? "text-right" : "text-left"
+                            }`}
+                          >
+                            {t("product.quantity")}
+                          </label>
+                          <input
+                            type="number"
+                            min="1"
+                            value={productQuantities[product._id] || 1} // Changed to _id
+                            onChange={(e) =>
+                              handleQuantityChange(
+                                product._id, // Changed to _id
+                                parseInt(e.target.value)
+                              )
+                            }
+                            className="w-20 px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          />
+                        </div>
+                      )}
                   </div>
                 </div>
                 <div
@@ -542,7 +545,7 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
                     onClick={(e) => {
                       e.stopPropagation();
                       handleArchiveToggle(
-                        product.id,
+                        product._id, // Changed to _id
                         product.archived || false
                       );
                     }}

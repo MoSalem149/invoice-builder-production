@@ -74,7 +74,7 @@ const invoiceSchema = new mongoose.Schema(
       },
       address: {
         type: String,
-        required: true,
+        default: "",
       },
       phone: {
         type: String,

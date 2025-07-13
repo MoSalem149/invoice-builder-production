@@ -62,8 +62,7 @@ const Navbar: React.FC<NavbarProps> = ({
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  const showMobileMenuButton =
-    !isLanding && authState.isAuthenticated && authState.user?.role === "admin";
+  const showMobileMenuButton = !isLanding && authState.isAuthenticated;
 
   return (
     <nav
