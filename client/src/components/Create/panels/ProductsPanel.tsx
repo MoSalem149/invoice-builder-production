@@ -378,7 +378,7 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
   }, [state.clients, state.products]);
 
   return (
-    <div className="h-full bg-white border-r border-gray-200 flex flex-col overflow-hidden">
+    <div className="h-full bg-white border-r border-gray-200 flex flex-col lg:pt-0 overflow-hidden">
       {/* Header */}
       <div className="p-4 sm:p-6 border-b border-gray-200 relative">
         <div
@@ -671,8 +671,8 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
 
       {/* Add/Edit Product Modal */}
       {showAddForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg p-4 sm:p-6 w-full max-w-md">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start lg:items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-lg p-4 sm:p-6 w-full max-w-md mt-4 lg:mt-0">
             <h3
               className={`text-base sm:text-lg font-semibold text-gray-900 mb-4 ${
                 isRTL ? "text-right" : "text-left"

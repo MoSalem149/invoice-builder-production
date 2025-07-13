@@ -27,7 +27,7 @@ const InvoiceDetailsPanel: React.FC<InvoiceDetailsPanelProps> = ({
   };
 
   return (
-    <div className="h-full bg-white border-r border-gray-200 flex flex-col pt-14">
+    <div className="h-full bg-white border-r border-gray-200 flex flex-col pt-14 lg:pt-0">
       {/* Header */}
       <div className="p-4 sm:p-6 border-b border-gray-200 relative">
         <div

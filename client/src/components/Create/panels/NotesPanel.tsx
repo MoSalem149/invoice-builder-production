@@ -23,7 +23,7 @@ const NotesPanel: React.FC<NotesPanelProps> = ({
 
   return (
     <div
-      className={`h-full bg-white border-r border-gray-200 flex flex-col ${
+      className={`h-full bg-white border-r border-gray-200 flex flex-col lg:pt-0 ${
         isRTL ? "rtl" : "ltr"
       }`}
       dir={isRTL ? "rtl" : "ltr"}
