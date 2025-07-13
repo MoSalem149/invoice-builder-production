@@ -61,7 +61,7 @@ const Navbar: React.FC<NavbarProps> = ({
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  const showMobileMenuButton = !isLanding && authState.isAuthenticated;
+  const showMobileMenuButton = authState.isAuthenticated;
 
   return (
     <nav

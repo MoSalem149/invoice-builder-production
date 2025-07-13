@@ -161,7 +161,9 @@
     "fixErrorsBelow": "Please fix the errors below",
     "logoRequired": "Company logo is required",
     "watermarkTooLong": "Watermark must be 10 characters or less",
-    "watermarkInvalidChars": "Watermark contains invalid characters"
+    "watermarkInvalidChars": "Watermark contains invalid characters",
+    "clientDuplicate": "Client already exists in the list",
+    "productDuplicate": "Product already exists in the list"
   },
   "client": {
     "selectClient": "Select Client",
@@ -226,7 +228,8 @@
     "productArchived": "Product archived",
     "productArchivedMessage": "Product has been archived",
     "productUnarchived": "Product unarchived",
-    "productUnarchivedMessage": "Product has been restored"
+    "productUnarchivedMessage": "Product has been restored",
+    "alreadyAdded": "Already added"
   },
   "details": {
     "invoiceDetails": "Invoice Details",

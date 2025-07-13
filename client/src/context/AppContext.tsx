@@ -51,7 +51,7 @@ const appReducer = (state: AppState, action: AppAction): AppState => {
       return {
         ...state,
         clients: state.clients.map((client) =>
-          client.id === action.payload.id ? action.payload : client
+          client._id === action.payload._id ? action.payload : client
         ),
       };
     case "UPDATE_PRODUCT":
@@ -72,14 +72,16 @@ const appReducer = (state: AppState, action: AppAction): AppState => {
       return {
         ...state,
         clients: state.clients.map((client) =>
-          client.id === action.payload ? { ...client, archived: true } : client
+          client._id === action.payload ? { ...client, archived: true } : client
         ),
       };
     case "UNARCHIVE_CLIENT":
       return {
         ...state,
         clients: state.clients.map((client) =>
-          client.id === action.payload ? { ...client, archived: false } : client
+          client._id === action.payload
+            ? { ...client, archived: false }
+            : client
         ),
       };
     case "ARCHIVE_PRODUCT":

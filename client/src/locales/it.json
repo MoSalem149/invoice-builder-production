@@ -161,7 +161,9 @@
     "fixErrorsBelow": "Correggi gli errori qui sotto",
     "logoRequired": "Il logo dell'azienda è obbligatorio",
     "watermarkTooLong": "La filigrana deve essere di massimo 10 caratteri",
-    "watermarkInvalidChars": "La filigrana contiene caratteri non validi"
+    "watermarkInvalidChars": "La filigrana contiene caratteri non validi",
+    "clientDuplicate": "Il cliente è già presente nell'elenco",
+    "productDuplicate": "Il prodotto è già presente nell'elenco"
   },
   "client": {
     "selectClient": "Seleziona Cliente",
@@ -226,7 +228,8 @@
     "productArchived": "Prodotto archiviato",
     "productArchivedMessage": "Il prodotto è stato archiviato",
     "productUnarchived": "Prodotto ripristinato",
-    "productUnarchivedMessage": "Il prodotto è stato ripristinato"
+    "productUnarchivedMessage": "Il prodotto è stato ripristinato",
+    "alreadyAdded": "Già aggiunto"
   },
   "details": {
     "invoiceDetails": "Dettagli Fattura",

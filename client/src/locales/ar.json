@@ -161,7 +161,9 @@
     "fixErrorsBelow": "الرجاء إصلاح الأخطاء أدناه",
     "logoRequired": "شعار الشركة مطلوب",
     "watermarkTooLong": "يجب ألا تتجاوز العلامة المائية 10 حرفًا",
-    "watermarkInvalidChars": "تحتوي العلامة المائية على أحرف غير صالحة"
+    "watermarkInvalidChars": "تحتوي العلامة المائية على أحرف غير صالحة",
+    "clientDuplicate": "العميل موجود بالفعل في القائمة",
+    "productDuplicate": "المنتج موجود بالفعل في القائمة"
   },
   "client": {
     "selectClient": "اختيار العميل",
@@ -226,7 +228,8 @@
     "productArchived": "تم أرشفة المنتج",
     "productArchivedMessage": "تمت أرشفة المنتج",
     "productUnarchived": "تم إلغاء أرشفة المنتج",
-    "productUnarchivedMessage": "تمت استعادة المنتج"
+    "productUnarchivedMessage": "تمت استعادة المنتج",
+    "alreadyAdded": "تمت الإضافة بالفعل"
   },
   "details": {
     "invoiceDetails": "تفاصيل الفاتورة",

@@ -17,6 +17,7 @@ import {
   validateClientName,
   validatePhoneNumber,
   validateAddress,
+  validateDuplicateClient,
 } from "../../../utils/validation";
 
 interface ClientPanelProps {
@@ -63,6 +64,19 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
 
     const nameError = validateClientName(newClient.name, t);
     if (nameError) newErrors.name = nameError;
+
+    // Check for duplicate client (only if not editing or name changed)
+    const duplicateError = validateDuplicateClient(
+      newClient.name,
+      state.clients,
+      t
+    );
+    if (
+      duplicateError &&
+      (!editingClient || editingClient.name !== newClient.name)
+    ) {
+      newErrors.name = duplicateError;
+    }
 
     if (newClient.phone) {
       const phoneError = validatePhoneNumber(newClient.phone, t);
@@ -253,7 +267,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
 
       dispatch({
         type: isArchived ? "UNARCHIVE_CLIENT" : "ARCHIVE_CLIENT",
-        payload: updatedClient._id,
+        payload: updatedClient._id, // Make sure to use _id here
       });
 
       showSuccess(

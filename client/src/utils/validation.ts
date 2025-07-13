@@ -1,3 +1,5 @@
+import { Product, Client } from "../types";
+
 export const validateClientName = (
   name: string,
   t: (key: string) => string
@@ -143,6 +145,30 @@ export const validatePhoneNumber = (
   }
 
   return null;
+};
+
+export const validateDuplicateClient = (
+  name: string,
+  clients: Client[],
+  t: (key: string) => string
+): string | null => {
+  const trimmedName = name.trim();
+  const exists = clients.some(
+    (client) => client.name.trim().toLowerCase() === trimmedName.toLowerCase()
+  );
+  return exists ? t("validation.clientDuplicate") : null;
+};
+
+export const validateDuplicateProduct = (
+  name: string,
+  products: Product[],
+  t: (key: string) => string
+): string | null => {
+  const trimmedName = name.trim();
+  const exists = products.some(
+    (product) => product.name.trim().toLowerCase() === trimmedName.toLowerCase()
+  );
+  return exists ? t("validation.productDuplicate") : null;
 };
 
 export const validateCompanyName = (

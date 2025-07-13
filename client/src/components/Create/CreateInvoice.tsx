@@ -341,7 +341,7 @@ const CreateInvoice: React.FC = () => {
       >
         {/* Toolbar */}
         {(!activePanel || !isMobile) && (
-          <div className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between print:hidden space-y-3 sm:space-y-0 sticky top-16 z-40 mb-16">
+          <div className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between print:hidden space-y-3 sm:space-y-0 sticky top-16 z-40 mt-16">
             <div
               className={`flex items-center space-x-4 ${
                 isRTL ? "space-x-reverse flex-row-reverse" : ""

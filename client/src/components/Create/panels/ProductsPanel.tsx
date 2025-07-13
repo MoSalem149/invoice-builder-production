@@ -19,6 +19,7 @@ import {
   validateProductDescription,
   validatePrice,
   validateDiscountRate,
+  validateDuplicateProduct,
 } from "../../../utils/validation";
 
 interface ProductsPanelProps {
@@ -56,6 +57,14 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isArchiving, setIsArchiving] = useState(false);
 
+  // Get IDs of already selected products in the invoice
+  const selectedProductIds = new Set(
+    selectedItems.map((item) => {
+      // Extract the product ID from the item.id (which is "timestamp + productId")
+      return item.id.slice(13); // Remove the timestamp part (13 digits)
+    })
+  );
+
   const filteredProducts = state.products.filter((product) => {
     const matchesSearch =
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -67,9 +76,18 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
   });
 
   const handleProductToggle = (productId: string) => {
+    // Don't allow selecting already added products
+    if (selectedProductIds.has(productId)) return;
+
     const newSelected = new Set(selectedProducts);
     if (newSelected.has(productId)) {
       newSelected.delete(productId);
+      // Remove quantity when unselecting
+      setProductQuantities((prev) => {
+        const newQuantities = { ...prev };
+        delete newQuantities[productId];
+        return newQuantities;
+      });
     } else {
       newSelected.add(productId);
       setProductQuantities((prev) => ({ ...prev, [productId]: 1 }));
@@ -89,6 +107,19 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
 
     const nameError = validateProductName(newProduct.name, t);
     if (nameError) newErrors.name = nameError;
+
+    // Check for duplicate product (only if not editing or name changed)
+    const duplicateError = validateDuplicateProduct(
+      newProduct.name,
+      state.products,
+      t
+    );
+    if (
+      duplicateError &&
+      (!editingProduct || editingProduct.name !== newProduct.name)
+    ) {
+      newErrors.name = duplicateError;
+    }
 
     const descriptionError = validateProductDescription(
       newProduct.description,
@@ -141,7 +172,7 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
       if (response.ok) {
         const data = await response.json();
         const product: Product = {
-          _id: data.data._id, // Changed to _id
+          _id: data.data._id,
           name: data.data.name,
           description: data.data.description,
           price: data.data.price,
@@ -172,7 +203,6 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
 
   const handleUpdateProduct = async () => {
     if (!validateForm() || !editingProduct?._id) {
-      // Changed to _id
       showError(
         t("validation.validationError"),
         t("validation.fixErrorsBelow")
@@ -187,7 +217,7 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/products/${editingProduct._id}`, // Changed to _id
+        `${import.meta.env.VITE_API_URL}/api/products/${editingProduct._id}`,
         {
           method: "PUT",
           headers: {
@@ -206,7 +236,7 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
       if (response.ok) {
         const data = await response.json();
         const product: Product = {
-          _id: data.data._id, // Changed to _id
+          _id: data.data._id,
           name: data.data.name,
           description: data.data.description,
           price: data.data.price,
@@ -288,7 +318,7 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
 
         dispatch({
           type: isArchived ? "UNARCHIVE_PRODUCT" : "ARCHIVE_PRODUCT",
-          payload: updatedProduct._id, // Changed to _id
+          payload: updatedProduct._id,
         });
 
         showSuccess(
@@ -321,7 +351,7 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
         const quantity = productQuantities[productId] || 1;
         const amount = product.price * quantity * (1 - product.discount / 100);
         return {
-          id: Date.now().toString() + productId,
+          id: Date.now().toString() + productId, // Combine timestamp with productId
           name: product.name,
           description: product.description,
           price: product.price,
@@ -454,121 +484,133 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
       {/* Product List */}
       <div className="flex-1 overflow-y-auto p-4 sm:p-6">
         <div className="space-y-3 mb-6">
-          {filteredProducts.map((product) => (
-            <div
-              key={product._id} // Changed to _id
-              className={`p-3 sm:p-4 border rounded-lg transition-colors ${
-                selectedProducts.has(product._id) // Changed to _id
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-gray-200 hover:border-gray-300"
-              } ${product.archived ? "opacity-60" : ""}`}
-            >
+          {filteredProducts.map((product) => {
+            const isAlreadyAdded = selectedProductIds.has(product._id);
+            return (
               <div
-                className={`flex items-start justify-between ${
-                  isRTL ? "flex-row-reverse" : ""
+                key={product._id}
+                className={`p-3 sm:p-4 border rounded-lg transition-colors ${
+                  selectedProducts.has(product._id)
+                    ? "border-blue-500 bg-blue-50"
+                    : "border-gray-200 hover:border-gray-300"
+                } ${product.archived ? "opacity-60" : ""} ${
+                  isAlreadyAdded ? "bg-gray-100" : ""
                 }`}
               >
                 <div
-                  className={`flex items-start space-x-3 flex-1 min-w-0 ${
-                    isRTL ? "space-x-reverse flex-row-reverse" : ""
+                  className={`flex items-start justify-between ${
+                    isRTL ? "flex-row-reverse" : ""
                   }`}
                 >
-                  {!product.archived && (
-                    <input
-                      type="checkbox"
-                      checked={selectedProducts.has(product._id)} // Changed to _id
-                      onChange={() => handleProductToggle(product._id)} // Changed to _id
-                      className="mt-1 flex-shrink-0"
-                    />
-                  )}
-                  <Package className="h-5 w-5 text-gray-400 mt-0.5 flex-shrink-0" />
                   <div
-                    className={`flex-1 min-w-0 ${
-                      isRTL ? "text-right" : "text-left"
+                    className={`flex items-start space-x-3 flex-1 min-w-0 ${
+                      isRTL ? "space-x-reverse flex-row-reverse" : ""
                     }`}
                   >
-                    <h3 className="font-medium text-gray-900 text-sm sm:text-base truncate">
-                      {product.name}
-                    </h3>
-                    {product.description && (
-                      <p className="text-xs text-gray-500 mt-1 break-words">
-                        {product.description}
-                      </p>
+                    {!product.archived && !isAlreadyAdded && (
+                      <input
+                        type="checkbox"
+                        checked={selectedProducts.has(product._id)}
+                        onChange={() => handleProductToggle(product._id)}
+                        className="mt-1 flex-shrink-0"
+                      />
                     )}
-                    <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                      {t("product.price")}: ${product.price.toFixed(2)} |{" "}
-                      {t("product.discountRate")}: {product.discount}%
-                    </p>
-
-                    {selectedProducts.has(product._id) &&
-                      !product.archived && ( // Changed to _id
-                        <div className="mt-2">
-                          <label
-                            className={`block text-sm font-medium text-gray-700 mb-1 ${
-                              isRTL ? "text-right" : "text-left"
-                            }`}
-                          >
-                            {t("product.quantity")}
-                          </label>
-                          <input
-                            type="number"
-                            min="1"
-                            value={productQuantities[product._id] || 1} // Changed to _id
-                            onChange={(e) =>
-                              handleQuantityChange(
-                                product._id, // Changed to _id
-                                parseInt(e.target.value)
-                              )
-                            }
-                            className="w-20 px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                          />
-                        </div>
+                    <Package className="h-5 w-5 text-gray-400 mt-0.5 flex-shrink-0" />
+                    <div
+                      className={`flex-1 min-w-0 ${
+                        isRTL ? "text-right" : "text-left"
+                      }`}
+                    >
+                      <h3 className="font-medium text-gray-900 text-sm sm:text-base truncate">
+                        {product.name}
+                        {isAlreadyAdded && (
+                          <span className="ml-2 text-xs text-green-600">
+                            ({t("product.alreadyAdded")})
+                          </span>
+                        )}
+                      </h3>
+                      {product.description && (
+                        <p className="text-xs text-gray-500 mt-1 break-words">
+                          {product.description}
+                        </p>
                       )}
+                      <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                        {t("product.price")}: ${product.price.toFixed(2)} |{" "}
+                        {t("product.discountRate")}: {product.discount}%
+                      </p>
+
+                      {selectedProducts.has(product._id) &&
+                        !product.archived && (
+                          <div className="mt-2">
+                            <label
+                              className={`block text-sm font-medium text-gray-700 mb-1 ${
+                                isRTL ? "text-right" : "text-left"
+                              }`}
+                            >
+                              {t("product.quantity")}
+                            </label>
+                            <input
+                              type="number"
+                              min="1"
+                              value={productQuantities[product._id] || 1}
+                              onChange={(e) =>
+                                handleQuantityChange(
+                                  product._id,
+                                  parseInt(e.target.value) || 1
+                                )
+                              }
+                              className="w-20 px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            />
+                          </div>
+                        )}
+                    </div>
                   </div>
-                </div>
-                <div
-                  className={`flex space-x-2 ${isRTL ? "space-x-reverse" : ""}`}
-                >
-                  {!product.archived && (
+                  <div
+                    className={`flex space-x-2 ${
+                      isRTL ? "space-x-reverse" : ""
+                    }`}
+                  >
+                    {!product.archived && !isAlreadyAdded && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditClick(product);
+                        }}
+                        className="p-1 hover:bg-gray-100 rounded transition-colors text-blue-500"
+                        title={t("common.edit")}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </button>
+                    )}
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleEditClick(product);
+                        handleArchiveToggle(
+                          product._id,
+                          product.archived || false
+                        );
                       }}
-                      className="p-1 hover:bg-gray-100 rounded transition-colors text-blue-500"
-                      title={t("common.edit")}
+                      disabled={isArchiving || isLoadingData}
+                      className={`p-1 hover:bg-gray-100 rounded transition-colors ${
+                        isArchiving ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                      title={
+                        product.archived
+                          ? t("common.unarchive")
+                          : t("common.archive")
+                      }
                     >
-                      <Edit className="h-4 w-4" />
+                      {product.archived ? (
+                        <ArchiveRestore className="h-4 w-4 text-green-600" />
+                      ) : (
+                        <Archive className="h-4 w-4 text-gray-500" />
+                      )}
                     </button>
-                  )}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleArchiveToggle(
-                        product._id, // Changed to _id
-                        product.archived || false
-                      );
-                    }}
-                    disabled={isArchiving || isLoadingData}
-                    className={`p-1 hover:bg-gray-100 rounded transition-colors ${
-                      isArchiving ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                    title={
-                      product.archived
-                        ? t("common.unarchive")
-                        : t("common.archive")
-                    }
-                  >
-                    {product.archived ? (
-                      <ArchiveRestore className="h-4 w-4 text-green-600" />
-                    ) : (
-                      <Archive className="h-4 w-4 text-gray-500" />
-                    )}
-                  </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Current Items */}
