@@ -1,23 +1,42 @@
+// components/Layout/Navbar.tsx
 import React, { useState, useEffect } from "react";
 import {
   FileText,
   Home,
-  // Settings,
+  Settings,
   History,
   Plus,
   LogOut,
   User,
   Menu,
   X,
+  Info,
+  Wrench,
+  HelpCircle,
+  FileText as TermsIcon,
+  Phone,
 } from "lucide-react";
 import { useLanguage } from "../../hooks/useLanguage";
 import { useAuth } from "../../hooks/useAuth";
+import { Link, useLocation } from "react-router-dom";
 
 interface NavbarProps {
   currentPage: string;
   onPageChange: (page: string) => void;
   isLanding: boolean;
 }
+
+interface AuthNavItem {
+  id: string;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+interface NonAuthNavItem extends AuthNavItem {
+  path: string;
+}
+
+type NavItem = AuthNavItem | NonAuthNavItem;
 
 const Navbar: React.FC<NavbarProps> = ({
   currentPage,
@@ -28,6 +47,7 @@ const Navbar: React.FC<NavbarProps> = ({
   const { state: authState, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,14 +62,21 @@ const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navItems = authState.isAuthenticated
+  const navItems: NavItem[] = authState.isAuthenticated
     ? [
         { id: "dashboard", label: t("navigation.dashboard"), icon: Home },
         { id: "create", label: t("navigation.create"), icon: Plus },
-        // { id: "settings", label: t("navigation.settings"), icon: Settings },
+        { id: "settings", label: t("navigation.settings"), icon: Settings },
         { id: "history", label: t("navigation.history"), icon: History },
       ]
-    : [];
+    : [
+        { id: "landing", label: "Home", icon: Home, path: "/" },
+        { id: "about", label: "About", icon: Info, path: "/about" },
+        { id: "services", label: "Services", icon: Wrench, path: "/services" },
+        { id: "faqs", label: "FAQs", icon: HelpCircle, path: "/faqs" },
+        { id: "terms", label: "Terms", icon: TermsIcon, path: "/terms" },
+        { id: "contact", label: "Contact", icon: Phone, path: "/contact" },
+      ];
 
   const handleLogout = () => {
     logout();
@@ -61,7 +88,13 @@ const Navbar: React.FC<NavbarProps> = ({
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  const showMobileMenuButton = authState.isAuthenticated;
+  // Determine if current route matches nav item
+  const isActive = (item: NavItem) => {
+    if ("path" in item) {
+      return location.pathname === item.path;
+    }
+    return currentPage === item.id;
+  };
 
   return (
     <nav
@@ -107,36 +140,31 @@ const Navbar: React.FC<NavbarProps> = ({
                 isRTL ? "space-x-reverse" : ""
               }`}
             >
-              {authState.isAuthenticated && (
-                <div
-                  className={`flex space-x-8 ${isRTL ? "space-x-reverse" : ""}`}
-                >
-                  {navItems.map((item) => {
-                    const IconComponent = item.icon;
-                    return (
-                      <button
-                        key={item.id}
-                        onClick={() => {
-                          onPageChange(item.id);
-                          setMobileMenuOpen(false);
-                        }}
-                        className={`flex items-center w-full px-3 py-2 text-base font-medium rounded-md ${
-                          isRTL ? "flex-row-reverse" : ""
-                        } ${
-                          currentPage === item.id
-                            ? "text-gray-900 bg-gray-100"
-                            : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                        }`}
-                      >
+              <div className="flex items-center space-x-6">
+                {navItems.map((item) => {
+                  const IconComponent = item.icon;
+                  return (
+                    <Link
+                      key={item.id}
+                      to={"path" in item ? item.path : `/${item.id}`}
+                      className={`flex items-center px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap ${
+                        isRTL ? "flex-row-reverse" : ""
+                      } ${
+                        isActive(item)
+                          ? "text-gray-900 bg-gray-100"
+                          : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                      }`}
+                    >
+                      {IconComponent && (
                         <IconComponent
                           className={`h-4 w-4 ${isRTL ? "ml-2" : "mr-2"}`}
                         />
-                        {item.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
+                      )}
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
 
               {/* Auth Buttons */}
               {authState.isAuthenticated && (
@@ -169,56 +197,54 @@ const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Mobile menu button - Only show for authenticated users and not on landing page */}
-          {showMobileMenuButton && (
-            <div className="md:hidden flex items-center">
-              <button
-                onClick={toggleMobileMenu}
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 focus:outline-none"
-                aria-expanded="false"
-              >
-                <span className="sr-only">Open main menu</span>
-                {mobileMenuOpen ? (
-                  <X className="block h-6 w-6" />
-                ) : (
-                  <Menu className="block h-6 w-6" />
-                )}
-              </button>
-            </div>
-          )}
+          {/* Mobile menu button - always visible */}
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={toggleMobileMenu}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 focus:outline-none"
+              aria-expanded="false"
+            >
+              <span className="sr-only">Open main menu</span>
+              {mobileMenuOpen ? (
+                <X className="block h-6 w-6" />
+              ) : (
+                <Menu className="block h-6 w-6" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile menu - Show for all authenticated users */}
-      {authState.isAuthenticated && (
-        <div className={`md:hidden ${mobileMenuOpen ? "block" : "hidden"}`}>
-          <div className="pt-2 pb-3 space-y-1">
-            {navItems.map((item) => {
-              const IconComponent = item.icon;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    onPageChange(item.id);
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`flex items-center w-full px-3 py-2 text-base font-medium rounded-md ${
-                    isRTL ? "flex-row-reverse" : ""
-                  } ${
-                    currentPage === item.id
-                      ? "text-gray-900 bg-gray-100"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                  }`}
-                >
+      {/* Mobile menu - always available */}
+      <div className={`md:hidden ${mobileMenuOpen ? "block" : "hidden"}`}>
+        <div className="pt-2 pb-3 space-y-1">
+          {navItems.map((item) => {
+            const IconComponent = item.icon;
+            return (
+              <Link
+                key={item.id}
+                to={"path" in item ? item.path : `/${item.id}`}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center w-full px-3 py-2 text-base font-medium rounded-md ${
+                  isRTL ? "flex-row-reverse" : ""
+                } ${
+                  isActive(item)
+                    ? "text-gray-900 bg-gray-100"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`}
+              >
+                {IconComponent && (
                   <IconComponent
                     className={`h-4 w-4 ${isRTL ? "ml-2" : "mr-2"}`}
                   />
-                  {item.label}
-                </button>
-              );
-            })}
+                )}
+                {item.label}
+              </Link>
+            );
+          })}
 
-            {/* Mobile Auth Buttons */}
+          {/* Mobile Auth Buttons */}
+          {authState.isAuthenticated && (
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="space-y-3">
                 <div
@@ -242,9 +268,9 @@ const Navbar: React.FC<NavbarProps> = ({
                 </button>
               </div>
             </div>
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </nav>
   );
 };

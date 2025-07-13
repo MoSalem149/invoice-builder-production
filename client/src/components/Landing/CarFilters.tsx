@@ -1,3 +1,4 @@
+// components/Landing/CarFilters.tsx
 import React, { useState } from "react";
 
 interface CarFiltersProps {
@@ -10,7 +11,7 @@ interface CarFiltersProps {
   }) => void;
 }
 
-const CarFilters: React.FC<CarFiltersProps> = () => {
+const CarFilters: React.FC<CarFiltersProps> = ({ onFilterChange }) => {
   const [filters, setFilters] = useState({
     brand: "",
     minPrice: "",
@@ -29,57 +30,86 @@ const CarFilters: React.FC<CarFiltersProps> = () => {
     }));
   };
 
-  return (
-    <div className="bg-white p-4 rounded-lg shadow-md">
-      <h3 className="font-bold mb-4">Filters</h3>
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (onFilterChange) {
+      onFilterChange(filters);
+    }
+  };
 
-      <div className="space-y-4">
+  const brands = [
+    "Toyota",
+    "Porsche",
+    "Audi",
+    "BMW",
+    "Ford",
+    "Nissan",
+    "Peugeot",
+    "Volkswagen",
+  ];
+
+  return (
+    <div className="container mx-auto px-4 -mt-16 relative z-20">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white rounded-xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-5 gap-4 items-end"
+      >
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-600 mb-2">
             Brand
           </label>
-          <input
-            type="text"
+          <select
             name="brand"
             value={filters.brand}
             onChange={handleFilterChange}
-            className="w-full p-2 border border-gray-300 rounded"
+            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
+          >
+            <option value="">All Brands</option>
+            {brands.map((brand) => (
+              <option key={brand} value={brand}>
+                {brand}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-2">
+            Min Price (CHF)
+          </label>
+          <input
+            type="number"
+            name="minPrice"
+            placeholder="Min"
+            value={filters.minPrice}
+            onChange={handleFilterChange}
+            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Price Range
+          <label className="block text-sm font-medium text-gray-600 mb-2">
+            Max Price (CHF)
           </label>
-          <div className="flex space-x-2">
-            <input
-              type="number"
-              name="minPrice"
-              placeholder="Min"
-              value={filters.minPrice}
-              onChange={handleFilterChange}
-              className="w-full p-2 border border-gray-300 rounded"
-            />
-            <input
-              type="number"
-              name="maxPrice"
-              placeholder="Max"
-              value={filters.maxPrice}
-              onChange={handleFilterChange}
-              className="w-full p-2 border border-gray-300 rounded"
-            />
-          </div>
+          <input
+            type="number"
+            name="maxPrice"
+            placeholder="Max"
+            value={filters.maxPrice}
+            onChange={handleFilterChange}
+            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
+          />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-600 mb-2">
             Transmission
           </label>
           <select
             name="transmission"
             value={filters.transmission}
             onChange={handleFilterChange}
-            className="w-full p-2 border border-gray-300 rounded"
+            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
           >
             <option value="">Any</option>
             <option value="Automatic">Automatic</option>
@@ -87,28 +117,13 @@ const CarFilters: React.FC<CarFiltersProps> = () => {
           </select>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Fuel Type
-          </label>
-          <select
-            name="fuelType"
-            value={filters.fuelType}
-            onChange={handleFilterChange}
-            className="w-full p-2 border border-gray-300 rounded"
-          >
-            <option value="">Any</option>
-            <option value="Petrol">Petrol</option>
-            <option value="Diesel">Diesel</option>
-            <option value="Electric">Electric</option>
-            <option value="Hybrid">Hybrid</option>
-          </select>
-        </div>
-
-        <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-          Apply Filters
+        <button
+          type="submit"
+          className="h-[50px] bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg font-semibold transition-colors"
+        >
+          Search
         </button>
-      </div>
+      </form>
     </div>
   );
 };

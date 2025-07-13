@@ -19,6 +19,13 @@ import LandingPage from "./components/Landing/LandingPage";
 import CarDetails from "./components/Landing/CarDetails";
 import { Car } from "./types";
 import Footer from "./components/Layout/Footer";
+import About from "./components/Landing/About";
+import Services from "./components/Landing/Services";
+import FAQs from "./components/Landing/FAQs";
+import Terms from "./components/Landing/Terms";
+import Contact from "./components/Landing/Contact";
+import TermsConditions from "./components/Landing/TermsConditions";
+import PrivacyNotice from "./components/Landing/PrivacyNotice";
 import {
   BrowserRouter as Router,
   Route,
@@ -38,6 +45,25 @@ const AppContent: React.FC = () => {
   const location = useLocation();
   const { state: authState } = useAuth();
 
+  // List of public routes that don't require authentication
+  const publicRoutes = [
+    "",
+    "about",
+    "services",
+    "faqs",
+    "terms",
+    "contact",
+    "terms-conditions",
+    "privacy-notice",
+    "car",
+  ];
+
+  // Check if current route is public
+  const isPublicRoute = () => {
+    const path = location.pathname.substring(1);
+    return publicRoutes.some((route) => path.startsWith(route));
+  };
+
   // Sync currentPage with the actual route
   useEffect(() => {
     const path = location.pathname.substring(1) || "landing";
@@ -48,6 +74,13 @@ const AppContent: React.FC = () => {
       "settings",
       "history",
       "login",
+      "about",
+      "services",
+      "faqs",
+      "terms",
+      "contact",
+      "terms-conditions",
+      "privacy-notice",
     ];
 
     if (validPages.includes(path)) {
@@ -58,7 +91,11 @@ const AppContent: React.FC = () => {
   }, [location.pathname]);
 
   const handlePageChange = (page: string) => {
-    if (!authState.isAuthenticated && page !== "landing") {
+    if (
+      !authState.isAuthenticated &&
+      page !== "landing" &&
+      !publicRoutes.includes(page)
+    ) {
       navigate("/login");
       return;
     }
@@ -78,11 +115,7 @@ const AppContent: React.FC = () => {
       return;
     }
 
-    if (
-      !isLoginPage &&
-      !authState.isAuthenticated &&
-      location.pathname !== "/"
-    ) {
+    if (!isLoginPage && !authState.isAuthenticated && !isPublicRoute()) {
       document.title = t("navigation.login");
       navigate("/login");
       return;
@@ -110,6 +143,14 @@ const AppContent: React.FC = () => {
       )}`,
       history: `${t("navigation.history")} - ${t("navigation.invoiceBuilder")}`,
       login: t("navigation.login"),
+      about: "About Us - " + t("navigation.carRentalTitle"),
+      services: "Services - " + t("navigation.carRentalTitle"),
+      faqs: "FAQs - " + t("navigation.carRentalTitle"),
+      terms: "Terms - " + t("navigation.carRentalTitle"),
+      contact: "Contact - " + t("navigation.carRentalTitle"),
+      "terms-conditions":
+        "Terms & Conditions - " + t("navigation.carRentalTitle"),
+      "privacy-notice": "Privacy Notice - " + t("navigation.carRentalTitle"),
     };
 
     const path = location.pathname.substring(1) || "landing";
@@ -128,29 +169,6 @@ const AppContent: React.FC = () => {
     authState.isAuthenticated,
     location.pathname,
   ]);
-
-  const renderPage = () => {
-    if (selectedCar) {
-      return (
-        <CarDetails car={selectedCar} onBack={() => setSelectedCar(null)} />
-      );
-    }
-
-    switch (currentPage) {
-      case "landing":
-        return <LandingPage onCarSelect={(car) => setSelectedCar(car)} />;
-      case "dashboard":
-        return <Dashboard onPageChange={handlePageChange} />;
-      case "settings":
-        return <Settings />;
-      case "history":
-        return <History />;
-      case "create":
-        return <CreateInvoice />;
-      default:
-        return <LandingPage onCarSelect={(car) => setSelectedCar(car)} />;
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -180,55 +198,90 @@ const AppContent: React.FC = () => {
             }
           />
 
+          {/* Dashboard routes */}
           <Route
             path="/dashboard"
             element={
               authState.isLoading ? (
                 <Loader fullScreen size="xl" />
-              ) : (
+              ) : authState.isAuthenticated ? (
                 <Dashboard onPageChange={handlePageChange} />
+              ) : (
+                <Navigate to="/login" />
               )
             }
           />
-
           <Route
             path="/create"
             element={
               authState.isLoading ? (
                 <Loader fullScreen size="xl" />
-              ) : (
+              ) : authState.isAuthenticated ? (
                 <CreateInvoice />
+              ) : (
+                <Navigate to="/login" />
               )
             }
           />
-
           <Route
             path="/settings"
             element={
               authState.isLoading ? (
                 <Loader fullScreen size="xl" />
-              ) : (
+              ) : authState.isAuthenticated ? (
                 <Settings />
+              ) : (
+                <Navigate to="/login" />
               )
             }
           />
-
           <Route
             path="/history"
             element={
               authState.isLoading ? (
                 <Loader fullScreen size="xl" />
-              ) : (
+              ) : authState.isAuthenticated ? (
                 <History />
+              ) : (
+                <Navigate to="/login" />
               )
             }
           />
 
-          <Route path="/" element={renderPage()} />
+          {/* Landing page routes */}
+          <Route
+            path="/"
+            element={
+              <LandingPage onCarSelect={(car: Car) => setSelectedCar(car)} />
+            }
+          />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/faqs" element={<FAQs />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/terms-conditions" element={<TermsConditions />} />
+          <Route path="/privacy-notice" element={<PrivacyNotice />} />
+
+          {/* Car details route */}
+          <Route
+            path="/car/:id"
+            element={
+              selectedCar ? (
+                <CarDetails
+                  car={selectedCar}
+                  onClose={() => setSelectedCar(null)}
+                />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
-      {!isLoginPage && location.pathname === "/" && <Footer />}
+      {!isLoginPage && !authState.isAuthenticated && <Footer />}
       <NotificationContainer
         notifications={notifications}
         onClose={removeNotification}

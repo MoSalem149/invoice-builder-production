@@ -19,6 +19,19 @@ html {
   direction: ltr;
 }
 
+/* Brand Slider Animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
 /* Print styles */
 @media print {
   body {
