@@ -109,8 +109,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
 
   const handleFilterChange = (filters: {
     brand: string;
-    minPrice: string;
-    maxPrice: string;
+    price: string;
     transmission: string;
     fuelType: string;
   }) => {
@@ -120,12 +119,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
       results = results.filter((car) => car.brand === filters.brand);
     }
 
-    if (filters.minPrice) {
-      results = results.filter((car) => car.price >= Number(filters.minPrice));
-    }
-
-    if (filters.maxPrice) {
-      results = results.filter((car) => car.price <= Number(filters.maxPrice));
+    if (filters.price) {
+      results = results.filter((car) => car.price <= Number(filters.price));
     }
 
     if (filters.transmission) {

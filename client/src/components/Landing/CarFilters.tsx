@@ -4,8 +4,7 @@ import React, { useState } from "react";
 interface CarFiltersProps {
   onFilterChange?: (filters: {
     brand: string;
-    minPrice: string;
-    maxPrice: string;
+    price: string;
     transmission: string;
     fuelType: string;
   }) => void;
@@ -14,8 +13,7 @@ interface CarFiltersProps {
 const CarFilters: React.FC<CarFiltersProps> = ({ onFilterChange }) => {
   const [filters, setFilters] = useState({
     brand: "",
-    minPrice: "",
-    maxPrice: "",
+    price: "",
     transmission: "",
     fuelType: "",
   });
@@ -75,27 +73,13 @@ const CarFilters: React.FC<CarFiltersProps> = ({ onFilterChange }) => {
 
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-2">
-            Min Price (CHF)
+            Price (CHF)
           </label>
           <input
             type="number"
-            name="minPrice"
-            placeholder="Min"
-            value={filters.minPrice}
-            onChange={handleFilterChange}
-            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-600 mb-2">
-            Max Price (CHF)
-          </label>
-          <input
-            type="number"
-            name="maxPrice"
-            placeholder="Max"
-            value={filters.maxPrice}
+            name="price"
+            placeholder="Max price"
+            value={filters.price}
             onChange={handleFilterChange}
             className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
           />
@@ -114,6 +98,24 @@ const CarFilters: React.FC<CarFiltersProps> = ({ onFilterChange }) => {
             <option value="">Any</option>
             <option value="Automatic">Automatic</option>
             <option value="Manual">Manual</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-2">
+            Fuel Type
+          </label>
+          <select
+            name="fuelType"
+            value={filters.fuelType}
+            onChange={handleFilterChange}
+            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
+          >
+            <option value="">Any Fuel Type</option>
+            <option value="Petrol">Petrol</option>
+            <option value="Diesel">Diesel</option>
+            <option value="Electric">Electric</option>
+            <option value="Hybrid">Hybrid</option>
           </select>
         </div>
 
