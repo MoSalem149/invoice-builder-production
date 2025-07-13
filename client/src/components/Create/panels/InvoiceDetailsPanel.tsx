@@ -31,7 +31,7 @@ const InvoiceDetailsPanel: React.FC<InvoiceDetailsPanelProps> = ({
       {/* Header */}
       <div className="p-4 sm:p-6 border-b border-gray-200 relative">
         <div
-          className={`flex items-center justify-between mb-4 ${
+          className={`flex items-center justify-between  ${
             isRTL ? "flex-row-reverse" : ""
           }`}
         >

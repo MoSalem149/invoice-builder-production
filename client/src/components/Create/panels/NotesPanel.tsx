@@ -31,7 +31,7 @@ const NotesPanel: React.FC<NotesPanelProps> = ({
       {/* Header */}
       <div className="p-4 sm:p-6 border-b border-gray-200 relative">
         <div
-          className={`flex items-center pt-14 justify-between ${
+          className={`flex items-center pt-14 justify-between mb-0  ${
             isRTL ? "flex-row-reverse" : ""
           }`}
         >
