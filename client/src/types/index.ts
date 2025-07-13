@@ -78,6 +78,7 @@ export interface Company {
 
 export interface Client {
   _id: string;
+  id?: string; // Add this to match backend expectation
   name: string;
   address?: string;
   phone?: string;
@@ -107,18 +108,21 @@ export interface InvoiceItem {
   discount: number;
 }
 
+export interface InvoiceClient {
+  _id: string;
+  id: string;
+  name: string;
+  address?: string;
+  phone?: string;
+}
+
 export interface Invoice {
   _id?: string; // Make optional for new invoices
   userId?: string; // Add this
   number: string;
   date: string;
   dueDate: string;
-  client: {
-    _id: string;
-    name: string;
-    address?: string;
-    phone?: string;
-  };
+  client: InvoiceClient;
   items: InvoiceItem[];
   subtotal: number;
   tax: number;

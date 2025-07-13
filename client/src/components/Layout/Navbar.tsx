@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react"; // Add useEffect import
+import React, { useState, useEffect } from "react";
 import {
   FileText,
   Home,
-  Settings,
+  // Settings,
   History,
   Plus,
   LogOut,
@@ -27,9 +27,8 @@ const Navbar: React.FC<NavbarProps> = ({
   const { t, isRTL } = useLanguage();
   const { state: authState, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false); // Add state for scroll detection
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  // Add scroll effect handler
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -47,7 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({
     ? [
         { id: "dashboard", label: t("navigation.dashboard"), icon: Home },
         { id: "create", label: t("navigation.create"), icon: Plus },
-        { id: "settings", label: t("navigation.settings"), icon: Settings },
+        // { id: "settings", label: t("navigation.settings"), icon: Settings },
         { id: "history", label: t("navigation.history"), icon: History },
       ]
     : [];
@@ -94,7 +93,7 @@ const Navbar: React.FC<NavbarProps> = ({
               <span className="text-xl font-semibold text-gray-800">
                 {authState.isAuthenticated
                   ? t("navigation.invoiceBuilder")
-                  : t("navigation.carRentalTitle")}
+                  : t("navigation.carRentalTitle")}{" "}
               </span>
             </button>
           </div>
@@ -168,7 +167,7 @@ const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Mobile menu button - Only show for admin users and not on landing page */}
+          {/* Mobile menu button - Only show for authenticated users and not on landing page */}
           {showMobileMenuButton && (
             <div className="md:hidden flex items-center">
               <button
@@ -188,8 +187,8 @@ const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Mobile menu - Only show for admin users */}
-      {authState.isAuthenticated && authState.user?.role === "admin" && (
+      {/* Mobile menu - Show for all authenticated users */}
+      {authState.isAuthenticated && (
         <div className={`md:hidden ${mobileMenuOpen ? "block" : "hidden"}`}>
           <div className="pt-2 pb-3 space-y-1">
             {navItems.map((item) => {

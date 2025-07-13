@@ -3,7 +3,7 @@ import { Save, Eye, Printer as Print, RefreshCw } from "lucide-react";
 import { useApp } from "../../hooks/useApp";
 import { useLanguage } from "../../hooks/useLanguage";
 import { useNotificationContext } from "../../hooks/useNotificationContext";
-import { Invoice, InvoiceItem } from "../../types";
+import { Invoice, InvoiceItem, Client, InvoiceClient } from "../../types";
 import { downloadInvoicePDF } from "../../utils/invoiceGenerator";
 import InvoicePreview from "./InvoicePreview";
 import ClientPanel from "./panels/ClientPanel";
@@ -37,23 +37,18 @@ const CreateInvoice: React.FC = () => {
   // Check screen size and set isMobile state
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+      setIsMobile(window.innerWidth < 1024);
     };
 
-    // Initial check
     checkScreenSize();
-
-    // Add event listener
     window.addEventListener("resize", checkScreenSize);
-
-    // Cleanup
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1500); // Same duration as other components
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -81,42 +76,41 @@ const CreateInvoice: React.FC = () => {
 
   const handleSave = async () => {
     try {
-      // Validate required fields before proceeding
-      if (!invoice.client) {
-        throw new Error(t("create.clientRequired"));
-      }
-      if (!invoice.items || invoice.items.length === 0) {
-        throw new Error(t("create.itemsRequired"));
+      if (!invoice.client || !invoice.items?.length) {
+        throw new Error(t("create.cannotSaveMessage"));
       }
 
-      // Prepare the invoice data for submission
+      // Transform client data for the invoice
+      const invoiceClient = {
+        _id: invoice.client._id, // Add this line
+        id: invoice.client._id,
+        name: invoice.client.name,
+        ...(invoice.client.address && { address: invoice.client.address }),
+        ...(invoice.client.phone && { phone: invoice.client.phone }),
+      };
+
       const invoiceData: Partial<Invoice> = {
         number: invoice.number!,
         date: invoice.date!,
         dueDate: invoice.dueDate!,
-        client: {
-          _id: invoice.client._id, // Changed from 'id' to '_id' to match type
-          name: invoice.client.name,
-          ...(invoice.client.address && { address: invoice.client.address }), // Optional field
-          ...(invoice.client.phone && { phone: invoice.client.phone }), // Optional field
-        },
+        client: invoiceClient,
         items: invoice.items.map((item) => ({
           id: item.id || Date.now().toString(),
           name: item.name,
           description: item.description || "",
           quantity: item.quantity,
-          price: item.price || 0, // Make sure this matches your InvoiceItem type
+          price: item.price || 0,
           discount: item.discount || 0,
           amount: item.amount || 0,
         })),
         subtotal: invoice.subtotal!,
         tax: invoice.tax!,
         total: invoice.total!,
-        ...(invoice.notes && { notes: invoice.notes }), // Optional field
-        ...(invoice.terms && { terms: invoice.terms }), // Optional field
+        ...(invoice.notes && { notes: invoice.notes }),
+        ...(invoice.terms && { terms: invoice.terms }),
+        status: "draft",
       };
 
-      // Save the invoice
       const success = await saveInvoice(invoiceData);
 
       if (success) {
@@ -129,7 +123,6 @@ const CreateInvoice: React.FC = () => {
           4000
         );
 
-        // Reset form with new invoice number
         setInvoice({
           number: `INV-${String(state.invoices.length + 2).padStart(4, "0")}`,
           date: new Date().toISOString().split("T")[0],
@@ -145,25 +138,28 @@ const CreateInvoice: React.FC = () => {
           client: undefined,
         });
       } else {
-        throw new Error(t("create.saveFailedUnknown"));
+        throw new Error(t("create.cannotSaveMessage"));
       }
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : t("create.cannotSaveMessage");
-      showError(t("create.cannotSaveInvoice"), errorMessage, 5000);
       console.error("Invoice save error:", error);
+      showError(
+        t("create.cannotSaveInvoice"),
+        t("create.cannotSaveMessage"),
+        5000
+      );
     }
   };
 
   const handlePrint = () => {
-    if (invoice.client && invoice.items && invoice.items.length > 0) {
-      const fullInvoice: Invoice = {
-        _id: Date.now().toString(), // Changed to _id
+    if (invoice.client && invoice.items?.length) {
+      const fullInvoice = {
+        _id: Date.now().toString(),
         number: invoice.number!,
         date: invoice.date!,
         dueDate: invoice.dueDate!,
         client: {
-          _id: invoice.client._id, // Changed to _id
+          _id: invoice.client._id, // Add this
+          id: invoice.client._id,
           name: invoice.client.name,
           address: invoice.client.address || "",
           phone: invoice.client.phone || "",
@@ -176,17 +172,19 @@ const CreateInvoice: React.FC = () => {
         terms: invoice.terms || "",
       };
 
-      const companyInfo = {
-        ...state.company,
-        address: state.company.address || "",
-        email: state.company.email || "",
-        phone: state.company.phone || "",
-        watermark: state.company.watermark || "",
-        showNotes: state.company.showNotes || false,
-        showTerms: state.company.showTerms || false,
-      };
-
-      downloadInvoicePDF(fullInvoice, companyInfo, isRTL);
+      downloadInvoicePDF(
+        fullInvoice,
+        {
+          ...state.company,
+          address: state.company.address || "",
+          email: state.company.email || "",
+          phone: state.company.phone || "",
+          watermark: state.company.watermark || "",
+          showNotes: state.company.showNotes || false,
+          showTerms: state.company.showTerms || false,
+        },
+        isRTL
+      );
     } else {
       showError(
         t("create.cannotSaveInvoice"),
@@ -211,8 +209,16 @@ const CreateInvoice: React.FC = () => {
         return (
           <ClientPanel
             selectedClient={invoice.client}
-            onSelectClient={(client) => {
-              updateInvoice({ client });
+            onSelectClient={(client: Client) => {
+              // Transform Client to InvoiceClient
+              const invoiceClient: InvoiceClient = {
+                _id: client._id,
+                id: client._id, // Use _id as the id if client.id is undefined
+                name: client.name,
+                ...(client.address && { address: client.address }),
+                ...(client.phone && { phone: client.phone }),
+              };
+              updateInvoice({ client: invoiceClient });
               setActivePanel(null);
               if (isMobile) setShowPreview(true);
             }}
@@ -274,9 +280,7 @@ const CreateInvoice: React.FC = () => {
 
   const panelClickHandler = (panel: string) => {
     setActivePanel(panel);
-    if (isMobile) {
-      setShowPreview(false);
-    }
+    if (isMobile) setShowPreview(false);
   };
 
   if (loading) {
@@ -292,7 +296,7 @@ const CreateInvoice: React.FC = () => {
 
   return (
     <div className="flex flex-col lg:flex-row h-screen bg-gray-100">
-      {/* Left Panel - Always render but control visibility */}
+      {/* Left Panel */}
       <div
         className={`${
           activePanel ? "block lg:w-1/3" : "hidden lg:block lg:w-0"
@@ -301,13 +305,13 @@ const CreateInvoice: React.FC = () => {
         {renderPanel()}
       </div>
 
-      {/* Right Panel - Invoice Preview */}
+      {/* Right Panel */}
       <div
         className={`${
           activePanel && !isMobile ? "lg:w-2/3" : "w-full"
         } transition-all duration-300 flex flex-col`}
       >
-        {/* Toolbar - fixed below navbar - Always visible */}
+        {/* Toolbar */}
         {(!activePanel || !isMobile) && (
           <div className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between print:hidden space-y-3 sm:space-y-0 sticky top-16 z-40 mb-16">
             <div
@@ -360,7 +364,7 @@ const CreateInvoice: React.FC = () => {
           </div>
         )}
 
-        {/* Invoice Preview - Conditionally rendered */}
+        {/* Invoice Preview */}
         {showPreview && (
           <div className="flex-1 overflow-auto p-4 sm:p-6 print:p-0">
             <div className="max-w-4xl mx-auto print:max-w-none print:mx-0">

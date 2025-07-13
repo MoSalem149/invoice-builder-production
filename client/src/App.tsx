@@ -145,7 +145,7 @@ const AppContent: React.FC = () => {
         <Navbar
           currentPage={currentPage}
           onPageChange={handlePageChange}
-          isLanding={currentPage === "landing"}
+          isLanding={location.pathname === "/"}
         />
       )}
       <main className="flex-grow">
@@ -218,7 +218,7 @@ const AppContent: React.FC = () => {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
-      {!isLoginPage && currentPage === "landing" && <Footer />}
+      {!isLoginPage && location.pathname === "/" && <Footer />}
       <NotificationContainer
         notifications={notifications}
         onClose={removeNotification}
