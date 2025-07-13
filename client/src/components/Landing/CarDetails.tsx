@@ -71,9 +71,6 @@ const CarDetails: React.FC<CarDetailsProps> = ({ car, onClose }) => {
             </div>
 
             <div className="space-y-4">
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors">
-                Schedule Test Drive
-              </button>
               <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-3 px-4 rounded-lg font-semibold transition-colors">
                 Contact Sales
               </button>
