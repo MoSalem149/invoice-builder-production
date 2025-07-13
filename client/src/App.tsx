@@ -38,12 +38,38 @@ const AppContent: React.FC = () => {
   const location = useLocation();
   const { state: authState } = useAuth();
 
+  // Sync currentPage with the actual route
+  useEffect(() => {
+    const path = location.pathname.substring(1) || "landing";
+    const validPages = [
+      "landing",
+      "dashboard",
+      "create",
+      "settings",
+      "history",
+      "login",
+    ];
+
+    if (validPages.includes(path)) {
+      setCurrentPage(path);
+    } else {
+      setCurrentPage("landing");
+    }
+  }, [location.pathname]);
+
+  const handlePageChange = (page: string) => {
+    if (!authState.isAuthenticated && page !== "landing") {
+      navigate("/login");
+      return;
+    }
+    navigate(page === "landing" ? "/" : `/${page}`);
+  };
+
   const isLoginPage = location.pathname === "/login";
 
   useEffect(() => {
     if (authState.isLoading) return;
 
-    // If user is on login page but already authenticated, redirect to dashboard
     if (isLoginPage && authState.isAuthenticated) {
       document.title = `${t("navigation.dashboard")} - ${t(
         "navigation.invoiceBuilder"
@@ -52,7 +78,6 @@ const AppContent: React.FC = () => {
       return;
     }
 
-    // If user is not on login page but not authenticated, redirect to login
     if (
       !isLoginPage &&
       !authState.isAuthenticated &&
@@ -68,20 +93,10 @@ const AppContent: React.FC = () => {
     isLoginPage,
     location.pathname,
     navigate,
-    t, // Add t to dependencies
+    t,
   ]);
 
-  const handlePageChange = (page: string) => {
-    if (!authState.isAuthenticated && page !== "landing") {
-      navigate("/login");
-      return;
-    }
-    setCurrentPage(page);
-    navigate(page === "landing" ? "/" : `/${page}`);
-  };
-
   useEffect(() => {
-    // Don't update title if we're still loading auth state or during redirects
     if (authState.isLoading) return;
 
     const pageTitles = {
@@ -97,11 +112,9 @@ const AppContent: React.FC = () => {
       login: t("navigation.login"),
     };
 
-    // Get current path and map to page key
     const path = location.pathname.substring(1) || "landing";
     const pageKey = Object.keys(pageTitles).includes(path) ? path : "landing";
 
-    // Only update if we're not in a redirect situation
     if (!(isLoginPage && authState.isAuthenticated)) {
       document.title =
         pageTitles[pageKey as keyof typeof pageTitles] ||
@@ -160,7 +173,6 @@ const AppContent: React.FC = () => {
                   isOpen={true}
                   onClose={() => navigate("/")}
                   onLoginSuccess={() => {
-                    setCurrentPage("dashboard");
                     navigate("/dashboard");
                   }}
                 />
@@ -168,7 +180,6 @@ const AppContent: React.FC = () => {
             }
           />
 
-          {/* Protected routes */}
           <Route
             path="/dashboard"
             element={
@@ -213,7 +224,6 @@ const AppContent: React.FC = () => {
             }
           />
 
-          {/* Public route */}
           <Route path="/" element={renderPage()} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

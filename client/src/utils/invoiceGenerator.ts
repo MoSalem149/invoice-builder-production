@@ -304,6 +304,12 @@ export const generateInvoicePDF = (
             white-space: pre-wrap;
             word-wrap: break-word;
             margin-top: 4px;
+            max-width: 100%;
+          }
+          
+          .items-table td:first-child {
+            max-width: 300px;
+            word-break: break-word;
           }
           
           .totals {

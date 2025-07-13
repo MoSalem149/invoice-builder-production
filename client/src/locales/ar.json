@@ -144,7 +144,7 @@
     "productNameInvalidChars": "يحتوي اسم المنتج على أحرف غير صالحة",
     "productNameTooLong": "يجب ألا يتجاوز اسم المنتج 50 حرفًا",
     "productDescInvalidChars": "يحتوي وصف المنتج على أحرف غير صالحة",
-    "productDescTooLong": "يجب ألا يتجاوز وصف المنتج 200 حرفًا",
+    "productDescTooLong": "يجب ألا يتجاوز وصف المنتج 400 حرفًا",
     "priceInvalid": "يجب أن يكون السعر رقمًا موجبًا صحيحًا",
     "priceTooHigh": "يجب أن يكون السعر أقل من 1,000,000",
     "taxRateInvalid": "يجب أن يكون معدل الضريبة بين 0 و 100",

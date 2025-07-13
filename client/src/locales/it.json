@@ -144,7 +144,7 @@
     "productNameInvalidChars": "Il nome del prodotto contiene caratteri non validi",
     "productNameTooLong": "Il nome del prodotto deve essere di massimo 50 caratteri",
     "productDescInvalidChars": "La descrizione del prodotto contiene caratteri non validi",
-    "productDescTooLong": "La descrizione del prodotto deve essere di massimo 200 caratteri",
+    "productDescTooLong": "La descrizione del prodotto deve essere di massimo 400 caratteri",
     "priceInvalid": "Il prezzo deve essere un numero positivo valido",
     "priceTooHigh": "Il prezzo deve essere inferiore a 1.000.000",
     "taxRateInvalid": "L'aliquota IVA deve essere compresa tra 0 e 100",

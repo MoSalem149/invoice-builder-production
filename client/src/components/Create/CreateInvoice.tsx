@@ -11,15 +11,19 @@ import InvoiceDetailsPanel from "./panels/InvoiceDetailsPanel";
 import ProductsPanel from "./panels/ProductsPanel";
 import NotesPanel from "./panels/NotesPanel";
 import TermsPanel from "./panels/TermsPanel";
+import { useLocation } from "react-router-dom";
 
 const CreateInvoice: React.FC = () => {
-  const { state, saveInvoice } = useApp();
+  const { state, saveInvoice, updateInvoice: updateInvoiceInApp } = useApp();
   const { t, isRTL } = useLanguage();
   const { showSuccess, showError } = useNotificationContext();
   const [activePanel, setActivePanel] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [showPreview, setShowPreview] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentInvoiceId, setCurrentInvoiceId] = useState<string | null>(null);
+  const location = useLocation();
   const [invoice, setInvoice] = useState<Partial<Invoice>>({
     number: `INV-${String(state.invoices.length + 1).padStart(4, "0")}`,
     date: new Date().toISOString().split("T")[0],
@@ -53,6 +57,22 @@ const CreateInvoice: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Check if we're editing an invoice from location state
+  useEffect(() => {
+    if (location.state?.invoiceToEdit) {
+      const invoiceToEdit = location.state.invoiceToEdit;
+      setIsEditing(true);
+      setCurrentInvoiceId(invoiceToEdit._id || null);
+      setInvoice({
+        ...invoiceToEdit,
+        client: {
+          ...invoiceToEdit.client,
+          _id: invoiceToEdit.client._id || invoiceToEdit.client.id,
+        },
+      });
+    }
+  }, [location.state]);
+
   const calculateTotals = (items: InvoiceItem[]) => {
     const subtotal = items.reduce((sum, item) => sum + item.amount, 0);
     const taxRate = state.company.taxRate || 0;
@@ -61,7 +81,7 @@ const CreateInvoice: React.FC = () => {
     return { subtotal, tax, total };
   };
 
-  const updateInvoice = (updates: Partial<Invoice>) => {
+  const updateInvoiceState = (updates: Partial<Invoice>) => {
     setInvoice((prev) => {
       const updated = { ...prev, ...updates };
       if (updates.items) {
@@ -82,7 +102,7 @@ const CreateInvoice: React.FC = () => {
 
       // Transform client data for the invoice
       const invoiceClient = {
-        _id: invoice.client._id, // Add this line
+        _id: invoice.client._id,
         id: invoice.client._id,
         name: invoice.client.name,
         ...(invoice.client.address && { address: invoice.client.address }),
@@ -111,7 +131,13 @@ const CreateInvoice: React.FC = () => {
         status: "draft",
       };
 
-      const success = await saveInvoice(invoiceData);
+      let success;
+      if (isEditing && currentInvoiceId) {
+        invoiceData._id = currentInvoiceId;
+        success = await updateInvoiceInApp(invoiceData);
+      } else {
+        success = await saveInvoice(invoiceData);
+      }
 
       if (success) {
         showSuccess(
@@ -123,20 +149,22 @@ const CreateInvoice: React.FC = () => {
           4000
         );
 
-        setInvoice({
-          number: `INV-${String(state.invoices.length + 2).padStart(4, "0")}`,
-          date: new Date().toISOString().split("T")[0],
-          dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-            .toISOString()
-            .split("T")[0],
-          items: [],
-          subtotal: 0,
-          tax: 0,
-          total: 0,
-          notes: "",
-          terms: "",
-          client: undefined,
-        });
+        if (!isEditing) {
+          setInvoice({
+            number: `INV-${String(state.invoices.length + 2).padStart(4, "0")}`,
+            date: new Date().toISOString().split("T")[0],
+            dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+              .toISOString()
+              .split("T")[0],
+            items: [],
+            subtotal: 0,
+            tax: 0,
+            total: 0,
+            notes: "",
+            terms: "",
+            client: undefined,
+          });
+        }
       } else {
         throw new Error(t("create.cannotSaveMessage"));
       }
@@ -158,7 +186,7 @@ const CreateInvoice: React.FC = () => {
         date: invoice.date!,
         dueDate: invoice.dueDate!,
         client: {
-          _id: invoice.client._id, // Add this
+          _id: invoice.client._id,
           id: invoice.client._id,
           name: invoice.client.name,
           address: invoice.client.address || "",
@@ -213,12 +241,12 @@ const CreateInvoice: React.FC = () => {
               // Transform Client to InvoiceClient
               const invoiceClient: InvoiceClient = {
                 _id: client._id,
-                id: client._id, // Use _id as the id if client.id is undefined
+                id: client._id,
                 name: client.name,
                 ...(client.address && { address: client.address }),
                 ...(client.phone && { phone: client.phone }),
               };
-              updateInvoice({ client: invoiceClient });
+              updateInvoiceState({ client: invoiceClient });
               setActivePanel(null);
               if (isMobile) setShowPreview(true);
             }}
@@ -230,7 +258,7 @@ const CreateInvoice: React.FC = () => {
           <InvoiceDetailsPanel
             invoice={invoice}
             onUpdate={(updates) => {
-              updateInvoice(updates);
+              updateInvoiceState(updates);
               setActivePanel(null);
               if (isMobile) setShowPreview(true);
             }}
@@ -242,7 +270,7 @@ const CreateInvoice: React.FC = () => {
           <ProductsPanel
             selectedItems={invoice.items || []}
             onUpdate={(items) => {
-              updateInvoice({ items });
+              updateInvoiceState({ items });
               setActivePanel(null);
               if (isMobile) setShowPreview(true);
             }}
@@ -254,7 +282,7 @@ const CreateInvoice: React.FC = () => {
           <NotesPanel
             notes={invoice.notes || ""}
             onUpdate={(notes) => {
-              updateInvoice({ notes });
+              updateInvoiceState({ notes });
               setActivePanel(null);
               if (isMobile) setShowPreview(true);
             }}
@@ -266,7 +294,7 @@ const CreateInvoice: React.FC = () => {
           <TermsPanel
             terms={invoice.terms || ""}
             onUpdate={(terms) => {
-              updateInvoice({ terms });
+              updateInvoiceState({ terms });
               setActivePanel(null);
               if (isMobile) setShowPreview(true);
             }}

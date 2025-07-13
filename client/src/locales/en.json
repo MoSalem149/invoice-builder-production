@@ -144,7 +144,7 @@
     "productNameInvalidChars": "Product name contains invalid characters",
     "productNameTooLong": "Product name must be 50 characters or less",
     "productDescInvalidChars": "Product description contains invalid characters",
-    "productDescTooLong": "Product description must be 200 characters or less",
+    "productDescTooLong": "Product description must be 400 characters or less",
     "priceInvalid": "Price must be a valid positive number",
     "priceTooHigh": "Price must be less than 1,000,000",
     "taxRateInvalid": "Tax rate must be between 0 and 100",

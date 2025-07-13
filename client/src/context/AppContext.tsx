@@ -58,14 +58,14 @@ const appReducer = (state: AppState, action: AppAction): AppState => {
       return {
         ...state,
         products: state.products.map((product) =>
-          product.id === action.payload.id ? action.payload : product
+          product._id === action.payload._id ? action.payload : product
         ),
       };
     case "UPDATE_INVOICE":
       return {
         ...state,
         invoices: state.invoices.map((invoice) =>
-          invoice.id === action.payload.id ? action.payload : invoice
+          invoice._id === action.payload._id ? action.payload : invoice
         ),
       };
     case "ARCHIVE_CLIENT":
@@ -86,7 +86,7 @@ const appReducer = (state: AppState, action: AppAction): AppState => {
       return {
         ...state,
         products: state.products.map((product) =>
-          product.id === action.payload
+          product._id === action.payload
             ? { ...product, archived: true }
             : product
         ),
@@ -95,7 +95,7 @@ const appReducer = (state: AppState, action: AppAction): AppState => {
       return {
         ...state,
         products: state.products.map((product) =>
-          product.id === action.payload
+          product._id === action.payload
             ? { ...product, archived: false }
             : product
         ),
@@ -230,11 +230,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const updateInvoice = async (invoice: Partial<Invoice>): Promise<boolean> => {
-    if (!authState.isAuthenticated || !authState.token) return false;
+    if (!authState.isAuthenticated || !authState.token || !invoice._id)
+      return false;
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/invoices/${invoice.id}`,
+        `${import.meta.env.VITE_API_URL}/api/invoices/${invoice._id}`,
         {
           method: "PUT",
           headers: {

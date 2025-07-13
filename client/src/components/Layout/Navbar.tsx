@@ -91,7 +91,9 @@ const Navbar: React.FC<NavbarProps> = ({
                 className={`h-8 w-8 text-gray-800 ${isRTL ? "ml-3" : "mr-3"}`}
               />
               <span className="text-xl font-semibold text-gray-800">
-                {authState.isAuthenticated
+                {isLanding
+                  ? t("navigation.carRentalTitle")
+                  : authState.isAuthenticated
                   ? t("navigation.invoiceBuilder")
                   : t("navigation.carRentalTitle")}{" "}
               </span>

@@ -75,7 +75,7 @@ export const validateProductDescription = (
   if (!/^[a-zA-Z0-9\s\-.,()]+$/.test(description)) {
     return t("validation.productDescInvalidChars");
   }
-  if (description.length > 200) {
+  if (description.length > 400) {
     return t("validation.productDescTooLong");
   }
   return null;

@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Download, Search, FileText, Edit, RefreshCw } from "lucide-react";
+import { Download, Search, FileText, RefreshCw } from "lucide-react";
 import { useApp } from "../../hooks/useApp";
 import { useAuth } from "../../hooks/useAuth";
 import { useLanguage } from "../../hooks/useLanguage";
 import { useNotificationContext } from "../../hooks/useNotificationContext";
 import { downloadInvoicePDF } from "../../utils/invoiceGenerator";
 import { Invoice } from "../../types";
+import { useNavigate } from "react-router-dom";
 
 const History: React.FC = () => {
-  const { state, updateInvoice } = useApp();
+  const { state } = useApp();
   const { state: authState } = useAuth();
   const { t, isRTL } = useLanguage();
-  const { showSuccess, showError } = useNotificationContext();
+  const { showError } = useNotificationContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(true);
-  const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null);
+  const navigate = useNavigate();
 
   // Load invoices from backend
   useEffect(() => {
@@ -87,22 +88,7 @@ const History: React.FC = () => {
   };
 
   const handleEdit = (invoice: Invoice) => {
-    setEditingInvoice(invoice);
-  };
-
-  const handleUpdateInvoice = async (updatedInvoice: Invoice) => {
-    const success = await updateInvoice(updatedInvoice);
-    if (success) {
-      setInvoices(
-        invoices.map((inv) =>
-          inv._id === updatedInvoice._id ? updatedInvoice : inv
-        )
-      );
-      setEditingInvoice(null);
-      showSuccess("Invoice updated successfully", "Changes have been saved");
-    } else {
-      showError("Failed to update invoice", "Please try again");
-    }
+    navigate("/create", { state: { invoiceToEdit: invoice } });
   };
 
   if (loading) {
@@ -221,7 +207,7 @@ const History: React.FC = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredInvoices.map((invoice) => (
                   <tr
-                    key={`invoice-${invoice._id}`} // Changed to _id
+                    key={`invoice-${invoice._id}`}
                     className="hover:bg-gray-50"
                   >
                     <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
@@ -283,17 +269,14 @@ const History: React.FC = () => {
                         }`}
                       >
                         <button
-                          key={`edit-${invoice._id}`} // Changed to _id
                           onClick={() => handleEdit(invoice)}
                           className={`bg-gray-200 text-gray-700 px-3 py-1 rounded-lg hover:bg-gray-300 transition-colors flex items-center space-x-1 ${
                             isRTL ? "space-x-reverse flex-row-reverse" : ""
                           }`}
                         >
-                          <Edit className="h-3 w-3" />
                           <span>{t("common.edit")}</span>
                         </button>
                         <button
-                          key={`download-${invoice._id}`} // Changed to _id
                           onClick={() => handleDownload(invoice)}
                           className={`bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-1 ${
                             isRTL ? "space-x-reverse flex-row-reverse" : ""
@@ -311,121 +294,6 @@ const History: React.FC = () => {
           </div>
         )}
       </div>
-
-      {/* Edit Invoice Modal */}
-      {editingInvoice && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Edit Invoice {editingInvoice.number}
-            </h3>
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Invoice Number
-                </label>
-                <input
-                  type="text"
-                  value={editingInvoice.number}
-                  onChange={(e) =>
-                    setEditingInvoice({
-                      ...editingInvoice,
-                      number: e.target.value,
-                    })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Invoice Date
-                  </label>
-                  <input
-                    type="date"
-                    value={editingInvoice.date}
-                    onChange={(e) =>
-                      setEditingInvoice({
-                        ...editingInvoice,
-                        date: e.target.value,
-                      })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Due Date
-                  </label>
-                  <input
-                    type="date"
-                    value={editingInvoice.dueDate}
-                    onChange={(e) =>
-                      setEditingInvoice({
-                        ...editingInvoice,
-                        dueDate: e.target.value,
-                      })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Notes
-                </label>
-                <textarea
-                  value={editingInvoice.notes || ""}
-                  onChange={(e) =>
-                    setEditingInvoice({
-                      ...editingInvoice,
-                      notes: e.target.value,
-                    })
-                  }
-                  rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Terms & Conditions
-                </label>
-                <textarea
-                  value={editingInvoice.terms || ""}
-                  onChange={(e) =>
-                    setEditingInvoice({
-                      ...editingInvoice,
-                      terms: e.target.value,
-                    })
-                  }
-                  rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            </div>
-
-            <div className="flex space-x-3 mt-6">
-              <button
-                onClick={() => setEditingInvoice(null)}
-                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => handleUpdateInvoice(editingInvoice)}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Update Invoice
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
