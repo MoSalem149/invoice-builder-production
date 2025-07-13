@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import {
   FileText,
   Home,
-  Settings,
+  // Settings,
   History,
   Plus,
   LogOut,
@@ -62,21 +62,50 @@ const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navItems: NavItem[] = authState.isAuthenticated
-    ? [
+  const getNavItems = () => {
+    if (authState.isAuthenticated) {
+      // For authenticated users, show admin links unless they're on landing pages
+      if (
+        isLanding ||
+        location.pathname.startsWith("/about") ||
+        location.pathname.startsWith("/services") ||
+        location.pathname.startsWith("/faqs") ||
+        location.pathname.startsWith("/terms") ||
+        location.pathname.startsWith("/contact")
+      ) {
+        return [
+          { id: "landing", label: "Home", icon: Home, path: "/" },
+          { id: "about", label: "About", icon: Info, path: "/about" },
+          {
+            id: "services",
+            label: "Services",
+            icon: Wrench,
+            path: "/services",
+          },
+          { id: "faqs", label: "FAQs", icon: HelpCircle, path: "/faqs" },
+          { id: "terms", label: "Terms", icon: TermsIcon, path: "/terms" },
+          { id: "contact", label: "Contact", icon: Phone, path: "/contact" },
+        ];
+      }
+      return [
         { id: "dashboard", label: t("navigation.dashboard"), icon: Home },
         { id: "create", label: t("navigation.create"), icon: Plus },
-        { id: "settings", label: t("navigation.settings"), icon: Settings },
+        // { id: "settings", label: t("navigation.settings"), icon: Settings },
         { id: "history", label: t("navigation.history"), icon: History },
-      ]
-    : [
-        { id: "landing", label: "Home", icon: Home, path: "/" },
-        { id: "about", label: "About", icon: Info, path: "/about" },
-        { id: "services", label: "Services", icon: Wrench, path: "/services" },
-        { id: "faqs", label: "FAQs", icon: HelpCircle, path: "/faqs" },
-        { id: "terms", label: "Terms", icon: TermsIcon, path: "/terms" },
-        { id: "contact", label: "Contact", icon: Phone, path: "/contact" },
       ];
+    }
+    // For non-authenticated users, always show landing page links
+    return [
+      { id: "landing", label: "Home", icon: Home, path: "/" },
+      { id: "about", label: "About", icon: Info, path: "/about" },
+      { id: "services", label: "Services", icon: Wrench, path: "/services" },
+      { id: "faqs", label: "FAQs", icon: HelpCircle, path: "/faqs" },
+      { id: "terms", label: "Terms", icon: TermsIcon, path: "/terms" },
+      { id: "contact", label: "Contact", icon: Phone, path: "/contact" },
+    ];
+  };
+
+  const navItems = getNavItems();
 
   const handleLogout = () => {
     logout();
@@ -88,7 +117,6 @@ const Navbar: React.FC<NavbarProps> = ({
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  // Determine if current route matches nav item
   const isActive = (item: NavItem) => {
     if ("path" in item) {
       return location.pathname === item.path;
@@ -115,7 +143,9 @@ const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={() =>
                 onPageChange(
-                  authState.isAuthenticated ? "dashboard" : "landing"
+                  authState.isAuthenticated && !isLanding
+                    ? "dashboard"
+                    : "landing"
                 )
               }
               className="flex items-center focus:outline-none"

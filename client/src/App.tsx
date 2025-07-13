@@ -281,7 +281,17 @@ const AppContent: React.FC = () => {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
-      {!isLoginPage && !authState.isAuthenticated && <Footer />}
+      {!isLoginPage &&
+        (authState.isAuthenticated
+          ? location.pathname === "/" ||
+            location.pathname.startsWith("/about") ||
+            location.pathname.startsWith("/services") ||
+            location.pathname.startsWith("/faqs") ||
+            location.pathname.startsWith("/terms") ||
+            location.pathname.startsWith("/contact") ||
+            location.pathname.startsWith("/terms-conditions") ||
+            location.pathname.startsWith("/privacy-notice")
+          : !authState.isAuthenticated) && <Footer />}
       <NotificationContainer
         notifications={notifications}
         onClose={removeNotification}
