@@ -3,9 +3,10 @@ import React, { useState, useEffect } from "react";
 import {
   FileText,
   Home,
-  // Settings,
-  History,
-  Plus,
+  LayoutDashboard,
+  Settings,
+  // History,
+  // Plus,
   LogOut,
   User,
   Menu,
@@ -15,6 +16,7 @@ import {
   HelpCircle,
   FileText as TermsIcon,
   Phone,
+  Shield,
 } from "lucide-react";
 import { useLanguage } from "../../hooks/useLanguage";
 import { useAuth } from "../../hooks/useAuth";
@@ -30,10 +32,11 @@ interface AuthNavItem {
   id: string;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
+  path?: string; // Make path optional for auth items
 }
 
 interface NonAuthNavItem extends AuthNavItem {
-  path: string;
+  path: string; // Path is required for non-auth items
 }
 
 type NavItem = AuthNavItem | NonAuthNavItem;
@@ -62,9 +65,51 @@ const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const getNavItems = () => {
+  const getNavItems = (): NavItem[] => {
     if (authState.isAuthenticated) {
-      // For authenticated users, show admin links unless they're on landing pages
+      // For admin users
+      if (authState.user?.role === "admin") {
+        if (isLanding) {
+          return [
+            { id: "landing", label: "Home", icon: Home, path: "/" },
+            {
+              id: "dashboard",
+              label: "Dashboard",
+              icon: LayoutDashboard,
+              path: "/dashboard",
+            },
+          ];
+        }
+        return [
+          { id: "landing", label: "Home", icon: Home, path: "/" },
+          {
+            id: "dashboard",
+            label: "Dashboard",
+            icon: LayoutDashboard,
+            path: "/dashboard",
+          },
+          // {
+          //   id: "create",
+          //   label: t("navigation.create"),
+          //   icon: Plus,
+          //   path: "/create",
+          // },
+          {
+            id: "settings",
+            label: t("navigation.settings"),
+            icon: Settings,
+            path: "/settings",
+          },
+          // {
+          //   id: "history",
+          //   label: t("navigation.history"),
+          //   icon: History,
+          //   path: "/history",
+          // },
+        ];
+      }
+
+      // For normal authenticated users, show admin links unless they're on landing pages
       if (
         isLanding ||
         location.pathname.startsWith("/about") ||
@@ -88,10 +133,30 @@ const Navbar: React.FC<NavbarProps> = ({
         ];
       }
       return [
-        { id: "dashboard", label: t("navigation.dashboard"), icon: Home },
-        { id: "create", label: t("navigation.create"), icon: Plus },
-        // { id: "settings", label: t("navigation.settings"), icon: Settings },
-        { id: "history", label: t("navigation.history"), icon: History },
+        {
+          id: "dashboard",
+          label: t("navigation.dashboard"),
+          icon: LayoutDashboard,
+          path: "/dashboard",
+        },
+        // {
+        //   id: "create",
+        //   label: t("navigation.create"),
+        //   icon: Plus,
+        //   path: "/create",
+        // },
+        {
+          id: "settings",
+          label: t("navigation.settings"),
+          icon: Settings,
+          path: "/settings",
+        },
+        // {
+        //   id: "history",
+        //   label: t("navigation.history"),
+        //   icon: History,
+        //   path: "/history",
+        // },
       ];
     }
     // For non-authenticated users, always show landing page links
@@ -118,7 +183,7 @@ const Navbar: React.FC<NavbarProps> = ({
   };
 
   const isActive = (item: NavItem) => {
-    if ("path" in item) {
+    if (item.path) {
       return location.pathname === item.path;
     }
     return currentPage === item.id;
@@ -176,7 +241,7 @@ const Navbar: React.FC<NavbarProps> = ({
                   return (
                     <Link
                       key={item.id}
-                      to={"path" in item ? item.path : `/${item.id}`}
+                      to={item.path || `/${item.id}`} // Ensure to always has a value
                       className={`flex items-center px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap ${
                         isRTL ? "flex-row-reverse" : ""
                       } ${
@@ -208,9 +273,14 @@ const Navbar: React.FC<NavbarProps> = ({
                       isRTL ? "space-x-reverse flex-row-reverse" : ""
                     }`}
                   >
-                    <User className="h-4 w-4" />
+                    {authState.user?.role === "admin" ? (
+                      <Shield className="h-4 w-4 text-purple-600" />
+                    ) : (
+                      <User className="h-4 w-4" />
+                    )}
                     <span className="text-sm font-medium">
                       {authState.user?.name || t("auth.user")}
+                      {authState.user?.role === "admin" && " (Admin)"}
                     </span>
                   </div>
                   <button
@@ -253,7 +323,7 @@ const Navbar: React.FC<NavbarProps> = ({
             return (
               <Link
                 key={item.id}
-                to={"path" in item ? item.path : `/${item.id}`}
+                to={item.path || `/${item.id}`} // Ensure to always has a value
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center w-full px-3 py-2 text-base font-medium rounded-md ${
                   isRTL ? "flex-row-reverse" : ""
@@ -282,9 +352,14 @@ const Navbar: React.FC<NavbarProps> = ({
                     isRTL ? "flex-row-reverse" : ""
                   }`}
                 >
-                  <User className="h-4 w-4" />
+                  {authState.user?.role === "admin" ? (
+                    <Shield className="h-4 w-4 text-purple-600" />
+                  ) : (
+                    <User className="h-4 w-4" />
+                  )}
                   <span className={`${isRTL ? "mr-2" : "ml-2"}`}>
                     {authState.user?.name || t("auth.user")}
+                    {authState.user?.role === "admin" && " (Admin)"}
                   </span>
                 </div>
                 <button
