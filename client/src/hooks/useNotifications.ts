@@ -16,7 +16,7 @@ export const useNotifications = () => {
     const newNotification: NotificationProps = {
       id,
       ...notification,
-      onClose: () => {}, // Will be set by the container
+      onClose: () => {},
     };
 
     setNotifications((prev) => [...prev, newNotification]);

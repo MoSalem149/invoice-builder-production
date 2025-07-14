@@ -1,5 +1,5 @@
 // App.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import { AppProvider } from "./context/AppContext";
 import { LanguageProvider } from "./context/LanguageContext";
@@ -13,6 +13,7 @@ import Navbar from "./components/Layout/Navbar";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Settings from "./components/Settings/Settings";
 import History from "./components/History/History";
+import UpdateCars from "./components/Cars/UpdateCars";
 import CreateInvoice from "./components/Create/CreateInvoice";
 import { useLanguage } from "./hooks/useLanguage";
 import LandingPage from "./components/Landing/LandingPage";
@@ -46,23 +47,25 @@ const AppContent: React.FC = () => {
   const { state: authState } = useAuth();
 
   // List of public routes that don't require authentication
-  const publicRoutes = [
-    "",
-    "about",
-    "services",
-    "faqs",
-    "terms",
-    "contact",
-    "terms-conditions",
-    "privacy-notice",
-    "car",
-  ];
+  const publicRoutes = useCallback(() => {
+    return [
+      "",
+      "about",
+      "services",
+      "faqs",
+      "terms",
+      "contact",
+      "terms-conditions",
+      "privacy-notice",
+      "car",
+    ];
+  }, []);
 
   // Check if current route is public
-  const isPublicRoute = () => {
+  const isPublicRoute = useCallback(() => {
     const path = location.pathname.substring(1);
-    return publicRoutes.some((route) => path.startsWith(route));
-  };
+    return publicRoutes().some((route) => path.startsWith(route));
+  }, [location.pathname, publicRoutes]);
 
   // Sync currentPage with the actual route
   useEffect(() => {
@@ -94,7 +97,7 @@ const AppContent: React.FC = () => {
     if (
       !authState.isAuthenticated &&
       page !== "landing" &&
-      !publicRoutes.includes(page)
+      !publicRoutes().includes(page)
     ) {
       navigate("/login");
       return;
@@ -127,6 +130,7 @@ const AppContent: React.FC = () => {
     location.pathname,
     navigate,
     t,
+    isPublicRoute,
   ]);
 
   useEffect(() => {
@@ -242,6 +246,19 @@ const AppContent: React.FC = () => {
                 <Loader fullScreen size="xl" />
               ) : authState.isAuthenticated ? (
                 <History />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+
+          <Route
+            path="/update-cars"
+            element={
+              authState.isLoading ? (
+                <Loader fullScreen size="xl" />
+              ) : authState.isAuthenticated ? (
+                <UpdateCars />
               ) : (
                 <Navigate to="/login" />
               )

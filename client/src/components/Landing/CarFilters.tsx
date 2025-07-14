@@ -7,6 +7,9 @@ interface CarFiltersProps {
     price: string;
     transmission: string;
     fuelType: string;
+    condition: string;
+    category: string;
+    bodyType: string;
   }) => void;
 }
 
@@ -16,6 +19,9 @@ const CarFilters: React.FC<CarFiltersProps> = ({ onFilterChange }) => {
     price: "",
     transmission: "",
     fuelType: "",
+    condition: "",
+    category: "",
+    bodyType: "",
   });
 
   const handleFilterChange = (
@@ -46,12 +52,24 @@ const CarFilters: React.FC<CarFiltersProps> = ({ onFilterChange }) => {
     "Volkswagen",
   ];
 
+  const categories = [
+    "Sedan",
+    "SUV",
+    "Sports",
+    "Hatchback",
+    "Coupe",
+    "Convertible",
+  ];
+  const bodyTypes = ["Berlin", "Station Wagon", "Crossover", "MPV", "Pickup"];
+  const conditions = ["New", "Used"];
+
   return (
     <div className="container mx-auto px-4 -mt-16 relative z-20">
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-5 gap-4 items-end"
+        className="bg-white rounded-xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-4 gap-4 items-end"
       >
+        {/* First Row - 4 filters */}
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-2">
             Brand
@@ -116,6 +134,64 @@ const CarFilters: React.FC<CarFiltersProps> = ({ onFilterChange }) => {
             <option value="Diesel">Diesel</option>
             <option value="Electric">Electric</option>
             <option value="Hybrid">Hybrid</option>
+          </select>
+        </div>
+
+        {/* Second Row - 3 filters + search button */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-2">
+            Condition
+          </label>
+          <select
+            name="condition"
+            value={filters.condition}
+            onChange={handleFilterChange}
+            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
+          >
+            <option value="">Any Condition</option>
+            {conditions.map((cond) => (
+              <option key={cond} value={cond}>
+                {cond}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-2">
+            Category
+          </label>
+          <select
+            name="category"
+            value={filters.category}
+            onChange={handleFilterChange}
+            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
+          >
+            <option value="">Any Category</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-2">
+            Body Type
+          </label>
+          <select
+            name="bodyType"
+            value={filters.bodyType}
+            onChange={handleFilterChange}
+            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
+          >
+            <option value="">Any Body Type</option>
+            {bodyTypes.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
           </select>
         </div>
 

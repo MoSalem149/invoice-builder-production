@@ -1,6 +1,5 @@
 import React, {
   createContext,
-  useContext,
   useReducer,
   ReactNode,
   useEffect,
@@ -115,7 +114,7 @@ const appReducer = (state: AppState, action: AppAction): AppState => {
   }
 };
 
-const AppContext = createContext<{
+export const AppContext = createContext<{
   state: AppState;
   dispatch: React.Dispatch<AppAction>;
   loadUserData: () => Promise<void>;
@@ -138,7 +137,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
         "Content-Type": "application/json",
       };
 
-      // 1. Load company data first
       const companyResponse = await fetch(
         `${import.meta.env.VITE_API_URL}/api/company`,
         { headers }
@@ -147,18 +145,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
       if (companyResponse.ok) {
         const companyData = await companyResponse.json();
         const savedCompany = companyData.data;
-
-        // Update the app state with company data
         dispatch({ type: "UPDATE_COMPANY", payload: savedCompany });
 
-        // 2. Update language in localStorage if it exists in company data
         if (savedCompany.language) {
           try {
             const currentStoredLanguage = JSON.parse(
               localStorage.getItem("language") || '"it"'
             );
 
-            // Only update if different to avoid unnecessary re-renders
             if (currentStoredLanguage !== savedCompany.language) {
               localStorage.setItem(
                 "language",
@@ -167,7 +161,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
             }
           } catch (error) {
             console.error("Error handling language in localStorage:", error);
-            // Fallback to company language if localStorage fails
             localStorage.setItem(
               "language",
               JSON.stringify(savedCompany.language)
@@ -176,7 +169,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
         }
       }
 
-      // 3. Load other data (clients, products, invoices)
       const [clientsResponse, productsResponse, invoicesResponse] =
         await Promise.all([
           fetch(`${import.meta.env.VITE_API_URL}/api/clients`, { headers }),
@@ -290,13 +282,3 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
     </AppContext.Provider>
   );
 };
-
-export const useApp = () => {
-  const context = useContext(AppContext);
-  if (!context) {
-    throw new Error("useApp must be used within an AppProvider");
-  }
-  return context;
-};
-
-export { AppContext };

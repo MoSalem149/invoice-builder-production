@@ -93,7 +93,32 @@
     "recentInvoices": "Recent Invoices",
     "latestActivity": "Latest Activity",
     "noInvoicesYet": "No invoices created yet",
-    "welcomeMessage": "Welcome to Invoice Builder - Professional invoice management system"
+    "welcomeMessage": "Welcome to Invoice Builder - Professional invoice management system",
+    "updateCarData": "Update Car Data",
+    "updateCarDataDesc": "Add or modify vehicle information in the system",
+    "addNewCar": "Add New Car",
+    "editCar": "Edit Car",
+    "carList": "Car List",
+    "noCarsFound": "No cars found. Add your first car!",
+    "brand": "Brand",
+    "model": "Model",
+    "year": "Year",
+    "price": "Price",
+    "imageUrl": "Image URL",
+    "category": "Category",
+    "condition": "Condition",
+    "transmission": "Transmission",
+    "fuelType": "Fuel Type",
+    "bodyType": "Body Type",
+    "mileage": "Mileage",
+    "color": "Color",
+    "engineSize": "Engine Size",
+    "chassisNumber": "Chassis Number",
+    "addCar": "Add Car",
+    "updateCar": "Update Car",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete"
   },
   "invoice": {
     "invoice": "INVOICE",
@@ -297,6 +322,32 @@
     "chf": "CHF (CHF)",
     "usd": "USD ($)",
     "egp": "EGP (ج.م)"
+  },
+  "notifications": {
+    "carAdded": "Car added successfully!",
+    "carUpdated": "Car updated successfully!",
+    "carDeleted": "Car deleted successfully!"
+  },
+  "hero": {
+    "subtitle": "Discover Switzerland's finest selection of luxury and performance vehicles",
+    "ctaText": "Contact Us",
+    "sliderSettings": "Hero Slider Settings",
+    "sliderType": "Slider Type",
+    "sliderTypes": {
+      "default": "Default",
+      "side-padding": "Side Padding",
+      "custom-pagination": "Custom Pagination",
+      "progress": "Carousel Progress",
+      "vertical": "Vertical Slider"
+    },
+    "addSlide": "Add Slide",
+    "editSlide": "Edit Slide",
+    "slideImage": "Slide Image",
+    "slideTitle": "Slide Title",
+    "slideSubtitle": "Slide Subtitle",
+    "ctaLink": "Button Link",
+    "saveChanges": "Save Changes",
+    "slidesUpdated": "Slides updated successfully"
   },
   "footer": {
     "companyName": "Said Transport - Gordola",

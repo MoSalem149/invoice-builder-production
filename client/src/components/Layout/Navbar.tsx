@@ -5,8 +5,6 @@ import {
   Home,
   LayoutDashboard,
   Settings,
-  // History,
-  // Plus,
   LogOut,
   User,
   Menu,
@@ -21,6 +19,7 @@ import {
 import { useLanguage } from "../../hooks/useLanguage";
 import { useAuth } from "../../hooks/useAuth";
 import { Link, useLocation } from "react-router-dom";
+import logo from "../../assets/logo.png";
 
 interface NavbarProps {
   currentPage: string;
@@ -32,11 +31,11 @@ interface AuthNavItem {
   id: string;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
-  path?: string; // Make path optional for auth items
+  path?: string;
 }
 
 interface NonAuthNavItem extends AuthNavItem {
-  path: string; // Path is required for non-auth items
+  path: string;
 }
 
 type NavItem = AuthNavItem | NonAuthNavItem;
@@ -67,7 +66,6 @@ const Navbar: React.FC<NavbarProps> = ({
 
   const getNavItems = (): NavItem[] => {
     if (authState.isAuthenticated) {
-      // For admin users
       if (authState.user?.role === "admin") {
         if (isLanding) {
           return [
@@ -88,28 +86,15 @@ const Navbar: React.FC<NavbarProps> = ({
             icon: LayoutDashboard,
             path: "/dashboard",
           },
-          // {
-          //   id: "create",
-          //   label: t("navigation.create"),
-          //   icon: Plus,
-          //   path: "/create",
-          // },
           {
             id: "settings",
             label: t("navigation.settings"),
             icon: Settings,
             path: "/settings",
           },
-          // {
-          //   id: "history",
-          //   label: t("navigation.history"),
-          //   icon: History,
-          //   path: "/history",
-          // },
         ];
       }
 
-      // For normal authenticated users, show admin links unless they're on landing pages
       if (
         isLanding ||
         location.pathname.startsWith("/about") ||
@@ -139,27 +124,14 @@ const Navbar: React.FC<NavbarProps> = ({
           icon: LayoutDashboard,
           path: "/dashboard",
         },
-        // {
-        //   id: "create",
-        //   label: t("navigation.create"),
-        //   icon: Plus,
-        //   path: "/create",
-        // },
         {
           id: "settings",
           label: t("navigation.settings"),
           icon: Settings,
           path: "/settings",
         },
-        // {
-        //   id: "history",
-        //   label: t("navigation.history"),
-        //   icon: History,
-        //   path: "/history",
-        // },
       ];
     }
-    // For non-authenticated users, always show landing page links
     return [
       { id: "landing", label: "Home", icon: Home, path: "/" },
       { id: "about", label: "About", icon: Info, path: "/about" },
@@ -201,7 +173,7 @@ const Navbar: React.FC<NavbarProps> = ({
             isRTL ? "flex-row-reverse" : ""
           }`}
         >
-          {/* Logo/Brand */}
+          {/* Logo/Brand - Modified for half-in-half effect */}
           <div
             className={`flex items-center ${isRTL ? "flex-row-reverse" : ""}`}
           >
@@ -213,18 +185,32 @@ const Navbar: React.FC<NavbarProps> = ({
                     : "landing"
                 )
               }
-              className="flex items-center focus:outline-none"
+              className="flex items-center focus:outline-none relative h-full"
             >
-              <FileText
-                className={`h-8 w-8 text-gray-800 ${isRTL ? "ml-3" : "mr-3"}`}
-              />
-              <span className="text-xl font-semibold text-gray-800">
-                {isLanding
-                  ? t("navigation.carRentalTitle")
-                  : authState.isAuthenticated
-                  ? t("navigation.invoiceBuilder")
-                  : t("navigation.carRentalTitle")}{" "}
-              </span>
+              {isLanding ? (
+                // Logo that extends halfway out of navbar
+                <div className="relative h-full flex items-end">
+                  <img
+                    src={logo}
+                    alt="Cars Said Logo"
+                    className="h-[120px] md:h-[140px] object-contain -mb-[40px] md:-mb-[50px]"
+                  />
+                </div>
+              ) : (
+                // Original logo for non-landing pages
+                <>
+                  <FileText
+                    className={`h-8 w-8 text-gray-800 ${
+                      isRTL ? "ml-3" : "mr-3"
+                    }`}
+                  />
+                  <span className="text-xl font-semibold text-gray-800">
+                    {authState.isAuthenticated
+                      ? t("navigation.invoiceBuilder")
+                      : t("navigation.carRentalTitle")}
+                  </span>
+                </>
+              )}
             </button>
           </div>
 
@@ -241,7 +227,7 @@ const Navbar: React.FC<NavbarProps> = ({
                   return (
                     <Link
                       key={item.id}
-                      to={item.path || `/${item.id}`} // Ensure to always has a value
+                      to={item.path || `/${item.id}`}
                       className={`flex items-center px-3 py-2 text-sm font-medium rounded-md whitespace-nowrap ${
                         isRTL ? "flex-row-reverse" : ""
                       } ${
@@ -297,7 +283,7 @@ const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Mobile menu button - always visible */}
+          {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
             <button
               onClick={toggleMobileMenu}
@@ -315,7 +301,7 @@ const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Mobile menu - always available */}
+      {/* Mobile menu */}
       <div className={`md:hidden ${mobileMenuOpen ? "block" : "hidden"}`}>
         <div className="pt-2 pb-3 space-y-1">
           {navItems.map((item) => {
@@ -323,7 +309,7 @@ const Navbar: React.FC<NavbarProps> = ({
             return (
               <Link
                 key={item.id}
-                to={item.path || `/${item.id}`} // Ensure to always has a value
+                to={item.path || `/${item.id}`}
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center w-full px-3 py-2 text-base font-medium rounded-md ${
                   isRTL ? "flex-row-reverse" : ""

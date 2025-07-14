@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Car } from "../../types";
 import { X } from "lucide-react";
 
@@ -8,6 +8,16 @@ interface CarDetailsProps {
 }
 
 const CarDetails: React.FC<CarDetailsProps> = ({ car, onClose }) => {
+  const [showContact, setShowContact] = useState(false);
+
+  const handleContactClick = () => {
+    setShowContact(true);
+  };
+
+  const handleCloseContact = () => {
+    setShowContact(false);
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
@@ -71,13 +81,66 @@ const CarDetails: React.FC<CarDetailsProps> = ({ car, onClose }) => {
             </div>
 
             <div className="space-y-4">
-              <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-3 px-4 rounded-lg font-semibold transition-colors">
+              <button
+                onClick={handleContactClick}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors"
+              >
                 Contact Sales
               </button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Contact Information Modal */}
+      {showContact && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl max-w-md w-full p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold">Get in Touch</h3>
+              <button
+                onClick={handleCloseContact}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold">Address</h4>
+                <p>Via S.Gottardo 100, 6596 Gordola, Switzerland</p>
+              </div>
+
+              <div>
+                <h4 className="font-semibold">Phone</h4>
+                <p>+41 91 929 29 29</p>
+              </div>
+
+              <div>
+                <h4 className="font-semibold">Email</h4>
+                <p>info@saidauto.ch</p>
+              </div>
+
+              <div>
+                <h4 className="font-semibold">Business Hours</h4>
+                <p>Monday-Friday: 9:00 AM - 6:00 PM</p>
+                <p>Saturday: 9:00 AM - 4:00 PM</p>
+                <p>Sunday: Closed</p>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <button
+                onClick={handleCloseContact}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

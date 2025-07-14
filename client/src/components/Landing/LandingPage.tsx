@@ -23,12 +23,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
       price: 25000,
       image: "/images/cars/car1.jpg",
       category: "Sedan",
+      bodyType: "Berlin",
       condition: "New",
       transmission: "Automatic",
       fuelType: "Petrol",
       mileage: 0,
       color: "Red",
       engineSize: "2.0L",
+      cylinders: 4,
+      doors: 4,
+      chassisNumber: "JT2BF22K6W0123456",
     },
     {
       id: "2",
@@ -38,12 +42,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
       price: 120000,
       image: "/images/cars/car2.jpg",
       category: "Sports",
+      bodyType: "Coupe",
       condition: "Used",
       transmission: "Automatic",
       fuelType: "Petrol",
       mileage: 12000,
       color: "Silver",
       engineSize: "3.0L",
+      cylinders: 6,
+      doors: 2,
+      chassisNumber: "WP0ZZZ99ZTS392124",
     },
     {
       id: "3",
@@ -53,12 +61,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
       price: 45000,
       image: "/images/cars/car3.jpg",
       category: "SUV",
+      bodyType: "Crossover",
       condition: "New",
       transmission: "Automatic",
       fuelType: "Diesel",
       mileage: 0,
       color: "Black",
       engineSize: "2.0L",
+      cylinders: 4,
+      doors: 5,
+      chassisNumber: "WA1ANAFY0N2009876",
     },
     {
       id: "4",
@@ -68,12 +80,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
       price: 65000,
       image: "/images/cars/car4.jpg",
       category: "SUV",
+      bodyType: "SUV",
       condition: "Used",
       transmission: "Automatic",
       fuelType: "Hybrid",
       mileage: 15000,
       color: "White",
       engineSize: "3.0L",
+      cylinders: 6,
+      doors: 5,
+      chassisNumber: "5UXCR6C05N9X54321",
     },
     {
       id: "5",
@@ -83,12 +99,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
       price: 55000,
       image: "/images/cars/car5.jpg",
       category: "Sports",
+      bodyType: "Coupe",
       condition: "New",
       transmission: "Manual",
       fuelType: "Petrol",
       mileage: 0,
       color: "Blue",
       engineSize: "5.0L",
+      cylinders: 8,
+      doors: 2,
+      chassisNumber: "1FA6P8CF5M5101234",
     },
     {
       id: "6",
@@ -98,12 +118,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
       price: 35000,
       image: "/images/cars/car6.jpg",
       category: "SUV",
+      bodyType: "Crossover",
       condition: "New",
       transmission: "Automatic",
       fuelType: "Petrol",
       mileage: 0,
       color: "Gray",
       engineSize: "1.3L",
+      cylinders: 4,
+      doors: 5,
+      chassisNumber: "SJNFEAJ11U7023456",
     },
   ];
 
@@ -112,6 +136,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
     price: string;
     transmission: string;
     fuelType: string;
+    condition: string;
+    category: string;
+    bodyType: string;
   }) => {
     let results = [...cars];
 
@@ -131,6 +158,18 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
 
     if (filters.fuelType) {
       results = results.filter((car) => car.fuelType === filters.fuelType);
+    }
+
+    if (filters.condition) {
+      results = results.filter((car) => car.condition === filters.condition);
+    }
+
+    if (filters.category) {
+      results = results.filter((car) => car.category === filters.category);
+    }
+
+    if (filters.bodyType) {
+      results = results.filter((car) => car.bodyType === filters.bodyType);
     }
 
     setFilteredCars(results.length > 0 ? results : cars);

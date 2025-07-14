@@ -1,4 +1,3 @@
-// useNotificationContext.ts
 import { useContext } from "react";
 import { NotificationContext } from "../context/NotificationContext";
 import { NotificationContextType } from "../types";

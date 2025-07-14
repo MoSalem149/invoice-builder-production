@@ -1,11 +1,16 @@
-import React, { createContext, useContext, ReactNode, useEffect } from "react";
+import React, { createContext, ReactNode, useEffect } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import it from "../locales/it.json";
 import en from "../locales/en.json";
 import ar from "../locales/ar.json";
 
-type Language = "it" | "en" | "ar";
-type Translations = typeof en;
+const translations = {
+  it,
+  en,
+  ar,
+} as const;
+
+type Language = keyof typeof translations;
 
 interface LanguageContextType {
   language: Language;
@@ -13,12 +18,6 @@ interface LanguageContextType {
   t: (key: string) => string;
   isRTL: boolean;
 }
-
-const translations: Record<Language, Translations> = {
-  it,
-  en,
-  ar,
-};
 
 type NestedTranslation = {
   [key: string]: NestedTranslation | string;
@@ -57,12 +56,15 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({
     const keys = key.split(".");
 
     const currentLangTranslation = getNestedTranslation(
-      translations[language],
+      translations[language] as NestedTranslation,
       keys
     );
     if (currentLangTranslation) return currentLangTranslation;
 
-    const fallbackTranslation = getNestedTranslation(translations.en, keys);
+    const fallbackTranslation = getNestedTranslation(
+      translations.en as NestedTranslation,
+      keys
+    );
     return fallbackTranslation || key;
   };
 
@@ -71,14 +73,6 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({
       {children}
     </LanguageContext.Provider>
   );
-};
-
-export const useLanguage = () => {
-  const context = useContext(LanguageContext);
-  if (!context) {
-    throw new Error("useLanguage must be used within a LanguageProvider");
-  }
-  return context;
 };
 
 export { LanguageContext };

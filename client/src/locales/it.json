@@ -93,7 +93,32 @@
     "recentInvoices": "Fatture Recenti",
     "latestActivity": "Ultime Attività",
     "noInvoicesYet": "Nessuna fattura creata ancora",
-    "welcomeMessage": "Benvenuto in Invoice Builder - Sistema professionale di gestione fatture"
+    "welcomeMessage": "Benvenuto in Invoice Builder - Sistema professionale di gestione fatture",
+    "updateCarData": "Aggiorna Dati Auto",
+    "updateCarDataDesc": "Aggiungi o modifica le informazioni dei veicoli nel sistema",
+    "addNewCar": "Aggiungi Nuova Auto",
+    "editCar": "Modifica Auto",
+    "carList": "Lista Auto",
+    "noCarsFound": "Nessuna auto trovata. Aggiungi la tua prima auto!",
+    "brand": "Marca",
+    "model": "Modello",
+    "year": "Anno",
+    "price": "Prezzo",
+    "imageUrl": "URL Immagine",
+    "category": "Categoria",
+    "condition": "Condizione",
+    "transmission": "Cambio",
+    "fuelType": "Tipo di Carburante",
+    "bodyType": "Tipo di Carrozzeria",
+    "mileage": "Chilometraggio",
+    "color": "Colore",
+    "engineSize": "Cilindrata",
+    "chassisNumber": "Numero di Telaio",
+    "addCar": "Aggiungi Auto",
+    "updateCar": "Aggiorna Auto",
+    "cancel": "Annulla",
+    "edit": "Modifica",
+    "delete": "Elimina"
   },
   "invoice": {
     "invoice": "FATTURA",
@@ -297,6 +322,32 @@
     "chf": "CHF (CHF)",
     "usd": "USD ($)",
     "egp": "EGP (ج.م)"
+  },
+  "notifications": {
+    "carAdded": "Auto aggiunta con successo!",
+    "carUpdated": "Auto aggiornata con successo!",
+    "carDeleted": "Auto eliminata con successo!"
+  },
+  "hero": {
+    "subtitle": "Scopri la migliore selezione di veicoli di lusso e ad alte prestazioni in Svizzera",
+    "ctaText": "Contattaci",
+    "sliderSettings": "Impostazioni Slider Hero",
+    "sliderType": "Tipo di Slider",
+    "sliderTypes": {
+      "default": "Predefinito",
+      "side-padding": "Con spaziatura laterale",
+      "custom-pagination": "Paginazione personalizzata",
+      "progress": "Progresso carosello",
+      "vertical": "Slider verticale"
+    },
+    "addSlide": "Aggiungi Slide",
+    "editSlide": "Modifica Slide",
+    "slideImage": "Immagine Slide",
+    "slideTitle": "Titolo Slide",
+    "slideSubtitle": "Sottotitolo Slide",
+    "ctaLink": "Link Bottone",
+    "saveChanges": "Salva Modifiche",
+    "slidesUpdated": "Slide aggiornate con successo"
   },
   "footer": {
     "companyName": "Said Trasporto - Gordola",

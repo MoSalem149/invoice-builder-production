@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode } from "react";
+import React, { createContext, ReactNode } from "react";
 import { useNotifications } from "../hooks/useNotifications";
 import { NotificationContextType } from "../types";
 
@@ -9,12 +9,11 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const notifications = useNotifications();
 
-  // Adapt the notifications value to match the expected type
   const adaptedNotifications = {
     ...notifications,
     notifications: notifications.notifications.map((notification) => ({
       ...notification,
-      onClose: () => notification.onClose(notification.id), // Adapt the onClose signature
+      onClose: () => notification.onClose(notification.id),
     })),
   };
 
@@ -23,16 +22,6 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({
       {children}
     </NotificationContext.Provider>
   );
-};
-
-export const useNotification = () => {
-  const context = useContext(NotificationContext);
-  if (!context) {
-    throw new Error(
-      "useNotification must be used within a NotificationProvider"
-    );
-  }
-  return context;
 };
 
 export { NotificationContext };

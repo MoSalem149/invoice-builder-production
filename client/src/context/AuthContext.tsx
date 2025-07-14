@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useReducer,
-  ReactNode,
-  useEffect,
-} from "react";
+import React, { createContext, useReducer, ReactNode, useEffect } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
 interface User {
@@ -12,6 +6,7 @@ interface User {
   name: string;
   email: string;
   role: string;
+  _id: string;
 }
 
 interface AuthState {
@@ -121,8 +116,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       }
     };
 
-    checkAuth();
-  }, [storedToken]); // Only include storedToken as dependency
+    if (state.isLoading) {
+      checkAuth();
+    }
+  }, [storedToken, setStoredToken, state.isLoading, dispatch]);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     dispatch({ type: "LOGIN_START" });
@@ -208,14 +205,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
 };
 
 export { AuthContext };

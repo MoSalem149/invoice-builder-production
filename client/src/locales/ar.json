@@ -93,7 +93,29 @@
     "recentInvoices": "الفواتير الأخيرة",
     "latestActivity": "آخر النشاطات",
     "noInvoicesYet": "لم يتم إنشاء فواتير بعد",
-    "welcomeMessage": "مرحبًا بكم في منشئ الفواتير - نظام إدارة الفواتير الاحترافي"
+    "welcomeMessage": "مرحبًا بكم في منشئ الفواتير - نظام إدارة الفواتير الاحترافي",
+    "updateCarData": "تحديث بيانات السيارة",
+    "updateCarDataDesc": "إضافة أو تعديل معلومات المركبة في النظام",
+    "addNewCar": "إضافة سيارة جديدة",
+    "editCar": "تعديل السيارة",
+    "carList": "قائمة السيارات",
+    "noCarsFound": "لم يتم العثور على سيارات. أضف سيارتك الأولى!",
+    "brand": "العلامة التجارية",
+    "model": "الموديل",
+    "year": "السنة",
+    "price": "السعر",
+    "imageUrl": "رابط الصورة",
+    "category": "الفئة",
+    "condition": "الحالة",
+    "transmission": "ناقل الحركة",
+    "fuelType": "نوع الوقود",
+    "bodyType": "نوع الهيكل",
+    "mileage": "عدد الأميال",
+    "color": "اللون",
+    "engineSize": "حجم المحرك",
+    "chassisNumber": "رقم الهيكل",
+    "addCar": "إضافة سيارة",
+    "updateCar": "تحديث السيارة"
   },
   "invoice": {
     "invoice": "فاتورة",
@@ -297,6 +319,32 @@
     "usd": "دولار أمريكي ($)",
     "egp": "جنيه مصري (ج.م)",
     "chf": "فرنك سويسري (CHF)"
+  },
+  "notifications": {
+    "carAdded": "تمت إضافة السيارة بنجاح!",
+    "carUpdated": "تم تحديث السيارة بنجاح!",
+    "carDeleted": "تم حذف السيارة بنجاح!"
+  },
+  "hero": {
+    "subtitle": "اكتشف أفضل مجموعة من السيارات الفاخرة والعالية الأداء في سويسرا",
+    "ctaText": "اتصل بنا",
+    "sliderSettings": "إعدادات شريط العرض",
+    "sliderType": "نوع الشريط",
+    "sliderTypes": {
+      "default": "افتراضي",
+      "side-padding": "حشو جانبي",
+      "custom-pagination": "ترقيم صفحة مخصص",
+      "progress": "تقدم الشريط",
+      "vertical": "شريط عمودي"
+    },
+    "addSlide": "إضافة شريحة",
+    "editSlide": "تعديل الشريحة",
+    "slideImage": "صورة الشريحة",
+    "slideTitle": "عنوان الشريحة",
+    "slideSubtitle": "عنوان فرعي للشريحة",
+    "ctaLink": "رابط الزر",
+    "saveChanges": "حفظ التغييرات",
+    "slidesUpdated": "تم تحديث الشرائح بنجاح"
   },
   "footer": {
     "companyName": "شركة سعيد للنقل - غوردولا",

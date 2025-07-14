@@ -4,8 +4,8 @@ import {
   Users,
   Package,
   DollarSign,
-  Plus,
-  // Settings,
+  FilePlus, // For creating new invoice
+  Car, // For car data
   History,
   RefreshCw,
   AlertCircle,
@@ -152,23 +152,23 @@ const Dashboard: React.FC<DashboardProps> = ({ onPageChange }) => {
     {
       title: t("dashboard.createNewInvoice"),
       description: t("dashboard.createNewInvoiceDesc"),
-      icon: Plus,
+      icon: FilePlus,
       action: () => onPageChange("create"),
       color: "bg-blue-600 hover:bg-blue-700",
     },
-    // {
-    //   title: t("navigation.settings"),
-    //   description: t("dashboard.settingsDesc"),
-    //   icon: Settings,
-    //   action: () => onPageChange("settings"),
-    //   color: "bg-gray-600 hover:bg-gray-700",
-    // },
     {
       title: t("dashboard.viewInvoiceHistory"),
       description: t("dashboard.viewInvoiceHistoryDesc"),
       icon: History,
       action: () => onPageChange("history"),
       color: "bg-green-600 hover:bg-green-700",
+    },
+    {
+      title: t("dashboard.updateCarData"),
+      description: t("dashboard.updateCarDataDesc"),
+      icon: Car,
+      action: () => onPageChange("update-cars"),
+      color: "bg-purple-600 hover:bg-purple-700",
     },
   ];
 

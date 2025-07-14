@@ -29,6 +29,7 @@ export interface Car {
   color?: string;
   doors?: number;
   chassisNumber?: string;
+  bodyType?: string; // Added for "Tipo" (Berlin or others)
 }
 
 // User and Auth Types
