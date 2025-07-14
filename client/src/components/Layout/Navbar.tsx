@@ -304,6 +304,8 @@ const Navbar: React.FC<NavbarProps> = ({
       {/* Mobile menu */}
       <div className={`md:hidden ${mobileMenuOpen ? "block" : "hidden"}`}>
         <div className="pt-2 pb-3 space-y-1">
+          <div className="mb-6"></div>
+
           {navItems.map((item) => {
             const IconComponent = item.icon;
             return (
