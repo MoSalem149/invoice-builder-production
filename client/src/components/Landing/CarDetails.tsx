@@ -36,19 +36,22 @@ const CarDetails: React.FC<CarDetailsProps> = ({ car, onClose }) => {
 
         <div className="md:flex">
           <div className="md:w-1/2">
-            <img
-              src={
-                car.images?.[0]
-                  ? `${import.meta.env.VITE_API_URL}${car.images[0]}`
-                  : "/images/default-car.jpg"
-              }
-              alt={`${car.brand} ${car.model}`}
-              className="w-full h-full min-h-[300px] object-cover"
-              crossOrigin="anonymous"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = "/images/default-car.jpg";
-              }}
-            />
+            <div className="relative h-64 w-full bg-gray-100 rounded-lg overflow-hidden">
+              <img
+                src={
+                  car.images?.[0]
+                    ? `${import.meta.env.VITE_API_URL}${car.images[0]}`
+                    : "/images/default-car.jpg"
+                }
+                alt={`${car.brand} ${car.model}`}
+                className="absolute inset-0 w-full h-full object-contain"
+                crossOrigin="anonymous"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src =
+                    "/images/default-car.jpg";
+                }}
+              />
+            </div>
           </div>
 
           <div className="p-6 md:w-1/2">

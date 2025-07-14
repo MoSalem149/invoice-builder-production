@@ -382,7 +382,10 @@ const UpdateCars: React.FC = () => {
               </label>
               <div className="flex flex-wrap gap-2 mb-2">
                 {newCar.images?.map((img, index) => (
-                  <div key={index} className="relative">
+                  <div
+                    key={index}
+                    className="relative h-24 w-24 bg-gray-100 rounded-md overflow-hidden"
+                  >
                     <img
                       src={
                         img
@@ -390,7 +393,7 @@ const UpdateCars: React.FC = () => {
                           : "/images/default-car.jpg"
                       }
                       alt={`Car preview ${index}`}
-                      className="h-16 w-16 object-cover rounded-md"
+                      className="absolute inset-0 w-full h-full object-contain"
                       crossOrigin="anonymous"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src =
@@ -685,22 +688,24 @@ const UpdateCars: React.FC = () => {
                   <div className="flex justify-between items-start">
                     <div className="flex items-start space-x-4">
                       {car.images?.length > 0 ? (
-                        <img
-                          src={
-                            car.images?.[0]
-                              ? `${import.meta.env.VITE_API_URL}${
-                                  car.images[0]
-                                }`
-                              : "/images/default-car.jpg"
-                          }
-                          alt={`${car.brand} ${car.model}`}
-                          className="h-16 w-16 object-cover rounded-md"
-                          crossOrigin="anonymous"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src =
-                              "/images/default-car.jpg";
-                          }}
-                        />
+                        <div className="h-16 w-16 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
+                          <img
+                            src={
+                              car.images?.[0]
+                                ? `${import.meta.env.VITE_API_URL}${
+                                    car.images[0]
+                                  }`
+                                : "/images/default-car.jpg"
+                            }
+                            alt={`${car.brand} ${car.model}`}
+                            className="w-full h-full object-contain"
+                            crossOrigin="anonymous"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src =
+                                "/images/default-car.jpg";
+                            }}
+                          />
+                        </div>
                       ) : (
                         <div className="h-16 w-16 bg-gray-200 rounded-md flex items-center justify-center">
                           <span className="text-xs text-gray-500">

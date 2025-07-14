@@ -39,15 +39,18 @@ const Carousel: React.FC<CarouselProps> = ({ cars, onCarSelect }) => {
 
   let visibleCars = [];
   if (totalCards <= cardsToShow) {
-    visibleCars = [...cars]; // Show all available cars without duplication
+    visibleCars = [...cars];
   } else {
     visibleCars = cars.slice(currentIndex, currentIndex + cardsToShow);
-    // Handle wrap-around if needed
     if (visibleCars.length < cardsToShow) {
       const remaining = cardsToShow - visibleCars.length;
       visibleCars.push(...cars.slice(0, remaining));
     }
   }
+
+  const handleCardClick = (car: Car) => {
+    onCarSelect(car);
+  };
 
   return (
     <div
@@ -59,10 +62,10 @@ const Carousel: React.FC<CarouselProps> = ({ cars, onCarSelect }) => {
         {visibleCars.map((car, index) => (
           <div
             key={`${car._id}-${index}`}
-            className="bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow border border-gray-100"
-            onClick={() => onCarSelect(car)}
+            className="bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow border border-gray-100 h-[400px] flex flex-col"
+            onClick={() => handleCardClick(car)} // Using the click handler here
           >
-            <div className="relative pb-[15%] overflow-hidden">
+            <div className="relative h-[200px] w-full overflow-hidden">
               <img
                 src={
                   car.images?.[0]
@@ -70,7 +73,7 @@ const Carousel: React.FC<CarouselProps> = ({ cars, onCarSelect }) => {
                     : "/images/default-car.jpg"
                 }
                 alt={`${car.brand} ${car.model}`}
-                className="w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-contain"
                 crossOrigin="anonymous"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src =
@@ -81,22 +84,24 @@ const Carousel: React.FC<CarouselProps> = ({ cars, onCarSelect }) => {
                 {car.condition}
               </div>
             </div>
-            <div className="p-4 pt-2">
+            <div className="p-4 pt-2 flex-1 flex flex-col">
               <h3 className="text-lg font-bold">
                 {car.brand} {car.model}
               </h3>
               <p className="text-gray-600 text-sm mb-1">{car.year}</p>
-              <div className="flex justify-between items-center">
-                <p className="text-blue-600 font-bold">
-                  CHF {car.price.toLocaleString()}
-                </p>
-                <div className="flex space-x-2">
-                  <span className="text-xs bg-gray-100 px-2 py-1 rounded">
-                    {car.mileage?.toLocaleString() || "0"} km
-                  </span>
-                  <span className="text-xs bg-gray-100 px-2 py-1 rounded">
-                    {car.transmission || "Automatic"}
-                  </span>
+              <div className="mt-6">
+                <div className="flex justify-between items-center">
+                  <p className="text-blue-600 font-bold">
+                    CHF {car.price.toLocaleString()}
+                  </p>
+                  <div className="flex space-x-2">
+                    <span className="text-xs bg-gray-100 px-2 py-1 rounded">
+                      {car.mileage?.toLocaleString() || "0"} km
+                    </span>
+                    <span className="text-xs bg-gray-100 px-2 py-1 rounded">
+                      {car.transmission || "Automatic"}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
