@@ -1,5 +1,5 @@
 // components/Landing/Carousel.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Car } from "../../types";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -12,23 +12,21 @@ const Carousel: React.FC<CarouselProps> = ({ cars, onCarSelect }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoScroll, setAutoScroll] = useState(true);
 
-  // Number of cards to show at once
   const cardsToShow = 3;
-  const totalCards = cars.length;
+  const totalCards = cars?.length || 0;
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     setCurrentIndex((prevIndex) =>
       prevIndex >= totalCards - cardsToShow ? 0 : prevIndex + 1
     );
-  };
+  }, [totalCards, cardsToShow]);
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     setCurrentIndex((prevIndex) =>
       prevIndex <= 0 ? totalCards - cardsToShow : prevIndex - 1
     );
-  };
+  }, [totalCards, cardsToShow]);
 
-  // Auto-scroll effect
   useEffect(() => {
     if (!autoScroll) return;
 
@@ -37,13 +35,18 @@ const Carousel: React.FC<CarouselProps> = ({ cars, onCarSelect }) => {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [autoScroll, currentIndex]);
+  }, [autoScroll, currentIndex, nextSlide]);
 
-  // Determine which cards to display
-  const visibleCars = [];
-  for (let i = 0; i < cardsToShow; i++) {
-    const index = (currentIndex + i) % totalCards;
-    visibleCars.push(cars[index]);
+  let visibleCars = [];
+  if (totalCards <= cardsToShow) {
+    visibleCars = [...cars]; // Show all available cars without duplication
+  } else {
+    visibleCars = cars.slice(currentIndex, currentIndex + cardsToShow);
+    // Handle wrap-around if needed
+    if (visibleCars.length < cardsToShow) {
+      const remaining = cardsToShow - visibleCars.length;
+      visibleCars.push(...cars.slice(0, remaining));
+    }
   }
 
   return (
@@ -53,37 +56,46 @@ const Carousel: React.FC<CarouselProps> = ({ cars, onCarSelect }) => {
       onMouseLeave={() => setAutoScroll(true)}
     >
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
-        {visibleCars.map((car) => (
+        {visibleCars.map((car, index) => (
           <div
-            key={car.id}
+            key={`${car._id}-${index}`}
             className="bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow border border-gray-100"
             onClick={() => onCarSelect(car)}
           >
-            <div className="relative pb-[75%] overflow-hidden">
+            <div className="relative pb-[15%] overflow-hidden">
               <img
-                src={car.image}
+                src={
+                  car.images?.[0]
+                    ? `${import.meta.env.VITE_API_URL}${car.images[0]}`
+                    : "/images/default-car.jpg"
+                }
                 alt={`${car.brand} ${car.model}`}
-                className="absolute top-0 left-0 w-full h-full object-cover hover:scale-105 transition-transform duration-300 min-h-[200px]"
+                className="w-full h-full object-cover"
+                crossOrigin="anonymous"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src =
+                    "/images/default-car.jpg";
+                }}
               />
               <div className="absolute bottom-2 right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded">
                 {car.condition}
               </div>
             </div>
-            <div className="p-4">
+            <div className="p-4 pt-2">
               <h3 className="text-lg font-bold">
                 {car.brand} {car.model}
               </h3>
-              <p className="text-gray-600 text-sm mb-2">{car.year}</p>
+              <p className="text-gray-600 text-sm mb-1">{car.year}</p>
               <div className="flex justify-between items-center">
                 <p className="text-blue-600 font-bold">
                   CHF {car.price.toLocaleString()}
                 </p>
                 <div className="flex space-x-2">
                   <span className="text-xs bg-gray-100 px-2 py-1 rounded">
-                    {car.mileage.toLocaleString()} km
+                    {car.mileage?.toLocaleString() || "0"} km
                   </span>
                   <span className="text-xs bg-gray-100 px-2 py-1 rounded">
-                    {car.transmission}
+                    {car.transmission || "Automatic"}
                   </span>
                 </div>
               </div>
@@ -92,7 +104,6 @@ const Carousel: React.FC<CarouselProps> = ({ cars, onCarSelect }) => {
         ))}
       </div>
 
-      {/* Navigation arrows */}
       <button
         onClick={(e) => {
           e.stopPropagation();

@@ -1,3 +1,4 @@
+// components/Landing/CarDetails.tsx
 import React, { useState } from "react";
 import { Car } from "../../types";
 import { X } from "lucide-react";
@@ -36,9 +37,17 @@ const CarDetails: React.FC<CarDetailsProps> = ({ car, onClose }) => {
         <div className="md:flex">
           <div className="md:w-1/2">
             <img
-              src={car.image}
+              src={
+                car.images?.[0]
+                  ? `${import.meta.env.VITE_API_URL}${car.images[0]}`
+                  : "/images/default-car.jpg"
+              }
               alt={`${car.brand} ${car.model}`}
               className="w-full h-full min-h-[300px] object-cover"
+              crossOrigin="anonymous"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = "/images/default-car.jpg";
+              }}
             />
           </div>
 
@@ -66,19 +75,46 @@ const CarDetails: React.FC<CarDetailsProps> = ({ car, onClose }) => {
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
                 <p className="text-sm text-gray-500">Mileage</p>
-                <p className="font-medium">{car.mileage.toLocaleString()} km</p>
+                <p className="font-medium">
+                  {car.mileage?.toLocaleString() || "N/A"} km
+                </p>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
                 <p className="text-sm text-gray-500">Color</p>
                 <p className="font-medium">{car.color || "N/A"}</p>
               </div>
-              {car.engineSize && (
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <p className="text-sm text-gray-500">Engine Size</p>
+                <p className="font-medium">{car.engineSize || "N/A"}</p>
+              </div>
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <p className="text-sm text-gray-500">Cylinders</p>
+                <p className="font-medium">{car.cylinders || "N/A"}</p>
+              </div>
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <p className="text-sm text-gray-500">Doors</p>
+                <p className="font-medium">{car.doors || "N/A"}</p>
+              </div>
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <p className="text-sm text-gray-500">Chassis Number</p>
+                <p className="font-medium">{car.chassisNumber || "N/A"}</p>
+              </div>
+              {car.bodyType && (
                 <div className="bg-gray-50 p-3 rounded-lg">
-                  <p className="text-sm text-gray-500">Engine Size</p>
-                  <p className="font-medium">{car.engineSize}</p>
+                  <p className="text-sm text-gray-500">Body Type</p>
+                  <p className="font-medium">{car.bodyType}</p>
                 </div>
               )}
             </div>
+
+            {car.description && (
+              <div className="mb-6">
+                <h4 className="text-sm font-medium text-gray-600 mb-2">
+                  Description
+                </h4>
+                <p className="text-gray-700">{car.description}</p>
+              </div>
+            )}
 
             <div className="space-y-4">
               <button

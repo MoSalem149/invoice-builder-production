@@ -13,23 +13,26 @@ export interface NotificationProps extends NotificationInput {
 
 // components/Landing/types.ts
 export interface Car {
-  id: string;
+  _id: string;
+  images: string[];
+  price: number;
   brand: string;
   model: string;
   year: number;
-  price: number;
-  image: string;
-  category: string;
-  condition: "New" | "Used";
-  transmission: "Automatic" | "Manual";
-  fuelType: "Petrol" | "Diesel" | "Electric" | "Hybrid";
-  mileage: number;
+  category?: string;
+  condition?: string;
+  transmission?: string;
+  fuelType?: string;
+  mileage?: number;
   engineSize?: string;
   cylinders?: number;
   color?: string;
   doors?: number;
   chassisNumber?: string;
-  bodyType?: string; // Added for "Tipo" (Berlin or others)
+  bodyType?: string;
+  description?: string;
+  isFeatured?: boolean;
+  createdAt?: Date;
 }
 
 // User and Auth Types

@@ -1,33 +1,48 @@
+// models/Car.js
 import mongoose from "mongoose";
 
-const carSchema = new mongoose.Schema({
-  images: [{ type: String, required: true }],
-  price: { type: Number, required: true },
-  category: {
-    type: String,
-    enum: ["Sedan", "SUV", "Hatchback", "Coupe", "Crossover"],
-    required: true,
+const carSchema = new mongoose.Schema(
+  {
+    images: [{ type: String, required: true }],
+    price: { type: Number, required: true, min: 0 },
+    brand: { type: String, required: true, trim: true },
+    model: { type: String, required: true, trim: true },
+    year: {
+      type: Number,
+      required: true,
+      min: 1900,
+      max: new Date().getFullYear() + 1,
+    },
+    category: {
+      type: String,
+      enum: ["Sedan", "SUV", "Hatchback", "Coupe", "Crossover"],
+      default: "Sedan",
+    },
+    condition: { type: String, enum: ["New", "Used"], default: "New" },
+    transmission: {
+      type: String,
+      enum: ["Automatic", "Manual"],
+      default: "Automatic",
+    },
+    fuelType: {
+      type: String,
+      enum: ["Petrol", "Diesel", "Electric", "Hybrid"],
+      default: "Petrol",
+    },
+    mileage: { type: Number, default: 0, min: 0 },
+    engineSize: { type: String, trim: true },
+    cylinders: { type: Number, default: 4, min: 1 },
+    color: { type: String, trim: true },
+    doors: { type: Number, default: 4, min: 1 },
+    chassisNumber: { type: String, trim: true },
+    description: { type: String, trim: true },
+    isFeatured: { type: Boolean, default: false },
+    bodyType: { type: String, trim: true },
   },
-  condition: { type: String, enum: ["New", "Used"], required: true },
-  brand: { type: String, required: true },
-  model: { type: String, required: true },
-  year: { type: Number, required: true },
-  transmission: { type: String, enum: ["Automatic", "Manual"], required: true },
-  fuelType: {
-    type: String,
-    enum: ["Petrol", "Diesel", "Electric", "Hybrid"],
-    required: true,
-  },
-  mileage: { type: Number, required: true },
-  engineSize: { type: Number, required: true },
-  cylinders: { type: Number, required: true },
-  color: { type: String, required: true },
-  doors: { type: Number, required: true },
-  chassisNumber: { type: String, required: true, unique: true },
-  description: { type: String },
-  isFeatured: { type: Boolean, default: false },
-  createdAt: { type: Date, default: Date.now },
-});
+  {
+    timestamps: true,
+  }
+);
 
 // Indexes for better performance
 carSchema.index({ brand: 1, model: 1 });

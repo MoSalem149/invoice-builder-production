@@ -1,7 +1,9 @@
 // components/Landing/CarFilters.tsx
 import React, { useState } from "react";
+import { Car } from "../../types";
 
 interface CarFiltersProps {
+  cars: Car[];
   onFilterChange?: (filters: {
     brand: string;
     price: string;
@@ -13,7 +15,7 @@ interface CarFiltersProps {
   }) => void;
 }
 
-const CarFilters: React.FC<CarFiltersProps> = ({ onFilterChange }) => {
+const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
   const [filters, setFilters] = useState({
     brand: "",
     price: "",
@@ -41,27 +43,23 @@ const CarFilters: React.FC<CarFiltersProps> = ({ onFilterChange }) => {
     }
   };
 
-  const brands = [
-    "Toyota",
-    "Porsche",
-    "Audi",
-    "BMW",
-    "Ford",
-    "Nissan",
-    "Peugeot",
-    "Volkswagen",
-  ];
-
+  // Get unique values from cars data with fallbacks
+  const brands = [...new Set(cars.map((car) => car.brand))].filter(Boolean);
   const categories = [
-    "Sedan",
-    "SUV",
-    "Sports",
-    "Hatchback",
-    "Coupe",
-    "Convertible",
-  ];
-  const bodyTypes = ["Berlin", "Station Wagon", "Crossover", "MPV", "Pickup"];
-  const conditions = ["New", "Used"];
+    ...new Set(cars.map((car) => car.category || "Sedan")),
+  ].filter(Boolean);
+  const conditions = [
+    ...new Set(cars.map((car) => car.condition || "New")),
+  ].filter(Boolean);
+  const transmissions = [
+    ...new Set(cars.map((car) => car.transmission || "Automatic")),
+  ].filter(Boolean);
+  const fuelTypes = [
+    ...new Set(cars.map((car) => car.fuelType || "Petrol")),
+  ].filter(Boolean);
+  const bodyTypes = [...new Set(cars.map((car) => car.bodyType))].filter(
+    Boolean
+  );
 
   return (
     <div className="container mx-auto px-4 -mt-16 relative z-20">
@@ -69,7 +67,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ onFilterChange }) => {
         onSubmit={handleSubmit}
         className="bg-white rounded-xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-4 gap-4 items-end"
       >
-        {/* First Row - 4 filters */}
+        {/* Brand Filter */}
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-2">
             Brand
@@ -89,6 +87,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ onFilterChange }) => {
           </select>
         </div>
 
+        {/* Price Filter */}
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-2">
             Price (CHF)
@@ -103,6 +102,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ onFilterChange }) => {
           />
         </div>
 
+        {/* Transmission Filter */}
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-2">
             Transmission
@@ -114,11 +114,15 @@ const CarFilters: React.FC<CarFiltersProps> = ({ onFilterChange }) => {
             className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
           >
             <option value="">Any</option>
-            <option value="Automatic">Automatic</option>
-            <option value="Manual">Manual</option>
+            {transmissions.map((trans) => (
+              <option key={trans} value={trans}>
+                {trans}
+              </option>
+            ))}
           </select>
         </div>
 
+        {/* Fuel Type Filter */}
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-2">
             Fuel Type
@@ -130,14 +134,15 @@ const CarFilters: React.FC<CarFiltersProps> = ({ onFilterChange }) => {
             className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
           >
             <option value="">Any Fuel Type</option>
-            <option value="Petrol">Petrol</option>
-            <option value="Diesel">Diesel</option>
-            <option value="Electric">Electric</option>
-            <option value="Hybrid">Hybrid</option>
+            {fuelTypes.map((fuel) => (
+              <option key={fuel} value={fuel}>
+                {fuel}
+              </option>
+            ))}
           </select>
         </div>
 
-        {/* Second Row - 3 filters + search button */}
+        {/* Condition Filter */}
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-2">
             Condition
@@ -157,6 +162,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ onFilterChange }) => {
           </select>
         </div>
 
+        {/* Category Filter */}
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-2">
             Category
@@ -176,6 +182,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ onFilterChange }) => {
           </select>
         </div>
 
+        {/* Body Type Filter */}
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-2">
             Body Type

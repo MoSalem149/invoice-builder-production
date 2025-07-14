@@ -1,10 +1,11 @@
 // components/Landing/LandingPage.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Carousel from "./Carousel";
 import CarFilters from "./CarFilters";
 import BrandSlider from "./BrandSlider";
 import CarDetails from "./CarDetails";
 import { Car } from "../../types";
+import { RefreshCw } from "lucide-react";
 
 interface LandingPageProps {
   onCarSelect?: (car: Car) => void;
@@ -12,124 +13,31 @@ interface LandingPageProps {
 
 const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
+  const [cars, setCars] = useState<Car[]>([]);
   const [filteredCars, setFilteredCars] = useState<Car[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const cars: Car[] = [
-    {
-      id: "1",
-      brand: "Toyota",
-      model: "Corolla",
-      year: 2022,
-      price: 25000,
-      image: "/images/cars/car1.jpg",
-      category: "Sedan",
-      bodyType: "Berlin",
-      condition: "New",
-      transmission: "Automatic",
-      fuelType: "Petrol",
-      mileage: 0,
-      color: "Red",
-      engineSize: "2.0L",
-      cylinders: 4,
-      doors: 4,
-      chassisNumber: "JT2BF22K6W0123456",
-    },
-    {
-      id: "2",
-      brand: "Porsche",
-      model: "911 Carrera",
-      year: 2021,
-      price: 120000,
-      image: "/images/cars/car2.jpg",
-      category: "Sports",
-      bodyType: "Coupe",
-      condition: "Used",
-      transmission: "Automatic",
-      fuelType: "Petrol",
-      mileage: 12000,
-      color: "Silver",
-      engineSize: "3.0L",
-      cylinders: 6,
-      doors: 2,
-      chassisNumber: "WP0ZZZ99ZTS392124",
-    },
-    {
-      id: "3",
-      brand: "Audi",
-      model: "Q5",
-      year: 2023,
-      price: 45000,
-      image: "/images/cars/car3.jpg",
-      category: "SUV",
-      bodyType: "Crossover",
-      condition: "New",
-      transmission: "Automatic",
-      fuelType: "Diesel",
-      mileage: 0,
-      color: "Black",
-      engineSize: "2.0L",
-      cylinders: 4,
-      doors: 5,
-      chassisNumber: "WA1ANAFY0N2009876",
-    },
-    {
-      id: "4",
-      brand: "BMW",
-      model: "X5",
-      year: 2022,
-      price: 65000,
-      image: "/images/cars/car4.jpg",
-      category: "SUV",
-      bodyType: "SUV",
-      condition: "Used",
-      transmission: "Automatic",
-      fuelType: "Hybrid",
-      mileage: 15000,
-      color: "White",
-      engineSize: "3.0L",
-      cylinders: 6,
-      doors: 5,
-      chassisNumber: "5UXCR6C05N9X54321",
-    },
-    {
-      id: "5",
-      brand: "Ford",
-      model: "Mustang",
-      year: 2023,
-      price: 55000,
-      image: "/images/cars/car5.jpg",
-      category: "Sports",
-      bodyType: "Coupe",
-      condition: "New",
-      transmission: "Manual",
-      fuelType: "Petrol",
-      mileage: 0,
-      color: "Blue",
-      engineSize: "5.0L",
-      cylinders: 8,
-      doors: 2,
-      chassisNumber: "1FA6P8CF5M5101234",
-    },
-    {
-      id: "6",
-      brand: "Nissan",
-      model: "Qashqai",
-      year: 2022,
-      price: 35000,
-      image: "/images/cars/car6.jpg",
-      category: "SUV",
-      bodyType: "Crossover",
-      condition: "New",
-      transmission: "Automatic",
-      fuelType: "Petrol",
-      mileage: 0,
-      color: "Gray",
-      engineSize: "1.3L",
-      cylinders: 4,
-      doors: 5,
-      chassisNumber: "SJNFEAJ11U7023456",
-    },
-  ];
+  useEffect(() => {
+    const fetchCars = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/cars`
+        );
+        const data = await response.json();
+        if (data.success) {
+          setCars(data.data);
+          setFilteredCars(data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching cars:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCars();
+  }, []);
 
   const handleFilterChange = (filters: {
     brand: string;
@@ -152,20 +60,26 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
 
     if (filters.transmission) {
       results = results.filter(
-        (car) => car.transmission === filters.transmission
+        (car) => (car.transmission || "Automatic") === filters.transmission
       );
     }
 
     if (filters.fuelType) {
-      results = results.filter((car) => car.fuelType === filters.fuelType);
+      results = results.filter(
+        (car) => (car.fuelType || "Petrol") === filters.fuelType
+      );
     }
 
     if (filters.condition) {
-      results = results.filter((car) => car.condition === filters.condition);
+      results = results.filter(
+        (car) => (car.condition || "New") === filters.condition
+      );
     }
 
     if (filters.category) {
-      results = results.filter((car) => car.category === filters.category);
+      results = results.filter(
+        (car) => (car.category || "Sedan") === filters.category
+      );
     }
 
     if (filters.bodyType) {
@@ -174,6 +88,17 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
 
     setFilteredCars(results.length > 0 ? results : cars);
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="flex flex-col items-center">
+          <RefreshCw className="animate-spin h-10 w-10 text-blue-600 mb-4" />
+          <p className="text-gray-600 text-lg">Loading cars...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative">
@@ -205,7 +130,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
       </div>
 
       {/* Filters Section */}
-      <CarFilters onFilterChange={handleFilterChange} />
+      <CarFilters cars={cars} onFilterChange={handleFilterChange} />
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-16">
@@ -214,7 +139,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
         </h1>
 
         <Carousel
-          cars={filteredCars.length > 0 ? filteredCars : cars}
+          cars={filteredCars}
           onCarSelect={(car) => {
             setSelectedCar(car);
             if (onCarSelect) {
