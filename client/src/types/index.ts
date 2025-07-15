@@ -35,6 +35,25 @@ export interface Car {
   createdAt?: Date;
 }
 
+export interface SliderImage {
+  _id: string;
+  imageUrl: string;
+  caption?: string;
+  isActive?: boolean;
+  order?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export type SliderSettings = {
+  autoplay?: boolean;
+  autoplayDelay?: number;
+  loop?: boolean;
+  navigation?: boolean;
+  pagination?: boolean;
+  effect?: "slide" | "fade" | "cube" | "coverflow" | "flip";
+};
+
 // User and Auth Types
 export interface User {
   _id: string;

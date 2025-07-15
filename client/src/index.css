@@ -1,6 +1,14 @@
 /* Import statements must come first */
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap");
 
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+@import "swiper/css/effect-fade";
+@import "swiper/css/effect-cube";
+@import "swiper/css/effect-coverflow";
+@import "swiper/css/effect-flip";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -124,4 +132,11 @@ html {
   .mobile-spacing-sm {
     padding: 0.5rem;
   }
+}
+
+.swiper-slide {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }

@@ -14,6 +14,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Settings from "./components/Settings/Settings";
 import History from "./components/History/History";
 import UpdateCars from "./components/Cars/UpdateCars";
+import ManageSlider from "./components/Slider/ManageSlider";
 import CreateInvoice from "./components/Create/CreateInvoice";
 import { useLanguage } from "./hooks/useLanguage";
 import LandingPage from "./components/Landing/LandingPage";
@@ -23,7 +24,6 @@ import Footer from "./components/Layout/Footer";
 import About from "./components/Landing/About";
 import Services from "./components/Landing/Services";
 import FAQs from "./components/Landing/FAQs";
-import Terms from "./components/Landing/Terms";
 import Contact from "./components/Landing/Contact";
 import TermsConditions from "./components/Landing/TermsConditions";
 import PrivacyNotice from "./components/Landing/PrivacyNotice";
@@ -265,6 +265,19 @@ const AppContent: React.FC = () => {
             }
           />
 
+          <Route
+            path="/manage-slider"
+            element={
+              authState.isLoading ? (
+                <Loader fullScreen size="xl" />
+              ) : authState.isAuthenticated ? (
+                <ManageSlider />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+
           {/* Landing page routes */}
           <Route
             path="/"
@@ -275,7 +288,6 @@ const AppContent: React.FC = () => {
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/faqs" element={<FAQs />} />
-          <Route path="/terms" element={<Terms />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/terms-conditions" element={<TermsConditions />} />
           <Route path="/privacy-notice" element={<PrivacyNotice />} />

@@ -4,7 +4,8 @@ import Carousel from "./Carousel";
 import CarFilters from "./CarFilters";
 import BrandSlider from "./BrandSlider";
 import CarDetails from "./CarDetails";
-import { Car } from "../../types";
+import ImageSlider from "./ImageSlider";
+import { Car, SliderImage, SliderSettings } from "../../types";
 import { RefreshCw } from "lucide-react";
 
 interface LandingPageProps {
@@ -16,6 +17,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
   const [cars, setCars] = useState<Car[]>([]);
   const [filteredCars, setFilteredCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sliderImages, setSliderImages] = useState<string[]>([]);
+  const [sliderSettings, setSliderSettings] = useState<SliderSettings>({});
 
   useEffect(() => {
     const fetchCars = async () => {
@@ -37,6 +40,48 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
     };
 
     fetchCars();
+  }, []);
+
+  useEffect(() => {
+    const fetchSliderImages = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/slider-images`
+        );
+        const data = await response.json();
+        if (data.success) {
+          setSliderImages(data.data.map((img: SliderImage) => img.imageUrl));
+        }
+      } catch (error) {
+        console.error("Error fetching slider images:", error);
+        // Fallback to default images if API fails
+        setSliderImages([
+          "/images/car1.jpg",
+          "/images/car2.jpg",
+          "/images/car3.jpg",
+        ]);
+      }
+    };
+
+    fetchSliderImages();
+  }, []);
+
+  useEffect(() => {
+    const fetchSliderData = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/slider-images/settings`
+        );
+        const data = await response.json();
+        if (data.success) {
+          setSliderSettings(data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching slider settings:", error);
+      }
+    };
+
+    fetchSliderData();
   }, []);
 
   const handleFilterChange = (filters: {
@@ -111,9 +156,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
           className="w-full h-full object-cover absolute top-0 left-0 min-h-[400px]"
         />
 
-        {/* Dark overlay for better text visibility */}
-        <div className="absolute inset-0 bg-black/40"></div>
-
         {/* Content */}
         <div className="container mx-auto px-4 h-full flex items-center relative z-10">
           <div className="max-w-2xl text-white">
@@ -146,6 +188,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
               onCarSelect(car);
             }
           }}
+        />
+      </div>
+
+      <div className="relative w-full" style={{ height: "600px" }}>
+        <ImageSlider
+          images={sliderImages}
+          settings={sliderSettings}
+          height="h-full" // This will make the slider take full height of the container
         />
       </div>
 

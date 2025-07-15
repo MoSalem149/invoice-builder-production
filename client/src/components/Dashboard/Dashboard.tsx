@@ -7,6 +7,7 @@ import {
   FilePlus, // For creating new invoice
   Car, // For car data
   History,
+  Image,
   RefreshCw,
   AlertCircle,
 } from "lucide-react";
@@ -170,6 +171,13 @@ const Dashboard: React.FC<DashboardProps> = ({ onPageChange }) => {
       action: () => onPageChange("update-cars"),
       color: "bg-purple-600 hover:bg-purple-700",
     },
+    {
+      title: "Manage Slider Images",
+      description: "Update the images displayed in the landing page slider",
+      icon: Image, // You'll need to import Image from lucide-react
+      action: () => onPageChange("manage-slider"),
+      color: "bg-indigo-600 hover:bg-indigo-700",
+    },
   ];
 
   if (loading) {
@@ -264,7 +272,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onPageChange }) => {
         >
           {t("dashboard.quickActions")}
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {quickActions.map((action, index) => {
             const IconComponent = action.icon;
             return (

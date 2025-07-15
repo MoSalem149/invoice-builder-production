@@ -17,6 +17,7 @@ import invoiceRoutes from "./routes/invoices.js";
 import authRoutes from "./routes/auth.js";
 import dashboardRoutes from "./routes/dashboard.js";
 import carRoutes from "./routes/cars.js";
+import sliderRoutes from "./routes/slider.js";
 
 dotenv.config();
 
@@ -31,6 +32,11 @@ const PORT = process.env.PORT || 5000;
 const uploadsDir = join(__dirname, "public", "uploads", "cars");
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+const sliderUploadsDir = join(__dirname, "public", "uploads", "slider");
+if (!fs.existsSync(sliderUploadsDir)) {
+  fs.mkdirSync(sliderUploadsDir, { recursive: true });
 }
 
 // Middleware
@@ -109,7 +115,7 @@ const createAdminUser = async () => {
       },
     });
     await admin.save();
-    console.log("👑 Admin created");
+    console.log("✅ Admin created");
   }
 };
 
@@ -121,6 +127,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/cars", carRoutes);
+app.use("/api/slider-images", sliderRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => {

@@ -12,7 +12,6 @@ import {
   Info,
   Wrench,
   HelpCircle,
-  FileText as TermsIcon,
   Phone,
   Shield,
 } from "lucide-react";
@@ -78,11 +77,70 @@ const Navbar: React.FC<NavbarProps> = ({
             },
           ];
         }
+
+        // For admin users, show settings when on dashboard or settings pages
+        if (
+          location.pathname.startsWith("/dashboard") ||
+          location.pathname.startsWith("/settings")
+        ) {
+          return [
+            { id: "landing", label: "Home", icon: Home, path: "/" },
+            {
+              id: "dashboard",
+              label: "Dashboard",
+              icon: LayoutDashboard,
+              path: "/dashboard",
+            },
+            {
+              id: "settings",
+              label: t("navigation.settings"),
+              icon: Settings,
+              path: "/settings",
+            },
+          ];
+        }
+
         return [
           { id: "landing", label: "Home", icon: Home, path: "/" },
           {
             id: "dashboard",
             label: "Dashboard",
+            icon: LayoutDashboard,
+            path: "/dashboard",
+          },
+        ];
+      }
+
+      // For regular users
+      if (
+        isLanding ||
+        location.pathname.startsWith("/about") ||
+        location.pathname.startsWith("/services") ||
+        location.pathname.startsWith("/faqs") ||
+        location.pathname.startsWith("/terms") ||
+        location.pathname.startsWith("/privacy-notice") ||
+        location.pathname.startsWith("/contact")
+      ) {
+        return [
+          { id: "landing", label: "Home", icon: Home, path: "/" },
+          { id: "about", label: "About Us", icon: Info, path: "/about" },
+          {
+            id: "services",
+            label: "Services",
+            icon: Wrench,
+            path: "/services",
+          },
+          { id: "faqs", label: "FAQs", icon: HelpCircle, path: "/faqs" },
+          { id: "contact", label: "Contact Us", icon: Phone, path: "/contact" },
+        ];
+      }
+
+      // For regular users on dashboard, show settings
+      if (location.pathname === "/dashboard") {
+        return [
+          {
+            id: "dashboard",
+            label: t("navigation.dashboard"),
             icon: LayoutDashboard,
             path: "/dashboard",
           },
@@ -95,28 +153,7 @@ const Navbar: React.FC<NavbarProps> = ({
         ];
       }
 
-      if (
-        isLanding ||
-        location.pathname.startsWith("/about") ||
-        location.pathname.startsWith("/services") ||
-        location.pathname.startsWith("/faqs") ||
-        location.pathname.startsWith("/terms") ||
-        location.pathname.startsWith("/contact")
-      ) {
-        return [
-          { id: "landing", label: "Home", icon: Home, path: "/" },
-          { id: "about", label: "About", icon: Info, path: "/about" },
-          {
-            id: "services",
-            label: "Services",
-            icon: Wrench,
-            path: "/services",
-          },
-          { id: "faqs", label: "FAQs", icon: HelpCircle, path: "/faqs" },
-          { id: "terms", label: "Terms", icon: TermsIcon, path: "/terms" },
-          { id: "contact", label: "Contact", icon: Phone, path: "/contact" },
-        ];
-      }
+      // For regular users on other pages (like settings), show dashboard link
       return [
         {
           id: "dashboard",
@@ -124,21 +161,14 @@ const Navbar: React.FC<NavbarProps> = ({
           icon: LayoutDashboard,
           path: "/dashboard",
         },
-        {
-          id: "settings",
-          label: t("navigation.settings"),
-          icon: Settings,
-          path: "/settings",
-        },
       ];
     }
     return [
       { id: "landing", label: "Home", icon: Home, path: "/" },
-      { id: "about", label: "About", icon: Info, path: "/about" },
+      { id: "about", label: "About Us", icon: Info, path: "/about" },
       { id: "services", label: "Services", icon: Wrench, path: "/services" },
       { id: "faqs", label: "FAQs", icon: HelpCircle, path: "/faqs" },
-      { id: "terms", label: "Terms", icon: TermsIcon, path: "/terms" },
-      { id: "contact", label: "Contact", icon: Phone, path: "/contact" },
+      { id: "contact", label: "Contact Us", icon: Phone, path: "/contact" },
     ];
   };
 
@@ -161,6 +191,19 @@ const Navbar: React.FC<NavbarProps> = ({
     return currentPage === item.id;
   };
 
+  // Check if we should show the logo instead of text
+  const shouldShowLogo = () => {
+    return (
+      isLanding ||
+      location.pathname.startsWith("/about") ||
+      location.pathname.startsWith("/services") ||
+      location.pathname.startsWith("/faqs") ||
+      location.pathname.startsWith("/terms") ||
+      location.pathname.startsWith("/privacy-notice") ||
+      location.pathname.startsWith("/contact")
+    );
+  };
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b border-gray-200 transition-all duration-300 ${
@@ -173,7 +216,7 @@ const Navbar: React.FC<NavbarProps> = ({
             isRTL ? "flex-row-reverse" : ""
           }`}
         >
-          {/* Logo/Brand - Modified for half-in-half effect */}
+          {/* Logo/Brand */}
           <div
             className={`flex items-center ${isRTL ? "flex-row-reverse" : ""}`}
           >
@@ -187,7 +230,7 @@ const Navbar: React.FC<NavbarProps> = ({
               }
               className="flex items-center focus:outline-none relative h-full"
             >
-              {isLanding ? (
+              {shouldShowLogo() ? (
                 // Logo that extends halfway out of navbar
                 <div className="relative h-full flex items-end">
                   <img
@@ -197,7 +240,7 @@ const Navbar: React.FC<NavbarProps> = ({
                   />
                 </div>
               ) : (
-                // Original logo for non-landing pages
+                // Original logo/text for other pages
                 <>
                   <FileText
                     className={`h-8 w-8 text-gray-800 ${
