@@ -28,6 +28,9 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// ✅ Trust Railway's proxy (required for express-rate-limit)
+app.set("trust proxy", 1);
+
 // Ensure uploads directory exists
 const uploadsDir = join(__dirname, "public", "uploads", "cars");
 if (!fs.existsSync(uploadsDir)) {
