@@ -22,8 +22,7 @@
     "unarchive": "إلغاء الأرشفة",
     "archived": "مؤرشف",
     "active": "نشط",
-    "retry": "إعادة المحاولة",
-    "doors": "أبواب"
+    "retry": "إعادة المحاولة"
   },
   "errors": {
     "dashboardLoadFailed": "فشل تحميل لوحة التحكم",
@@ -171,7 +170,10 @@
     },
     "description": "الوصف",
     "cylinders": "اسطوانات",
-    "featured": "مميز"
+    "featured": "مميز",
+    "cancel": "إلغاء",
+    "edit": "Edit",
+    "delete": "Delete"
   },
   "invoice": {
     "invoice": "فاتورة",
@@ -377,14 +379,15 @@
     "total": "الإجمالي"
   },
   "languages": {
+    "italian": "الإيطالية",
     "english": "الإنجليزية",
-    "arabic": "العربية",
-    "italian": "الإيطالية"
+    "german": "الألمانية",
+    "arabic": "العربية"
   },
   "currencies": {
+    "chf": "فرنك سويسري (CHF)",
     "usd": "دولار أمريكي ($)",
-    "egp": "جنيه مصري (ج.م)",
-    "chf": "فرنك سويسري (CHF)"
+    "egp": "جنيه مصري (ج.م)"
   },
   "notifications": {
     "carAdded": "تمت إضافة السيارة بنجاح!",
@@ -399,7 +402,8 @@
     "errorDeletingCar": "خطأ في حذف السيارة",
     "validationFailed": "فشل التحقق من الصحة",
     "requiredFieldsMissing": "الحقول المطلوبة مفقودة",
-    "success": "نجاح"
+    "success": "نجاح",
+    "error": "خطأ"
   },
   "hero": {
     "ctaText": "اتصل بنا",

@@ -49,7 +49,7 @@ const Settings: React.FC = () => {
       showFunc(t(titleKey), t(messageKey), duration);
       setPendingNotification(null);
     }
-  }, [pendingNotification, t]);
+  }, [pendingNotification, t, showSuccess, showError]);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -508,6 +508,7 @@ const Settings: React.FC = () => {
             >
               <option value="it">{t("languages.italian")}</option>
               <option value="en">{t("languages.english")}</option>
+              <option value="gr">{t("languages.german")}</option>
               {/* <option value="ar">{t("languages.arabic")}</option> */}
             </select>
           </div>

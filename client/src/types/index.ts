@@ -92,7 +92,7 @@ export interface Company {
   email?: string;
   phone?: string;
   currency: "CHF" | "USD" | "EGP";
-  language: "it" | "en" | "ar";
+  language: "it" | "en" | "gr" | "ar";
   watermark?: string;
   showNotes?: boolean;
   showTerms?: boolean;
@@ -194,8 +194,8 @@ export interface AppContextType {
 export interface LanguageContextType {
   t: (key: string) => string;
   isRTL: boolean;
-  language: "it" | "en" | "ar";
-  setLanguage: (lang: "it" | "en" | "ar") => void;
+  language: "it" | "en" | "gr" | "ar";
+  setLanguage: (lang: "it" | "en" | "gr" | "ar") => void;
 }
 
 // Notification Context Type

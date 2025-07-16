@@ -382,6 +382,7 @@
   "languages": {
     "italian": "Italiano",
     "english": "Inglese",
+    "german": "Tedesco",
     "arabic": "Arabo"
   },
   "currencies": {
@@ -403,7 +404,7 @@
     "validationFailed": "Validazione fallita",
     "requiredFieldsMissing": "Campi obbligatori mancanti",
     "success": "Successo",
-    "error": "errore"
+    "error": "Errore"
   },
   "hero": {
     "ctaText": "Contattaci",

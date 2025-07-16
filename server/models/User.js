@@ -67,7 +67,7 @@ const userSchema = new mongoose.Schema(
       email: { type: String, default: "Info@saidauto.ch" },
       phone: { type: String, default: "" },
       currency: { type: String, enum: ["CHF", "USD", "EGY"], default: "CHF" },
-      language: { type: String, enum: ["it", "en", "ar"], default: "it" },
+      language: { type: String, enum: ["it", "en", "gr", "ar"], default: "it" },
       watermark: { type: String, default: "" },
       showNotes: { type: Boolean, default: false },
       showTerms: { type: Boolean, default: false },

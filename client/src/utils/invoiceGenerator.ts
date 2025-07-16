@@ -8,7 +8,7 @@ export interface CompanyInfo {
   email?: string;
   phone?: string;
   currency: "CHF" | "USD" | "EGP";
-  language: "it" | "en" | "ar";
+  language: "it" | "en" | "ar" | "gr";
   watermark?: string;
   showNotes?: boolean;
   showTerms?: boolean;
@@ -21,106 +21,127 @@ const translations = {
     it: "FATTURA",
     en: "INVOICE",
     ar: "فاتورة",
+    gr: "RECHNUNG",
   },
   billTo: {
     it: "Fattura a:",
     en: "Bill To:",
     ar: "فاتورة إلى:",
+    gr: "Rechnung an:",
   },
   invoiceNumber: {
     it: "Numero fattura",
     en: "Invoice #",
     ar: "رقم الفاتورة",
+    gr: "Rechnung Nr.",
   },
   invoiceDate: {
     it: "Data fattura",
     en: "Invoice Date",
     ar: "تاريخ الفاتورة",
+    gr: "Rechnungsdatum",
   },
   status: {
     it: "Stato",
     en: "Status",
     ar: "الحالة",
+    gr: "Status",
   },
   paid: {
     it: "Pagato",
     en: "Paid",
     ar: "مدفوع",
+    gr: "Bezahlt",
   },
   unpaid: {
     it: "Non pagato",
     en: "Unpaid",
     ar: "غير مدفوع",
+    gr: "Unbezahlt",
   },
   product: {
     it: "Prodotto",
     en: "Product",
     ar: "المنتج",
+    gr: "Produkt",
   },
   price: {
     it: "Prezzo",
     en: "Price",
     ar: "السعر",
+    gr: "Preis",
   },
   discount: {
     it: "Sconto %",
     en: "Discount %",
     ar: "الخصم %",
+    gr: "Rabatt %",
   },
   amount: {
     it: "Importo",
     en: "Amount",
     ar: "المبلغ",
+    gr: "Betrag",
   },
   subtotal: {
     it: "Subtotale:",
     en: "Subtotal:",
     ar: "المجموع الفرعي:",
+    gr: "Zwischensumme:",
   },
   totalTax: {
     it: "Tassa:",
     en: "Tax:",
     ar: "الضريبة:",
+    gr: "Steuer:",
   },
   total: {
     it: "Totale:",
     en: "Total:",
     ar: "الإجمالي:",
+    gr: "Gesamt:",
   },
   notes: {
     it: "Note:",
     en: "Notes:",
     ar: "ملاحظات:",
+    gr: "Notizen:",
   },
   terms: {
     it: "Termini e condizioni:",
     en: "Terms & Conditions:",
     ar: "الشروط والأحكام:",
+    gr: "AGB:",
   },
   clickToSelectClient: {
     it: "Clicca per selezionare un cliente",
     en: "Click to select client",
     ar: "انقر لتحديد العميل",
+    gr: "Klicken Sie, um einen Kunden auszuwählen",
   },
   selectDate: {
     it: "Seleziona data",
     en: "Select date",
     ar: "حدد تاريخًا",
+    gr: "Datum auswählen",
   },
   clickToAddProducts: {
     it: "Clicca per aggiungere prodotti",
     en: "Click to add products",
     ar: "انقر لإضافة منتجات",
+    gr: "Klicken Sie, um Produkte hinzuzufügen",
   },
   clickToAddNotes: {
     it: "Clicca per aggiungere note",
     en: "Click to add notes",
     ar: "انقر لإضافة ملاحظات",
+    gr: "Klicken Sie, um Notizen hinzuzufügen",
   },
   clickToAddTerms: {
     it: "Clicca per aggiungere termini",
     en: "Click to add terms",
     ar: "انقر لإضافة شروط",
+    gr: "Klicken Sie, um AGB hinzuzufügen",
   },
 };
 

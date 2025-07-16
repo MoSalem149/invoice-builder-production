@@ -2,11 +2,13 @@ import React, { createContext, ReactNode, useEffect } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import it from "../locales/it.json";
 import en from "../locales/en.json";
+import gr from "../locales/gr.json";
 import ar from "../locales/ar.json";
 
 const translations = {
   it,
   en,
+  gr,
   ar,
 } as const;
 
