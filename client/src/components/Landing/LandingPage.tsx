@@ -1,5 +1,5 @@
 // components/Landing/LandingPage.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Carousel from "./Carousel";
 import CarFilters from "./CarFilters";
 import BrandSlider from "./BrandSlider";
@@ -7,12 +7,14 @@ import CarDetails from "./CarDetails";
 import ImageSlider from "./ImageSlider";
 import { Car, SliderImage, SliderSettings } from "../../types";
 import { RefreshCw } from "lucide-react";
+import { LanguageContext } from "../../context/LanguageContext";
 
 interface LandingPageProps {
   onCarSelect?: (car: Car) => void;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
+  const { t } = useContext(LanguageContext)!;
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
   const [cars, setCars] = useState<Car[]>([]);
   const [filteredCars, setFilteredCars] = useState<Car[]>([]);
@@ -54,7 +56,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
         }
       } catch (error) {
         console.error("Error fetching slider images:", error);
-        // Fallback to default images if API fails
         setSliderImages([
           "/images/car1.jpg",
           "/images/car2.jpg",
@@ -139,7 +140,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
       <div className="flex justify-center items-center h-screen">
         <div className="flex flex-col items-center">
           <RefreshCw className="animate-spin h-10 w-10 text-blue-600 mb-4" />
-          <p className="text-gray-600 text-lg">Loading cars...</p>
+          <p className="text-gray-600 text-lg">{t("loading")}</p>
         </div>
       </div>
     );
@@ -160,12 +161,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
         <div className="container mx-auto px-4 h-full flex items-center relative z-10">
           <div className="max-w-2xl text-white">
             <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
-              Premium Vehicles <br />
-              <span className="text-blue-400">Exceptional Value</span>
+              {t("landing.premiumVehicles")} <br />
+              <span className="text-blue-400">
+                {t("landing.exceptionalValue")}
+              </span>
             </h1>
             <p className="text-xl md:text-2xl mb-8">
-              Discover Switzerland's finest selection of luxury and performance
-              vehicles
+              {t("landing.discoverSelection")}
             </p>
           </div>
         </div>
@@ -177,7 +179,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-16">
         <h1 className="text-3xl font-bold mb-8 text-center">
-          Featured Vehicles
+          {t("landing.featuredVehicles")}
         </h1>
 
         <Carousel
@@ -195,7 +197,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
         <ImageSlider
           images={sliderImages}
           settings={sliderSettings}
-          height="h-full" // This will make the slider take full height of the container
+          height="h-full"
         />
       </div>
 

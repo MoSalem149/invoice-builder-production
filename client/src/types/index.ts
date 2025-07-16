@@ -101,10 +101,11 @@ export interface Company {
 
 export interface Client {
   _id: string;
-  id?: string; // Add this to match backend expectation
+  id?: string;
   name: string;
   address?: string;
   phone?: string;
+  email?: string;
   archived?: boolean;
   createdAt?: string;
   updatedAt?: string;
@@ -137,22 +138,22 @@ export interface InvoiceClient {
   name: string;
   address?: string;
   phone?: string;
+  email?: string;
 }
 
 export interface Invoice {
-  _id?: string; // Make optional for new invoices
-  userId?: string; // Add this
+  _id?: string;
+  userId?: string;
   number: string;
   date: string;
-  dueDate: string;
   client: InvoiceClient;
   items: InvoiceItem[];
   subtotal: number;
   tax: number;
   total: number;
+  paid: boolean; // Changed from status to simple boolean
   notes?: string;
   terms?: string;
-  status?: "draft" | "sent" | "paid" | "overdue";
   createdAt?: string;
   updatedAt?: string;
 }

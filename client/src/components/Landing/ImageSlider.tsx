@@ -1,3 +1,4 @@
+// components/Landing/ImageSlider.tsx
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Swiper from "swiper";
@@ -17,6 +18,7 @@ import "swiper/css/effect-fade";
 import "swiper/css/effect-cube";
 import "swiper/css/effect-coverflow";
 import "swiper/css/effect-flip";
+import { useLanguage } from "../../hooks/useLanguage";
 
 type SwiperModule =
   | typeof Autoplay
@@ -85,14 +87,15 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
   const swiperRef = useRef<Swiper | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const [autoScroll, setAutoScroll] = useState(settings.autoplay ?? true);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (!sliderRef.current || images.length === 0) return;
 
     const swiperParams: SwiperParams = {
       modules: swiperModules,
-      slidesPerView: 1, // Always show one slide at a time
-      spaceBetween: 0, // No space between slides
+      slidesPerView: 1,
+      spaceBetween: 0,
       loop: settings.loop ?? true,
       navigation: settings.navigation
         ? {
@@ -146,7 +149,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
       <div
         className={`relative w-full ${height} bg-gray-100 flex items-center justify-center`}
       >
-        <p className="text-gray-500">No images to display</p>
+        <p className="text-gray-500">{t("imageSlider.noImages")}</p>
       </div>
     );
   }

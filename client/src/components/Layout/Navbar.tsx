@@ -68,10 +68,15 @@ const Navbar: React.FC<NavbarProps> = ({
       if (authState.user?.role === "admin") {
         if (isLanding) {
           return [
-            { id: "landing", label: "Home", icon: Home, path: "/" },
+            {
+              id: "landing",
+              label: t("navigation.home"),
+              icon: Home,
+              path: "/",
+            },
             {
               id: "dashboard",
-              label: "Dashboard",
+              label: t("navigation.dashboard"),
               icon: LayoutDashboard,
               path: "/dashboard",
             },
@@ -84,10 +89,15 @@ const Navbar: React.FC<NavbarProps> = ({
           location.pathname.startsWith("/settings")
         ) {
           return [
-            { id: "landing", label: "Home", icon: Home, path: "/" },
+            {
+              id: "landing",
+              label: t("navigation.home"),
+              icon: Home,
+              path: "/",
+            },
             {
               id: "dashboard",
-              label: "Dashboard",
+              label: t("navigation.dashboard"),
               icon: LayoutDashboard,
               path: "/dashboard",
             },
@@ -101,10 +111,10 @@ const Navbar: React.FC<NavbarProps> = ({
         }
 
         return [
-          { id: "landing", label: "Home", icon: Home, path: "/" },
+          { id: "landing", label: t("navigation.home"), icon: Home, path: "/" },
           {
             id: "dashboard",
-            label: "Dashboard",
+            label: t("navigation.dashboard"),
             icon: LayoutDashboard,
             path: "/dashboard",
           },
@@ -122,16 +132,31 @@ const Navbar: React.FC<NavbarProps> = ({
         location.pathname.startsWith("/contact")
       ) {
         return [
-          { id: "landing", label: "Home", icon: Home, path: "/" },
-          { id: "about", label: "About Us", icon: Info, path: "/about" },
+          { id: "landing", label: t("navigation.home"), icon: Home, path: "/" },
+          {
+            id: "about",
+            label: t("navigation.about"),
+            icon: Info,
+            path: "/about",
+          },
           {
             id: "services",
-            label: "Services",
+            label: t("navigation.services"),
             icon: Wrench,
             path: "/services",
           },
-          { id: "faqs", label: "FAQs", icon: HelpCircle, path: "/faqs" },
-          { id: "contact", label: "Contact Us", icon: Phone, path: "/contact" },
+          {
+            id: "faqs",
+            label: t("navigation.faqs"),
+            icon: HelpCircle,
+            path: "/faqs",
+          },
+          {
+            id: "contact",
+            label: t("navigation.contact"),
+            icon: Phone,
+            path: "/contact",
+          },
         ];
       }
 
@@ -164,11 +189,26 @@ const Navbar: React.FC<NavbarProps> = ({
       ];
     }
     return [
-      { id: "landing", label: "Home", icon: Home, path: "/" },
-      { id: "about", label: "About Us", icon: Info, path: "/about" },
-      { id: "services", label: "Services", icon: Wrench, path: "/services" },
-      { id: "faqs", label: "FAQs", icon: HelpCircle, path: "/faqs" },
-      { id: "contact", label: "Contact Us", icon: Phone, path: "/contact" },
+      { id: "landing", label: t("navigation.home"), icon: Home, path: "/" },
+      { id: "about", label: t("navigation.about"), icon: Info, path: "/about" },
+      {
+        id: "services",
+        label: t("navigation.services"),
+        icon: Wrench,
+        path: "/services",
+      },
+      {
+        id: "faqs",
+        label: t("navigation.faqs"),
+        icon: HelpCircle,
+        path: "/faqs",
+      },
+      {
+        id: "contact",
+        label: t("navigation.contact"),
+        icon: Phone,
+        path: "/contact",
+      },
     ];
   };
 

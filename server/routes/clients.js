@@ -42,6 +42,11 @@ router.post(
     body("name").trim().notEmpty().withMessage("Client name is required"),
     body("address").optional().trim(),
     body("phone").optional().trim(),
+    body("email")
+      .optional()
+      .trim()
+      .isEmail()
+      .withMessage("Invalid email format"),
   ],
   async (req, res) => {
     try {
@@ -54,13 +59,14 @@ router.post(
         });
       }
 
-      const { name, address, phone } = req.body;
+      const { name, address, phone, email } = req.body;
 
       const client = new Client({
         userId: req.user._id,
         name,
         address: address || "",
         phone: phone || "",
+        email: email || "",
       });
 
       await client.save();

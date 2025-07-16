@@ -1,41 +1,42 @@
 // components/Landing/Services.tsx
-import React from "react";
+import React, { useContext } from "react";
 import { Wrench, Car, ShieldCheck, CreditCard, Clock } from "lucide-react";
+import { LanguageContext } from "../../context/LanguageContext";
 
 const Services: React.FC = () => {
+  const { t } = useContext(LanguageContext)!;
+
   const services = [
     {
       icon: <Car className="h-8 w-8" />,
-      title: "Vehicle Sales",
-      description:
-        "Wide selection of new and pre-owned vehicles from top brands.",
+      title: t("services.vehicleSales"),
+      description: t("services.vehicleSalesText"),
     },
     {
       icon: <Wrench className="h-8 w-8" />,
-      title: "Maintenance & Repairs",
-      description:
-        "Expert service for all makes and models using genuine parts.",
+      title: t("services.maintenance"),
+      description: t("services.maintenanceText"),
     },
     {
       icon: <ShieldCheck className="h-8 w-8" />,
-      title: "Extended Warranties",
-      description: "Comprehensive protection plans for your peace of mind.",
+      title: t("services.warranties"),
+      description: t("services.warrantiesText"),
     },
     {
       icon: <CreditCard className="h-8 w-8" />,
-      title: "Financing Options",
-      description: "Flexible payment plans tailored to your budget.",
+      title: t("services.financing"),
+      description: t("services.financingText"),
     },
     {
       icon: <Clock className="h-8 w-8" />,
-      title: "24/7 Roadside Assistance",
-      description: "Help whenever you need it, day or night.",
+      title: t("services.roadsideAssistance"),
+      description: t("services.roadsideAssistanceText"),
     },
   ];
 
   return (
     <div className="container mx-auto px-4 py-8 mt-20">
-      <h1 className="text-3xl font-bold mb-8">Our Services</h1>
+      <h1 className="text-3xl font-bold mb-8">{t("services.title")}</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {services.map((service, index) => (

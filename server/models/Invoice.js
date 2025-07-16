@@ -58,10 +58,6 @@ const invoiceSchema = new mongoose.Schema(
       required: true,
       default: Date.now,
     },
-    dueDate: {
-      type: Date,
-      required: true,
-    },
     client: {
       id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -77,6 +73,9 @@ const invoiceSchema = new mongoose.Schema(
         default: "",
       },
       phone: {
+        type: String,
+      },
+      email: {
         type: String,
       },
     },
@@ -96,11 +95,10 @@ const invoiceSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
-    discount: {
-      type: Number,
-      min: 0,
-      max: 100,
-      default: 0,
+    paid: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
     notes: {
       type: String,
@@ -122,5 +120,6 @@ const invoiceSchema = new mongoose.Schema(
 invoiceSchema.index({ userId: 1, number: 1 });
 invoiceSchema.index({ userId: 1, date: -1 });
 invoiceSchema.index({ userId: 1, "client.id": 1 });
+invoiceSchema.index({ userId: 1, paid: 1 }); // Add index for paid status
 
 export default mongoose.model("Invoice", invoiceSchema);

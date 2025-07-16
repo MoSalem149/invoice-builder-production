@@ -21,7 +21,27 @@
     "archive": "Archive",
     "unarchive": "Unarchive",
     "archived": "Archived",
-    "active": "Active"
+    "active": "Active",
+    "retry": "Retry"
+  },
+  "errors": {
+    "dashboardLoadFailed": "Failed to load dashboard",
+    "sliderLoadFailed": "Failed to load slider images",
+    "tryAgainLater": "Please try again later",
+    "uploadFailed": "Upload failed",
+    "failedToUploadImage": "Failed to upload image",
+    "deleteFailed": "Delete failed",
+    "failedToDeleteImage": "Failed to delete image",
+    "saveFailed": "Save failed",
+    "failedToSaveSettings": "Failed to save settings"
+  },
+  "success": {
+    "imageUploaded": "Image uploaded successfully",
+    "imageAddedToSlider": "Image added to slider",
+    "imageDeleted": "Image deleted successfully",
+    "imageRemovedFromSlider": "Image removed from slider",
+    "settingsSaved": "Settings saved successfully",
+    "sliderSettingsUpdated": "Slider settings updated"
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -30,7 +50,12 @@
     "history": "History",
     "invoiceBuilder": "Invoice Builder",
     "carRentalTitle": "Car Rental - Said Trasporto Gordola",
-    "login": "Login"
+    "login": "Login",
+    "about": "About Us",
+    "services": "Services",
+    "faqs": "FAQs",
+    "contact": "Contact Us",
+    "home": "Home"
   },
   "auth": {
     "login": "Login",
@@ -105,10 +130,10 @@
     "year": "Year",
     "price": "Price",
     "imageUrl": "Image URL",
-    "category": "Category",
-    "condition": "Condition",
-    "transmission": "Transmission",
-    "fuelType": "Fuel Type",
+    "categoryHeader": "Category",
+    "conditionHeader": "Condition",
+    "transmissionHeader": "Transmission",
+    "fuelTypeHeader": "Fuel Type",
     "bodyType": "Body Type",
     "mileage": "Mileage",
     "color": "Color",
@@ -118,7 +143,38 @@
     "updateCar": "Update Car",
     "cancel": "Cancel",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "manageSlider": "Manage Slider Images",
+    "manageSliderDesc": "Update the images displayed in the landing page slider",
+    "images": "Images",
+    "chooseFile": "Choose File",
+    "noFileChosen": "No file chosen",
+    "category": {
+      "Sedan": "Sedan",
+      "SUV": "SUV",
+      "Hatchback": "Hatchback",
+      "Coupe": "Coupe",
+      "Crossover": "Crossover",
+      "Hybrid": "Hybrid"
+    },
+    "condition": {
+      "New": "New",
+      "Used": "Used"
+    },
+    "transmission": {
+      "Automatic": "Automatic",
+      "Manual": "Manual"
+    },
+    "fuelType": {
+      "Petrol": "Petrol",
+      "Diesel": "Diesel",
+      "Electric": "Electric",
+      "Hybrid": "Hybrid"
+    },
+    "description": "Description",
+    "cylinders": "Cylinders",
+    "featured": "Featured",
+    "doors": "Doors"
   },
   "invoice": {
     "invoice": "INVOICE",
@@ -144,7 +200,10 @@
     "clickToAddNotes": "Click to add notes",
     "clickToAddTerms": "Click to add terms and conditions",
     "editInvoice": "Edit Invoice {number}",
-    "updateInvoice": "Update Invoice"
+    "updateInvoice": "Update Invoice",
+    "paid": "Paid",
+    "unpaid": "Unpaid",
+    "status": "Status"
   },
   "create": {
     "title": "Create Invoice",
@@ -214,7 +273,9 @@
     "clientArchived": "Client archived",
     "clientArchivedMessage": "Client has been archived",
     "clientUnarchived": "Client unarchived",
-    "clientUnarchivedMessage": "Client has been restored"
+    "clientUnarchivedMessage": "Client has been restored",
+    "email": "Email",
+    "enterEmail": "Enter email"
   },
   "product": {
     "name": "Product Name",
@@ -266,11 +327,6 @@
     "addNotesPlaceholder": "Add any additional notes or comments for this invoice...",
     "updateNotes": "Update Notes"
   },
-  "terms": {
-    "termsConditions": "Terms & Conditions",
-    "addTermsPlaceholder": "Enter your terms and conditions, payment terms, etc...",
-    "updateTerms": "Update Terms"
-  },
   "settings": {
     "title": "Invoice Settings",
     "subtitle": "Configure your company information and preferences",
@@ -301,7 +357,13 @@
     "noLogo": "No logo",
     "changeLogo": "Change Logo",
     "taxRate": "Tax Rate",
-    "enterTaxRate": "Enter tax rate percentage"
+    "enterTaxRate": "Enter tax rate percentage",
+    "authRequired": "Authentication required",
+    "loginToSave": "Please login to save settings",
+    "saveFailed": "Save failed",
+    "tryAgain": "Please try again",
+    "networkError": "Network error",
+    "connectionFailed": "Failed to connect to server"
   },
   "history": {
     "title": "Invoice History",
@@ -311,7 +373,11 @@
     "client": "Client",
     "actions": "Actions",
     "download": "Download",
-    "noInvoicesFound": "No invoices found"
+    "noInvoicesFound": "No invoices found",
+    "invoiceNumber": "Invoice #",
+    "invoiceDate": "Invoice Date",
+    "dueDate": "Due Date",
+    "total": "Total"
   },
   "languages": {
     "italian": "Italian",
@@ -326,12 +392,21 @@
   "notifications": {
     "carAdded": "Car added successfully!",
     "carUpdated": "Car updated successfully!",
-    "carDeleted": "Car deleted successfully!"
+    "carDeleted": "Car deleted successfully!",
+    "failedToFetchCars": "Failed to fetch cars",
+    "failedToUploadImages": "Failed to upload images",
+    "fillRequiredFields": "Please fill all required fields",
+    "featured": "Featured",
+    "errorAddingCar": "Error adding car",
+    "errorUpdatingCar": "Error updating car",
+    "errorDeletingCar": "Error deleting car",
+    "validationFailed": "Validation failed",
+    "requiredFieldsMissing": "Required fields are missing",
+    "success": "Success",
+    "error": "Error"
   },
   "hero": {
-    "subtitle": "Discover Switzerland's finest selection of luxury and performance vehicles",
     "ctaText": "Contact Us",
-    "sliderSettings": "Hero Slider Settings",
     "sliderType": "Slider Type",
     "sliderTypes": {
       "default": "Default",
@@ -347,7 +422,22 @@
     "slideSubtitle": "Slide Subtitle",
     "ctaLink": "Button Link",
     "saveChanges": "Save Changes",
-    "slidesUpdated": "Slides updated successfully"
+    "slidesUpdated": "Slides updated successfully",
+    "manageSlider": "Manage Slider",
+    "sliderSettings": "Slider Settings",
+    "sliderConfiguration": "Slider Configuration",
+    "uploadNewImage": "Upload New Image",
+    "selectImage": "Select Image",
+    "uploadImage": "Upload Image",
+    "currentSliderImages": "Current Slider Images",
+    "noSliderImages": "No slider images uploaded yet",
+    "loadingImages": "Loading images...",
+    "chooseFile": "Choose File",
+    "noFileChosen": "No file chosen",
+    "fade": "Fade",
+    "cube": "Cube",
+    "coverflow": "Coverflow",
+    "flip": "Flip"
   },
   "footer": {
     "companyName": "Said Transport - Gordola",
@@ -356,6 +446,156 @@
     "aboutText": "Professional car rental and transport services with over 20 years of experience in Ticino.",
     "contact": "Contact",
     "privacy": "Privacy",
-    "copyright": "All rights reserved Said Transport"
+    "copyright": "All rights reserved Said Transport",
+    "company": "Company",
+    "ourBrands": "Our Brands",
+    "vehiclesType": "Vehicles Type",
+    "connectWithUs": "Connect With Us"
+  },
+  "about": {
+    "title": "About Us",
+    "ourStory": "Our Story",
+    "storyText": "Founded in 2005, Said Auto has grown from a small local dealership to one of the most trusted names in the automotive industry in Switzerland. Our commitment to quality vehicles and exceptional customer service has been the driving force behind our success.",
+    "ourMission": "Our Mission",
+    "missionText": "We strive to provide our customers with the best selection of vehicles at competitive prices, along with transparent and hassle-free purchasing experience. Our team of experts is dedicated to helping you find the perfect vehicle to match your needs and budget.",
+    "ourTeam": "Our Team",
+    "teamText": "Our knowledgeable staff brings decades of combined experience in the automotive industry. From sales to service, every team member is committed to your complete satisfaction."
+  },
+  "carFilters": {
+    "brand": "Brand",
+    "allBrands": "All Brands",
+    "price": "Price (CHF)",
+    "maxPrice": "Max price",
+    "transmission": "Transmission",
+    "anyTransmission": "Any",
+    "fuelType": "Fuel Type",
+    "anyFuelType": "Any Fuel Type",
+    "condition": "Condition",
+    "anyCondition": "Any Condition",
+    "category": "Category",
+    "anyCategory": "Any Category",
+    "bodyType": "Body Type",
+    "anyBodyType": "Any Body Type",
+    "search": "Search"
+  },
+  "brandSlider": {
+    "ourPartners": "Our Partners"
+  },
+  "carousel": {
+    "condition": "Condition",
+    "km": "km"
+  },
+  "carDetails": {
+    "transmission": "Transmission",
+    "fuelType": "Fuel Type",
+    "mileage": "Mileage",
+    "color": "Color",
+    "engineSize": "Engine Size",
+    "cylinders": "Cylinders",
+    "doors": "Doors",
+    "chassisNumber": "Chassis Number",
+    "bodyType": "Body Type",
+    "description": "Description",
+    "contactSales": "Contact Sales",
+    "getInTouch": "Get in Touch",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "businessHours": "Business Hours",
+    "mondayFriday": "Monday-Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "closed": "Closed",
+    "close": "Close"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "getInTouch": "Get in Touch",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "businessHours": "Business Hours",
+    "mondayFriday": "Monday-Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "closed": "Closed",
+    "sendMessage": "Send Us a Message",
+    "name": "Name",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send Message"
+  },
+  "faqs": {
+    "title": "Frequently Asked Questions",
+    "paymentMethods": "What payment methods do you accept?",
+    "paymentAnswer": "We accept cash, bank transfers, and all major credit cards. Financing options are also available through our partner banks.",
+    "testDrives": "Do you offer test drives?",
+    "testDrivesAnswer": "Yes, we encourage all potential buyers to test drive vehicles. Simply contact us to schedule an appointment.",
+    "returnPolicy": "What is your return policy?",
+    "returnPolicyAnswer": "We offer a 7-day money-back guarantee on all vehicles, subject to certain conditions and mileage limits.",
+    "vehicleHistory": "Do you provide vehicle history reports?",
+    "vehicleHistoryAnswer": "Yes, we provide free Carfax reports for all pre-owned vehicles in our inventory.",
+    "tradeIn": "Can I trade in my current vehicle?",
+    "tradeInAnswer": "Absolutely! We offer competitive trade-in valuations. Bring your vehicle for an appraisal or send us details online."
+  },
+  "privacy": {
+    "title": "Privacy Notice",
+    "informationWeCollect": "1. Information We Collect",
+    "informationWeCollectText": "We collect personal information you provide when using our services, including name, contact details, and vehicle preferences. We also collect technical data like IP addresses and browser information for analytics.",
+    "howWeUse": "2. How We Use Your Information",
+    "howWeUseText": "Your information is used to provide and improve our services, process inquiries, communicate with you, and (with your consent) for marketing purposes. We may use aggregated data for business analytics.",
+    "dataSharing": "3. Data Sharing",
+    "dataSharingText": "We may share your information with trusted third-party service providers who assist us in operating our business, but only to the extent necessary. We do not sell your personal information to third parties.",
+    "dataSecurity": "4. Data Security",
+    "dataSecurityText": "We implement appropriate security measures to protect your personal information against unauthorized access, alteration, or destruction. However, no internet transmission is completely secure.",
+    "yourRights": "5. Your Rights",
+    "yourRightsText": "You have the right to access, correct, or delete your personal information. You may also object to or restrict certain processing activities. To exercise these rights, please contact us at info@saidauto.ch.",
+    "cookies": "6. Cookies",
+    "cookiesText": "Our website uses cookies to enhance your experience. You can control cookies through your browser settings, but disabling them may affect website functionality.",
+    "changes": "7. Changes to This Notice",
+    "changesText": "We may update this Privacy Notice periodically. Significant changes will be communicated through our website or via email when appropriate."
+  },
+  "services": {
+    "title": "Our Services",
+    "vehicleSales": "Vehicle Sales",
+    "vehicleSalesText": "Wide selection of new and pre-owned vehicles from top brands.",
+    "maintenance": "Maintenance & Repairs",
+    "maintenanceText": "Expert service for all makes and models using genuine parts.",
+    "warranties": "Extended Warranties",
+    "warrantiesText": "Comprehensive protection plans for your peace of mind.",
+    "financing": "Financing Options",
+    "financingText": "Flexible payment plans tailored to your budget.",
+    "roadsideAssistance": "24/7 Roadside Assistance",
+    "roadsideAssistanceText": "Help whenever you need it, day or night."
+  },
+  "terms": {
+    "title": "Terms & Conditions",
+    "introduction": "1. Introduction",
+    "introductionText": "Welcome to Boxcars.com. These Terms & Conditions govern your use of our website and services. By accessing or using our services, you agree to be bound by these Terms.",
+    "useOfWebsite": "2. Use of the Website",
+    "useOfWebsiteText": "You agree to use this website only for lawful purposes and in a way that does not infringe the rights of, restrict or inhibit anyone else's use and enjoyment of the website.",
+    "intellectualProperty": "3. Intellectual Property",
+    "intellectualPropertyText": "All content on this website, including text, graphics, logos, and images, is the property of Boxcars.com or its content suppliers and is protected by international copyright laws.",
+    "vehicleListings": "4. Vehicle Listings",
+    "vehicleListingsText": "While we strive for accuracy, we do not warrant that vehicle descriptions or other content on this site is accurate, complete, reliable, current, or error-free.",
+    "liability": "5. Limitation of Liability",
+    "liabilityText": "Boxcars.com shall not be liable for any indirect, incidental, special, or consequential damages resulting from the use of or inability to use our services.",
+    "changesToTerms": "6. Changes to Terms",
+    "changesToTermsText": "We reserve the right to modify these Terms at any time. Your continued use of the website after such changes constitutes your acceptance of the new Terms.",
+    "governingLaw": "7. Governing Law",
+    "governingLawText": "These Terms shall be governed by and construed in accordance with the laws of Switzerland, without regard to its conflict of law provisions.",
+    "termsConditions": "Terms & Conditions",
+    "addTermsPlaceholder": "Enter your terms and conditions...",
+    "updateTerms": "Update Terms"
+  },
+  "landing": {
+    "premiumVehicles": "Premium Vehicles",
+    "exceptionalValue": "Exceptional Value",
+    "discoverSelection": "Discover Switzrland's finest selection of luxury and performance vehicles",
+    "featuredVehicles": "Featured Vehicles",
+    "loadingCars": "Loading cars..."
+  },
+  "imageSlider": {
+    "noImages": "No images to display"
   }
 }

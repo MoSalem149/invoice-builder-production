@@ -15,7 +15,7 @@ router.get("/", authenticate, async (req, res) => {
     const filter = { userId: req.user._id };
 
     if (status) {
-      filter.status = status;
+      filter.paid = status === "paid"; // Convert status query to boolean
     }
 
     // Add search functionality
@@ -103,7 +103,7 @@ router.post(
       .isLength({ min: 1 })
       .withMessage("Invoice number is required"),
     body("date").isISO8601().withMessage("Valid invoice date is required"),
-    body("dueDate").isISO8601().withMessage("Valid due date is required"),
+    body("paid").isBoolean().withMessage("Paid status must be a boolean"),
     body("client").isObject().withMessage("Client information is required"),
     body("client.id").isMongoId().withMessage("Valid client ID is required"),
     body("client.name")
@@ -112,6 +112,11 @@ router.post(
       .withMessage("Client name is required"),
     body("client.address").optional().trim(),
     body("client.phone").optional().trim(),
+    body("client.email")
+      .optional()
+      .trim()
+      .isEmail()
+      .withMessage("Invalid email format"),
     body("items")
       .isArray({ min: 1 })
       .withMessage("At least one item is required"),
@@ -179,17 +184,18 @@ router.post(
         });
       }
 
-      // Create invoice with snapshot of client data (preserves data even if client is archived)
+      // Create invoice with snapshot of client data
       const invoice = new Invoice({
         userId: req.user._id,
         number: req.body.number,
         date: new Date(req.body.date),
-        dueDate: new Date(req.body.dueDate),
+        paid: req.body.paid,
         client: {
           id: client._id,
           name: client.name,
           address: client.address || "",
           phone: client.phone || "",
+          email: client.email || "",
         },
         items: req.body.items,
         subtotal: req.body.subtotal,
@@ -197,7 +203,6 @@ router.post(
         total: req.body.total,
         notes: req.body.notes || "",
         terms: req.body.terms || "",
-        status: "draft",
       });
 
       await invoice.save();
@@ -233,10 +238,10 @@ router.put(
       .optional()
       .isISO8601()
       .withMessage("Valid invoice date is required"),
-    body("dueDate")
+    body("paid")
       .optional()
-      .isISO8601()
-      .withMessage("Valid due date is required"),
+      .isBoolean()
+      .withMessage("Paid status must be a boolean"),
     body("client")
       .optional()
       .isObject()
@@ -307,15 +312,13 @@ router.put(
           name: client.name,
           address: client.address || "",
           phone: client.phone || "",
+          email: client.email || "",
         };
       }
 
-      // Convert date strings to Date objects if provided
+      // Convert date string to Date object if provided
       if (req.body.date) {
         req.body.date = new Date(req.body.date);
-      }
-      if (req.body.dueDate) {
-        req.body.dueDate = new Date(req.body.dueDate);
       }
 
       const invoice = await Invoice.findOneAndUpdate(
@@ -347,16 +350,12 @@ router.put(
 );
 
 // @route   PUT /api/invoices/:id/status
-// @desc    Update invoice status
+// @desc    Update invoice paid status
 // @access  Private
 router.put(
   "/:id/status",
   authenticate,
-  [
-    body("status")
-      .isIn(["draft", "sent", "paid", "overdue"])
-      .withMessage("Invalid status"),
-  ],
+  [body("paid").isBoolean().withMessage("Paid status must be a boolean")],
   async (req, res) => {
     try {
       const errors = validationResult(req);
@@ -370,7 +369,7 @@ router.put(
 
       const invoice = await Invoice.findOneAndUpdate(
         { _id: req.params.id, userId: req.user._id },
-        { status: req.body.status },
+        { paid: req.body.paid },
         { new: true }
       );
 

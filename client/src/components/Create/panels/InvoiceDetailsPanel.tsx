@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { X, Calendar, Hash } from "lucide-react";
+import { X, Calendar, Hash, Check } from "lucide-react";
 import { useLanguage } from "../../../hooks/useLanguage";
 import { Invoice } from "../../../types";
 
@@ -18,7 +18,7 @@ const InvoiceDetailsPanel: React.FC<InvoiceDetailsPanelProps> = ({
   const [formData, setFormData] = useState({
     number: invoice.number || "",
     date: invoice.date || "",
-    dueDate: invoice.dueDate || "",
+    paid: invoice.paid || false,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -26,12 +26,16 @@ const InvoiceDetailsPanel: React.FC<InvoiceDetailsPanelProps> = ({
     onUpdate(formData);
   };
 
+  const handlePaidStatusChange = (isPaid: boolean) => {
+    setFormData({ ...formData, paid: isPaid });
+  };
+
   return (
-    <div className="h-full bg-white border-r border-gray-200 flex flex-col pt-14 lg:pt-0">
+    <div className="h-full bg-white border-r border-gray-200 flex flex-col mt-14 lg:pt-0">
       {/* Header */}
       <div className="p-4 sm:p-6 border-b border-gray-200 relative">
         <div
-          className={`flex items-center justify-between  ${
+          className={`flex items-center justify-between ${
             isRTL ? "flex-row-reverse" : ""
           }`}
         >
@@ -98,28 +102,53 @@ const InvoiceDetailsPanel: React.FC<InvoiceDetailsPanelProps> = ({
             />
           </div>
 
-          {/* Due Date */}
-          <div>
-            <label
-              className={`block text-sm font-medium text-gray-700 mb-2 ${
-                isRTL ? "text-right" : "text-left"
-              }`}
-            >
-              <Calendar
-                className={`h-4 w-4 inline ${isRTL ? "ml-1" : "mr-1"}`}
-              />
-              {t("invoice.dueDate")}
-            </label>
-            <input
-              type="date"
-              value={formData.dueDate}
-              onChange={(e) =>
-                setFormData({ ...formData, dueDate: e.target.value })
-              }
-              className={`w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                isRTL ? "text-right" : "text-left"
-              }`}
-            />
+          {/* Paid Status */}
+          <div className="space-y-3">
+            <div className="flex items-center">
+              <button
+                type="button"
+                onClick={() => handlePaidStatusChange(true)}
+                className={`flex items-center justify-center h-6 w-6 rounded border-2 ${
+                  formData.paid
+                    ? "bg-green-500 border-green-500"
+                    : "border-gray-300"
+                } transition-colors`}
+              >
+                {formData.paid && (
+                  <Check className="h-4 w-4 text-white" strokeWidth={3} />
+                )}
+              </button>
+              <label
+                className={`${
+                  isRTL ? "mr-3" : "ml-3"
+                } text-sm font-medium text-gray-700`}
+              >
+                {t("invoice.paid")}
+              </label>
+            </div>
+
+            <div className="flex items-center">
+              <button
+                type="button"
+                onClick={() => handlePaidStatusChange(false)}
+                className={`flex items-center justify-center h-6 w-6 rounded border-2 ${
+                  !formData.paid
+                    ? "bg-red-500 border-red-500"
+                    : "border-gray-300"
+                } transition-colors`}
+              >
+                {!formData.paid && (
+                  <Check className="h-4 w-4 text-white" strokeWidth={3} />
+                )}
+              </button>
+              <label
+                className={`${
+                  isRTL ? "mr-3" : "ml-3"
+                } text-sm font-medium text-gray-700`}
+              >
+                {t("invoice.unpaid")}
+              </label>
+            </div>
           </div>
 
           {/* Submit Button */}

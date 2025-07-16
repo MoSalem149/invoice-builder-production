@@ -2,7 +2,12 @@ import express from "express";
 import SliderImage from "../models/Slider.js";
 import { authenticate, authorize } from "../middleware/auth.js";
 import multer from "multer";
+import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const router = express.Router();
 
@@ -232,7 +237,7 @@ router.put("/:id", authenticate, authorize("admin"), async (req, res) => {
 // @access  Private (Admin only)
 router.delete("/:id", authenticate, authorize("admin"), async (req, res) => {
   try {
-    const image = await SliderImage.findByIdAndDelete(req.params.id);
+    const image = await SliderImage.findById(req.params.id);
 
     if (!image) {
       return res.status(404).json({
@@ -241,7 +246,34 @@ router.delete("/:id", authenticate, authorize("admin"), async (req, res) => {
       });
     }
 
-    // TODO: Add logic to delete the actual image file from server
+    // Delete the image file from the filesystem
+    if (image.imageUrl) {
+      const filename = image.imageUrl.split("/").pop();
+      const filePath = path.join(
+        process.cwd(), // Changed from __dirname to process.cwd()
+        "public",
+        "uploads",
+        "slider",
+        filename
+      );
+
+      console.log("Deletion path:", filePath); // Debug log
+
+      try {
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+          console.log("File successfully deleted");
+        } else {
+          console.warn("File not found at:", filePath);
+        }
+      } catch (fileError) {
+        console.error("File deletion error:", fileError);
+        // Continue with DB deletion even if file deletion fails
+      }
+    }
+
+    // Delete from database
+    await SliderImage.findByIdAndDelete(req.params.id);
 
     res.json({
       success: true,

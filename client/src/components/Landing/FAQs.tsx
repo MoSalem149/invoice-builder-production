@@ -1,34 +1,31 @@
 // components/Landing/FAQs.tsx
 import React, { useState } from "react";
+import { useLanguage } from "../../hooks/useLanguage";
 
 const FAQs: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const { t } = useLanguage();
 
   const faqs = [
     {
-      question: "What payment methods do you accept?",
-      answer:
-        "We accept cash, bank transfers, and all major credit cards. Financing options are also available through our partner banks.",
+      question: t("faqs.paymentMethods"),
+      answer: t("faqs.paymentAnswer"),
     },
     {
-      question: "Do you offer test drives?",
-      answer:
-        "Yes, we encourage all potential buyers to test drive vehicles. Simply contact us to schedule an appointment.",
+      question: t("faqs.testDrives"),
+      answer: t("faqs.testDrivesAnswer"),
     },
     {
-      question: "What is your return policy?",
-      answer:
-        "We offer a 7-day money-back guarantee on all vehicles, subject to certain conditions and mileage limits.",
+      question: t("faqs.returnPolicy"),
+      answer: t("faqs.returnPolicyAnswer"),
     },
     {
-      question: "Do you provide vehicle history reports?",
-      answer:
-        "Yes, we provide free Carfax reports for all pre-owned vehicles in our inventory.",
+      question: t("faqs.vehicleHistory"),
+      answer: t("faqs.vehicleHistoryAnswer"),
     },
     {
-      question: "Can I trade in my current vehicle?",
-      answer:
-        "Absolutely! We offer competitive trade-in valuations. Bring your vehicle for an appraisal or send us details online.",
+      question: t("faqs.tradeIn"),
+      answer: t("faqs.tradeInAnswer"),
     },
   ];
 
@@ -39,7 +36,7 @@ const FAQs: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8 mt-20">
       <div className="flex items-center mb-8">
-        <h1 className="text-3xl font-bold">Frequently Asked Questions</h1>
+        <h1 className="text-3xl font-bold">{t("faqs.title")}</h1>
       </div>
 
       <div className="bg-white rounded-lg shadow-md overflow-hidden">

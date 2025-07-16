@@ -1,7 +1,9 @@
 // components/Landing/BrandSlider.tsx
 import React from "react";
+import { useLanguage } from "../../hooks/useLanguage";
 
 const BrandSlider: React.FC = () => {
+  const { t } = useLanguage();
   const brands = [
     { name: "Toyota", logo: "/images/brands/toyota.png" },
     { name: "Porsche", logo: "/images/brands/porsche.png" },
@@ -16,7 +18,9 @@ const BrandSlider: React.FC = () => {
   return (
     <div className="py-12 bg-gray-100">
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl font-bold mb-8 text-center">Our Partners</h2>
+        <h2 className="text-2xl font-bold mb-8 text-center">
+          {t("brandSlider.ourPartners")}
+        </h2>
         <div className="relative overflow-hidden">
           <div className="flex">
             <div className="flex space-x-16 animate-marquee whitespace-nowrap items-center">

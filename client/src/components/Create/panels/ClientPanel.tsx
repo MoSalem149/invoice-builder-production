@@ -46,6 +46,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
     name: "",
     address: "",
     phone: "",
+    email: "",
   });
 
   const filteredClients = state.clients.filter((client) => {
@@ -53,6 +54,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
       client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (client.address || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
       (client.phone || "").includes(searchTerm);
+    (client.email || "").includes(searchTerm);
     const matchesArchiveFilter = showArchived
       ? client.archived
       : !client.archived;
@@ -88,6 +90,13 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
       if (addressError) newErrors.address = addressError;
     }
 
+    if (newClient.email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(newClient.email)) {
+        newErrors.email = t("validation.emailInvalid");
+      }
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -119,6 +128,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
             name: newClient.name,
             address: newClient.address || undefined,
             phone: newClient.phone || undefined,
+            email: newClient.email || undefined,
           }),
         }
       );
@@ -128,6 +138,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
         const client: Client = {
           _id: data.data._id, // Only use _id
           name: data.data.name,
+          email: data.data.email,
           address: data.data.address,
           phone: data.data.phone,
           archived: data.data.archived,
@@ -179,6 +190,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
             name: newClient.name,
             address: newClient.address || undefined,
             phone: newClient.phone || undefined,
+            email: newClient.email || undefined,
           }),
         }
       );
@@ -227,6 +239,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
     setNewClient({
       name: client.name,
       address: client.address || "",
+      email: client.email || "",
       phone: client.phone || "",
     });
     setShowAddForm(true);
@@ -294,11 +307,11 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
   }, [state.clients, state.products]);
 
   return (
-    <div className="h-full bg-white border-r border-gray-200 flex flex-col pt-14 lg:pt-0">
+    <div className="h-full bg-white border-r border-gray-200 flex flex-col mt-14 lg:pt-0">
       {/* Header */}
       <div className="p-4 sm:p-6 border-b border-gray-200 relative">
         <div
-          className={`flex items-center justify-between mb-4 ${
+          className={`flex items-center justify-between ${
             isRTL ? "flex-row-reverse" : ""
           }`}
         >
@@ -307,14 +320,14 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
           </h2>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg transition-colors text-gray-500 hover:bg-gray-100 absolute top-4 right-4 z-50"
+            className="p-1 hover:bg-gray-100 rounded-lg transition-colors z-50"
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5 text-gray-500" />
           </button>
         </div>
 
         {/* Archive Toggle */}
-        <div className="mb-4">
+        <div className="mb-4 mt-4">
           <div
             className={`flex space-x-2 ${
               isRTL ? "space-x-reverse flex-row-reverse" : ""
@@ -409,6 +422,12 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
                     <h3 className="font-medium text-gray-900 text-sm sm:text-base">
                       {client.name}
                     </h3>
+                    {/* Add this block for email display */}
+                    {client.email && (
+                      <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                        {client.email}
+                      </p>
+                    )}
                     {client.address && (
                       <p
                         className="text-xs sm:text-sm text-gray-600 mt-1 whitespace-pre-line"
@@ -515,6 +534,35 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
                     }`}
                   >
                     {errors.name}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  className={`block text-sm font-medium text-gray-700 mb-1 ${
+                    isRTL ? "text-right" : "text-left"
+                  }`}
+                >
+                  {t("client.email")}
+                </label>
+                <input
+                  type="email"
+                  value={newClient.email || ""}
+                  onChange={(e) => handleInputChange("email", e.target.value)}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                    isRTL ? "text-right" : "text-left"
+                  } ${errors.email ? "border-red-500" : "border-gray-300"}`}
+                  placeholder={t("client.enterEmail")}
+                  dir={isRTL ? "rtl" : "ltr"}
+                />
+                {errors.email && (
+                  <p
+                    className={`text-red-500 text-sm mt-1 ${
+                      isRTL ? "text-right" : "text-left"
+                    }`}
+                  >
+                    {errors.email}
                   </p>
                 )}
               </div>

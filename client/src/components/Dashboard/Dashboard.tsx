@@ -172,9 +172,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onPageChange }) => {
       color: "bg-purple-600 hover:bg-purple-700",
     },
     {
-      title: "Manage Slider Images",
-      description: "Update the images displayed in the landing page slider",
-      icon: Image, // You'll need to import Image from lucide-react
+      title: t("dashboard.manageSlider"),
+      description: t("dashboard.manageSliderDesc"),
+      icon: Image,
       action: () => onPageChange("manage-slider"),
       color: "bg-indigo-600 hover:bg-indigo-700",
     },
@@ -199,7 +199,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onPageChange }) => {
             <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 mr-2" />
             <div>
               <h3 className="text-red-800 font-medium text-lg mb-1">
-                {t("error.dashboardLoadFailed")}
+                {t("errors.dashboardLoadFailed")}
               </h3>
               <p className="text-red-600">{error}</p>
               <button

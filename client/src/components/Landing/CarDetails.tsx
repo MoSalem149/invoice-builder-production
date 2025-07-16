@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Car } from "../../types";
 import { X } from "lucide-react";
+import { useLanguage } from "../../hooks/useLanguage";
 
 interface CarDetailsProps {
   car: Car;
@@ -10,6 +11,7 @@ interface CarDetailsProps {
 
 const CarDetails: React.FC<CarDetailsProps> = ({ car, onClose }) => {
   const [showContact, setShowContact] = useState(false);
+  const { t } = useLanguage();
 
   const handleContactClick = () => {
     setShowContact(true);
@@ -69,42 +71,56 @@ const CarDetails: React.FC<CarDetailsProps> = ({ car, onClose }) => {
 
             <div className="grid grid-cols-2 gap-4 mb-8">
               <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-sm text-gray-500">Transmission</p>
+                <p className="text-sm text-gray-500">
+                  {t("carDetails.transmission")}
+                </p>
                 <p className="font-medium">{car.transmission}</p>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-sm text-gray-500">Fuel Type</p>
+                <p className="text-sm text-gray-500">
+                  {t("carDetails.fuelType")}
+                </p>
                 <p className="font-medium">{car.fuelType}</p>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-sm text-gray-500">Mileage</p>
+                <p className="text-sm text-gray-500">
+                  {t("carDetails.mileage")}
+                </p>
                 <p className="font-medium">
                   {car.mileage?.toLocaleString() || "N/A"} km
                 </p>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-sm text-gray-500">Color</p>
+                <p className="text-sm text-gray-500">{t("carDetails.color")}</p>
                 <p className="font-medium">{car.color || "N/A"}</p>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-sm text-gray-500">Engine Size</p>
+                <p className="text-sm text-gray-500">
+                  {t("carDetails.engineSize")}
+                </p>
                 <p className="font-medium">{car.engineSize || "N/A"}</p>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-sm text-gray-500">Cylinders</p>
+                <p className="text-sm text-gray-500">
+                  {t("carDetails.cylinders")}
+                </p>
                 <p className="font-medium">{car.cylinders || "N/A"}</p>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-sm text-gray-500">Doors</p>
+                <p className="text-sm text-gray-500">{t("carDetails.doors")}</p>
                 <p className="font-medium">{car.doors || "N/A"}</p>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-sm text-gray-500">Chassis Number</p>
+                <p className="text-sm text-gray-500">
+                  {t("carDetails.chassisNumber")}
+                </p>
                 <p className="font-medium">{car.chassisNumber || "N/A"}</p>
               </div>
               {car.bodyType && (
                 <div className="bg-gray-50 p-3 rounded-lg">
-                  <p className="text-sm text-gray-500">Body Type</p>
+                  <p className="text-sm text-gray-500">
+                    {t("carDetails.bodyType")}
+                  </p>
                   <p className="font-medium">{car.bodyType}</p>
                 </div>
               )}
@@ -113,7 +129,7 @@ const CarDetails: React.FC<CarDetailsProps> = ({ car, onClose }) => {
             {car.description && (
               <div className="mb-6">
                 <h4 className="text-sm font-medium text-gray-600 mb-2">
-                  Description
+                  {t("carDetails.description")}
                 </h4>
                 <p className="text-gray-700">{car.description}</p>
               </div>
@@ -124,7 +140,7 @@ const CarDetails: React.FC<CarDetailsProps> = ({ car, onClose }) => {
                 onClick={handleContactClick}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors"
               >
-                Contact Sales
+                {t("carDetails.contactSales")}
               </button>
             </div>
           </div>
@@ -136,7 +152,9 @@ const CarDetails: React.FC<CarDetailsProps> = ({ car, onClose }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-xl max-w-md w-full p-6">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold">Get in Touch</h3>
+              <h3 className="text-xl font-bold">
+                {t("carDetails.getInTouch")}
+              </h3>
               <button
                 onClick={handleCloseContact}
                 className="text-gray-500 hover:text-gray-700"
@@ -147,25 +165,29 @@ const CarDetails: React.FC<CarDetailsProps> = ({ car, onClose }) => {
 
             <div className="space-y-4">
               <div>
-                <h4 className="font-semibold">Address</h4>
+                <h4 className="font-semibold">{t("carDetails.address")}</h4>
                 <p>Via S.Gottardo 100, 6596 Gordola, Switzerland</p>
               </div>
 
               <div>
-                <h4 className="font-semibold">Phone</h4>
+                <h4 className="font-semibold">{t("carDetails.phone")}</h4>
                 <p>+41 91 929 29 29</p>
               </div>
 
               <div>
-                <h4 className="font-semibold">Email</h4>
+                <h4 className="font-semibold">{t("carDetails.email")}</h4>
                 <p>info@saidauto.ch</p>
               </div>
 
               <div>
-                <h4 className="font-semibold">Business Hours</h4>
-                <p>Monday-Friday: 9:00 AM - 6:00 PM</p>
-                <p>Saturday: 9:00 AM - 4:00 PM</p>
-                <p>Sunday: Closed</p>
+                <h4 className="font-semibold">
+                  {t("carDetails.businessHours")}
+                </h4>
+                <p>{t("carDetails.mondayFriday")}: 9:00 AM - 6:00 PM</p>
+                <p>{t("carDetails.saturday")}: 9:00 AM - 4:00 PM</p>
+                <p>
+                  {t("carDetails.sunday")}: {t("carDetails.closed")}
+                </p>
               </div>
             </div>
 
@@ -174,7 +196,7 @@ const CarDetails: React.FC<CarDetailsProps> = ({ car, onClose }) => {
                 onClick={handleCloseContact}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-semibold transition-colors"
               >
-                Close
+                {t("carDetails.close")}
               </button>
             </div>
           </div>

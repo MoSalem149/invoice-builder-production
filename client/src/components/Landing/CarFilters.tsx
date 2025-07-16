@@ -1,6 +1,7 @@
 // components/Landing/CarFilters.tsx
 import React, { useState } from "react";
 import { Car } from "../../types";
+import { useLanguage } from "../../hooks/useLanguage";
 
 interface CarFiltersProps {
   cars: Car[];
@@ -25,6 +26,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
     category: "",
     bodyType: "",
   });
+  const { t } = useLanguage();
 
   const handleFilterChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -70,7 +72,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
         {/* Brand Filter */}
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-2">
-            Brand
+            {t("carFilters.brand")}
           </label>
           <select
             name="brand"
@@ -78,7 +80,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
             onChange={handleFilterChange}
             className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
           >
-            <option value="">All Brands</option>
+            <option value="">{t("carFilters.allBrands")}</option>
             {brands.map((brand) => (
               <option key={brand} value={brand}>
                 {brand}
@@ -90,12 +92,12 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
         {/* Price Filter */}
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-2">
-            Price (CHF)
+            {t("carFilters.price")}
           </label>
           <input
             type="number"
             name="price"
-            placeholder="Max price"
+            placeholder={t("carFilters.maxPrice")}
             value={filters.price}
             onChange={handleFilterChange}
             className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
@@ -105,7 +107,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
         {/* Transmission Filter */}
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-2">
-            Transmission
+            {t("carFilters.transmission")}
           </label>
           <select
             name="transmission"
@@ -113,7 +115,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
             onChange={handleFilterChange}
             className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
           >
-            <option value="">Any</option>
+            <option value="">{t("carFilters.anyTransmission")}</option>
             {transmissions.map((trans) => (
               <option key={trans} value={trans}>
                 {trans}
@@ -125,7 +127,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
         {/* Fuel Type Filter */}
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-2">
-            Fuel Type
+            {t("carFilters.fuelType")}
           </label>
           <select
             name="fuelType"
@@ -133,7 +135,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
             onChange={handleFilterChange}
             className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
           >
-            <option value="">Any Fuel Type</option>
+            <option value="">{t("carFilters.anyFuelType")}</option>
             {fuelTypes.map((fuel) => (
               <option key={fuel} value={fuel}>
                 {fuel}
@@ -145,7 +147,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
         {/* Condition Filter */}
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-2">
-            Condition
+            {t("carFilters.condition")}
           </label>
           <select
             name="condition"
@@ -153,7 +155,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
             onChange={handleFilterChange}
             className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
           >
-            <option value="">Any Condition</option>
+            <option value="">{t("carFilters.anyCondition")}</option>
             {conditions.map((cond) => (
               <option key={cond} value={cond}>
                 {cond}
@@ -165,7 +167,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
         {/* Category Filter */}
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-2">
-            Category
+            {t("carFilters.category")}
           </label>
           <select
             name="category"
@@ -173,7 +175,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
             onChange={handleFilterChange}
             className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
           >
-            <option value="">Any Category</option>
+            <option value="">{t("carFilters.anyCategory")}</option>
             {categories.map((cat) => (
               <option key={cat} value={cat}>
                 {cat}
@@ -185,7 +187,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
         {/* Body Type Filter */}
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-2">
-            Body Type
+            {t("carFilters.bodyType")}
           </label>
           <select
             name="bodyType"
@@ -193,7 +195,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
             onChange={handleFilterChange}
             className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
           >
-            <option value="">Any Body Type</option>
+            <option value="">{t("carFilters.anyBodyType")}</option>
             {bodyTypes.map((type) => (
               <option key={type} value={type}>
                 {type}
@@ -206,7 +208,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
           type="submit"
           className="h-[50px] bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg font-semibold transition-colors"
         >
-          Search
+          {t("carFilters.search")}
         </button>
       </form>
     </div>

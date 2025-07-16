@@ -27,9 +27,7 @@ const CreateInvoice: React.FC = () => {
   const [invoice, setInvoice] = useState<Partial<Invoice>>({
     number: `INV-${String(state.invoices.length + 1).padStart(4, "0")}`,
     date: new Date().toISOString().split("T")[0],
-    dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-      .toISOString()
-      .split("T")[0],
+    paid: false, // Added paid status with default false
     items: [],
     subtotal: 0,
     tax: 0,
@@ -107,12 +105,13 @@ const CreateInvoice: React.FC = () => {
         name: invoice.client.name,
         ...(invoice.client.address && { address: invoice.client.address }),
         ...(invoice.client.phone && { phone: invoice.client.phone }),
+        ...(invoice.client.email && { email: invoice.client.email }),
       };
 
       const invoiceData: Partial<Invoice> = {
         number: invoice.number!,
         date: invoice.date!,
-        dueDate: invoice.dueDate!,
+        paid: invoice.paid!, // Include paid status
         client: invoiceClient,
         items: invoice.items.map((item) => ({
           id: item.id || Date.now().toString(),
@@ -128,7 +127,6 @@ const CreateInvoice: React.FC = () => {
         total: invoice.total!,
         ...(invoice.notes && { notes: invoice.notes }),
         ...(invoice.terms && { terms: invoice.terms }),
-        status: "draft",
       };
 
       let success;
@@ -153,9 +151,7 @@ const CreateInvoice: React.FC = () => {
           setInvoice({
             number: `INV-${String(state.invoices.length + 2).padStart(4, "0")}`,
             date: new Date().toISOString().split("T")[0],
-            dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-              .toISOString()
-              .split("T")[0],
+            paid: false, // Reset paid status for new invoices
             items: [],
             subtotal: 0,
             tax: 0,
@@ -184,13 +180,14 @@ const CreateInvoice: React.FC = () => {
         _id: Date.now().toString(),
         number: invoice.number!,
         date: invoice.date!,
-        dueDate: invoice.dueDate!,
+        paid: invoice.paid!, // Include paid status
         client: {
           _id: invoice.client._id,
           id: invoice.client._id,
           name: invoice.client.name,
           address: invoice.client.address || "",
           phone: invoice.client.phone || "",
+          email: invoice.client.email || "",
         },
         items: invoice.items,
         subtotal: invoice.subtotal!,
@@ -238,13 +235,13 @@ const CreateInvoice: React.FC = () => {
           <ClientPanel
             selectedClient={invoice.client}
             onSelectClient={(client: Client) => {
-              // Transform Client to InvoiceClient
               const invoiceClient: InvoiceClient = {
                 _id: client._id,
                 id: client._id,
                 name: client.name,
                 ...(client.address && { address: client.address }),
                 ...(client.phone && { phone: client.phone }),
+                ...(client.email && { email: client.email }),
               };
               updateInvoiceState({ client: invoiceClient });
               setActivePanel(null);

@@ -37,10 +37,20 @@ const translations = {
     en: "Invoice Date",
     ar: "تاريخ الفاتورة",
   },
-  dueDate: {
-    it: "Scadenza",
-    en: "Due Date",
-    ar: "تاريخ الاستحقاق",
+  status: {
+    it: "Stato",
+    en: "Status",
+    ar: "الحالة",
+  },
+  paid: {
+    it: "Pagato",
+    en: "Paid",
+    ar: "مدفوع",
+  },
+  unpaid: {
+    it: "Non pagato",
+    en: "Unpaid",
+    ar: "غير مدفوع",
   },
   product: {
     it: "Prodotto",
@@ -87,6 +97,31 @@ const translations = {
     en: "Terms & Conditions:",
     ar: "الشروط والأحكام:",
   },
+  clickToSelectClient: {
+    it: "Clicca per selezionare un cliente",
+    en: "Click to select client",
+    ar: "انقر لتحديد العميل",
+  },
+  selectDate: {
+    it: "Seleziona data",
+    en: "Select date",
+    ar: "حدد تاريخًا",
+  },
+  clickToAddProducts: {
+    it: "Clicca per aggiungere prodotti",
+    en: "Click to add products",
+    ar: "انقر لإضافة منتجات",
+  },
+  clickToAddNotes: {
+    it: "Clicca per aggiungere note",
+    en: "Click to add notes",
+    ar: "انقر لإضافة ملاحظات",
+  },
+  clickToAddTerms: {
+    it: "Clicca per aggiungere termini",
+    en: "Click to add terms",
+    ar: "انقر لإضافة شروط",
+  },
 };
 
 export const generateInvoicePDF = (
@@ -109,7 +144,7 @@ export const generateInvoicePDF = (
   }
 
   // Get language from company info
-  const lang = companyInfo.language || "it";
+  const lang = companyInfo.language || "en";
   const dir = isRTL ? "rtl" : "ltr";
 
   // Get appropriate translations
@@ -133,41 +168,43 @@ export const generateInvoicePDF = (
             font-family: ${
               isRTL
                 ? "'Noto Sans Arabic', Arial, sans-serif"
-                : lang === "it"
-                ? "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
                 : "Arial, sans-serif"
             };
             line-height: 1.6;
             color: #333;
             background: white;
-            padding: 10px;
+            padding: 16px;
             direction: ${dir};
           }
           
           .invoice-container {
             background: white;
-            padding: 20px;
+            padding: 16px;
             margin: 0 auto;
             max-width: 8.5in;
             min-height: 11in;
             position: relative;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
           }
           
           .header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             flex-direction: ${isRTL ? "row-reverse" : "row"};
           }
           
           .invoice-title {
             font-size: 24px;
             font-weight: bold;
-            color: #333;
+            color: #111827;
           }
           
           .company-logo {
+            object-fit: contain;
+            height: auto;
+            width: auto;
             max-height: 80px;
             max-width: 160px;
           }
@@ -187,18 +224,19 @@ export const generateInvoicePDF = (
           }
           
           .company-info {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             text-align: ${isRTL ? "right" : "left"};
           }
           
           .company-name {
             font-size: 18px;
-            font-weight: bold;
+            font-weight: 600;
+            color: #111827;
             margin-bottom: 8px;
           }
           
           .company-address, .company-contact {
-            color: #666;
+            color: #4b5563;
             font-size: 14px;
             white-space: pre-line;
           }
@@ -206,8 +244,8 @@ export const generateInvoicePDF = (
           .invoice-details {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
+            gap: 24px;
+            margin-bottom: 24px;
           }
           
           @media (min-width: 1024px) {
@@ -216,70 +254,76 @@ export const generateInvoicePDF = (
             }
           }
           
-          .bill-to, .invoice-info {
+          .bill-to {
             text-align: ${isRTL ? "right" : "left"};
+            order: ${isRTL ? "2" : "1"};
           }
           
           .invoice-info {
             text-align: ${isRTL ? "left" : "right"};
+            order: ${isRTL ? "1" : "2"};
+            border: 1px solid #d1d5db;
+            padding: 16px;
+            border-radius: 4px;
           }
           
           .section-title {
             font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 12px;
-            color: #333;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 16px;
           }
           
           .client-name {
-            font-weight: bold;
-            margin-bottom: 5px;
+            font-weight: 500;
+            margin-bottom: 4px;
             font-size: 14px;
+            color: #111827;
           }
           
           .client-details {
-            color: #666;
+            color: #4b5563;
             white-space: pre-line;
             word-wrap: break-word;
             font-size: 14px;
           }
           
           .invoice-meta {
-            margin-bottom: 10px;
+            margin-bottom: 16px;
           }
           
           .meta-label {
             font-size: 12px;
-            color: #666;
-            margin-bottom: 2px;
+            color: #4b5563;
+            margin-bottom: 4px;
           }
           
           .meta-value {
-            font-weight: bold;
-            color: #333;
+            font-weight: 500;
+            color: #111827;
             font-size: 14px;
           }
           
           .items-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
+            margin-bottom: 24px;
+            border: 1px solid #d1d5db;
             font-size: 12px;
+            min-width: 100%;
           }
           
           .items-table th {
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
-            padding: 6px 8px;
+            background-color: #f9fafb;
+            border: 1px solid #d1d5db;
+            padding: 8px 16px;
             text-align: ${isRTL ? "right" : "left"};
             font-weight: normal;
           }
           
           .items-table td {
-            border: 1px solid #ddd;
-            padding: 6px 8px;
-            text-align: ${isRTL ? "right" : "left"};
+            border: 1px solid #d1d5db;
+            padding: 8px 16px;
           }
           
           .items-table th:nth-child(2),
@@ -288,7 +332,7 @@ export const generateInvoicePDF = (
           .items-table td:nth-child(3),
           .items-table th:nth-child(4),
           .items-table td:nth-child(4) {
-            width: 80px;
+            width: 96px;
             text-align: center;
           }
           
@@ -297,14 +341,15 @@ export const generateInvoicePDF = (
           }
           
           .product-name {
-            font-weight: bold;
+            font-weight: 500;
             margin-bottom: 4px;
             font-size: 12px;
+            color: #111827;
           }
           
           .product-description {
             font-size: 11px;
-            color: #666;
+            color: #6b7280;
             white-space: pre-wrap;
             word-wrap: break-word;
             margin-top: 4px;
@@ -313,37 +358,37 @@ export const generateInvoicePDF = (
           .totals {
             display: flex;
             justify-content: ${isRTL ? "flex-start" : "flex-end"};
-            margin-bottom: 20px;
+            margin-bottom: 24px;
           }
           
           .totals-table {
             width: 100%;
-            max-width: 300px;
+            max-width: 256px;
           }
           
           .totals-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             padding: 4px 0;
             font-size: 14px;
           }
           
           .totals-row.total {
-            border-top: 2px solid #333;
+            border-top: 2px solid #111827;
             padding-top: 8px;
-            font-weight: bold;
+            font-weight: 600;
             font-size: 16px;
           }
           
           .notes-section,
           .terms-section {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             text-align: ${isRTL ? "right" : "left"};
           }
           
           .section-content {
-            color: #666;
+            color: #4b5563;
             white-space: pre-line;
             margin-top: 8px;
             word-wrap: break-word;
@@ -353,9 +398,9 @@ export const generateInvoicePDF = (
           .watermark {
             position: fixed;
             opacity: 0.1;
-            font-size: 80px;
+            font-size: 120px;
             color: #000;
-            z-index: 9999;
+            z-index: 0;
             width: 100%;
             text-align: center;
             top: 50%;
@@ -366,7 +411,6 @@ export const generateInvoicePDF = (
             pointer-events: none;
             user-select: none;
             background: none !important;
-            white-space: nowrap;
             font-family: ${
               isRTL
                 ? "'Noto Sans Arabic', Arial, sans-serif"
@@ -375,72 +419,12 @@ export const generateInvoicePDF = (
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
           }
           
-          @media (min-width: 640px) {
-            .invoice-title {
-              font-size: 28px;
-            }
-            
-            .company-name {
-              font-size: 20px;
-            }
-            
-            .company-address, .company-contact {
-              font-size: 15px;
-            }
-            
-            .section-title {
-              font-size: 17px;
-            }
-            
-            .client-name, .meta-value {
-              font-size: 15px;
-            }
-            
-            .items-table {
-              font-size: 13px;
-            }
-            
-            .product-name {
-              font-size: 13px;
-            }
-            
-            .watermark {
-              font-size: 100px;
-            }
+          .italic {
+            font-style: italic;
           }
           
-          @media (min-width: 1024px) {
-            .invoice-container {
-              padding: 40px;
-            }
-            
-            .invoice-title {
-              font-size: 32px;
-            }
-            
-            .company-name {
-              font-size: 22px;
-            }
-            
-            .section-title {
-              font-size: 18px;
-            }
-            
-            .client-name, .meta-value {
-              font-size: 16px;
-            }
-            
-            .items-table {
-              font-size: 14px;
-            }
-            
-            .product-name {
-              font-size: 14px;
-            }
-            
-            .watermark {
-              font-size: 120px;
-            }
+          .text-gray-400 {
+            color: #9ca3af;
           }
           
           @media print {
@@ -448,8 +432,8 @@ export const generateInvoicePDF = (
               padding: 0;
             }
             .invoice-container {
-              border: none;
-              padding: 20px;
+              box-shadow: none;
+              padding: 0;
               max-width: 100%;
               min-height: auto;
             }
@@ -461,6 +445,10 @@ export const generateInvoicePDF = (
             
             .watermark {
               opacity: 0.2;
+            }
+            
+            .print-hidden {
+              display: none;
             }
           }
         </style>
@@ -508,31 +496,46 @@ export const generateInvoicePDF = (
           <div class="invoice-details">
             <div class="bill-to">
               <div class="section-title">${t("billTo")}</div>
-              <div class="client-name">${invoice.client.name}</div>
               ${
-                invoice.client.address
-                  ? `<div class="client-details">${invoice.client.address}</div>`
-                  : ""
-              }
-              ${
-                invoice.client.phone
-                  ? `<div class="client-details">${invoice.client.phone}</div>`
-                  : ""
+                invoice.client
+                  ? `
+                    <div class="client-name">${invoice.client.name}</div>
+                    ${
+                      invoice.client.email
+                        ? `<div class="client-details">${invoice.client.email}</div>`
+                        : ""
+                    }
+                    ${
+                      invoice.client.address
+                        ? `<div class="client-details">${invoice.client.address}</div>`
+                        : ""
+                    }
+                    ${
+                      invoice.client.phone
+                        ? `<div class="client-details">${invoice.client.phone}</div>`
+                        : ""
+                    }
+                  `
+                  : `<p class="text-gray-400 italic print-hidden">${t(
+                      "clickToSelectClient"
+                    )}</p>`
               }
             </div>
             
             <div class="invoice-info">
               <div class="invoice-meta">
                 <div class="meta-label">${t("invoiceNumber")}</div>
-                <div class="meta-value">${invoice.number}</div>
+                <div class="meta-value">${invoice.number || "INV-0001"}</div>
               </div>
               <div class="invoice-meta">
                 <div class="meta-label">${t("invoiceDate")}</div>
-                <div class="meta-value">${invoice.date}</div>
+                <div class="meta-value">${invoice.date || t("selectDate")}</div>
               </div>
               <div class="invoice-meta">
-                <div class="meta-label">${t("dueDate")}</div>
-                <div class="meta-value">${invoice.dueDate}</div>
+                <div class="meta-label">${t("status")}</div>
+                <div class="meta-value">${
+                  invoice.paid ? t("paid") : t("unpaid")
+                }</div>
               </div>
             </div>
           </div>
@@ -548,31 +551,45 @@ export const generateInvoicePDF = (
               </tr>
             </thead>
             <tbody>
-              ${invoice.items
-                .map(
-                  (item) => `
-                <tr>
-                  <td>
-                    <div class="product-name">${item.name}${
-                    item.quantity !== 1 ? ` × ${item.quantity}` : ""
-                  }</div>
-                    ${
-                      item.description
-                        ? `<div class="product-description">${item.description}</div>`
-                        : ""
-                    }
-                  </td>
-                  <td>${currencySymbol}${(
-                    item.amount /
-                    item.quantity /
-                    (1 - item.discount / 100)
-                  ).toFixed(2)}</td>
-                  <td>${item.discount}%</td>
-                  <td>${currencySymbol}${item.amount.toFixed(2)}</td>
-                </tr>
-              `
-                )
-                .join("")}
+              ${
+                invoice.items && invoice.items.length > 0
+                  ? invoice.items
+                      .map(
+                        (item) => `
+                    <tr>
+                      <td style="max-width: 300px; word-wrap: break-word;">
+                        <div class="product-name" style="font-weight: 500; margin-bottom: 4px;">
+                          ${item.name}${
+                          item.quantity !== 1 ? ` × ${item.quantity}` : ""
+                        }
+                        </div>
+                        ${
+                          item.description
+                            ? `<div class="product-description" style="color: #6b7280; font-size: 11px; margin-top: 4px; white-space: pre-wrap; word-wrap: break-word;">
+                                ${item.description}
+                              </div>`
+                            : ""
+                        }
+                      </td>
+                      <td>${currencySymbol}${(
+                          item.amount /
+                          item.quantity /
+                          (1 - item.discount / 100)
+                        ).toFixed(2)}</td>
+                      <td>${item.discount}%</td>
+                      <td>${currencySymbol}${item.amount.toFixed(2)}</td>
+                    </tr>
+                  `
+                      )
+                      .join("")
+                  : `
+                    <tr class="print-hidden">
+                      <td colspan="4" class="text-gray-400 italic" style="text-align: center; padding: 24px 16px;">
+                        ${t("clickToAddProducts")}
+                      </td>
+                    </tr>
+                  `
+              }
             </tbody>
           </table>
           
@@ -596,11 +613,20 @@ export const generateInvoicePDF = (
           
           <!-- Notes -->
           ${
-            invoice.notes && companyInfo.showNotes !== false
+            (companyInfo.showNotes || invoice.notes) && invoice.notes
               ? `
             <div class="notes-section">
               <div class="section-title">${t("notes")}</div>
               <div class="section-content">${invoice.notes}</div>
+            </div>
+          `
+              : companyInfo.showNotes
+              ? `
+            <div class="notes-section">
+              <div class="section-title">${t("notes")}</div>
+              <div class="section-content text-gray-400 italic print-hidden">
+                ${t("clickToAddNotes")}
+              </div>
             </div>
           `
               : ""
@@ -608,11 +634,20 @@ export const generateInvoicePDF = (
           
           <!-- Terms -->
           ${
-            invoice.terms && companyInfo.showTerms !== false
+            (companyInfo.showTerms || invoice.terms) && invoice.terms
               ? `
             <div class="terms-section">
               <div class="section-title">${t("terms")}</div>
               <div class="section-content">${invoice.terms}</div>
+            </div>
+          `
+              : companyInfo.showTerms
+              ? `
+            <div class="terms-section">
+              <div class="section-title">${t("terms")}</div>
+              <div class="section-content text-gray-400 italic print-hidden">
+                ${t("clickToAddTerms")}
+              </div>
             </div>
           `
               : ""

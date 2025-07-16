@@ -378,11 +378,11 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
   }, [state.clients, state.products]);
 
   return (
-    <div className="h-full bg-white border-r border-gray-200 flex flex-col lg:pt-0 overflow-hidden">
+    <div className="h-full mt-14 bg-white border-r border-gray-200 flex flex-col lg:pt-0 overflow-hidden">
       {/* Header */}
       <div className="p-4 sm:p-6 border-b border-gray-200 relative">
         <div
-          className={`flex items-center pt-14 justify-between mb-4 ${
+          className={`flex items-center justify-between mb-4 ${
             isRTL ? "flex-row-reverse" : ""
           }`}
         >

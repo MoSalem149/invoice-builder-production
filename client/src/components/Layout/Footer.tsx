@@ -3,39 +3,42 @@ import React from "react";
 import { Mail, Phone } from "lucide-react";
 import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../../hooks/useLanguage";
 
 const Footer: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-gray-800 text-white py-8">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Section */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Company</h3>
+            <h3 className="text-xl font-bold mb-4">{t("footer.company")}</h3>
             <ul className="space-y-2 text-gray-400">
               <li>
                 <Link to="/" className="hover:text-blue-300">
-                  Home
+                  {t("navigation.home")}
                 </Link>
               </li>
               <li>
                 <Link to="/about" className="hover:text-blue-300">
-                  About Us
+                  {t("navigation.about")}
                 </Link>
               </li>
               <li>
                 <Link to="/services" className="hover:text-blue-300">
-                  Services
+                  {t("navigation.services")}
                 </Link>
               </li>
               <li>
                 <Link to="/faqs" className="hover:text-blue-300">
-                  FAQs
+                  {t("navigation.faqs")}
                 </Link>
               </li>
               <li>
                 <Link to="/contact" className="hover:text-blue-300">
-                  Contact Us
+                  {t("navigation.contact")}
                 </Link>
               </li>
             </ul>
@@ -43,7 +46,7 @@ const Footer: React.FC = () => {
 
           {/* Our Brands Section */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Our Brands</h3>
+            <h3 className="text-xl font-bold mb-4">{t("footer.ourBrands")}</h3>
             <ul className="space-y-2 text-gray-400">
               <li>
                 <a href="#" className="hover:text-blue-300">
@@ -90,46 +93,38 @@ const Footer: React.FC = () => {
 
           {/* Vehicles Type Section */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Vehicles Type</h3>
+            <h3 className="text-xl font-bold mb-4">
+              {t("footer.vehiclesType")}
+            </h3>
             <ul className="space-y-2 text-gray-400">
               <li>
                 <a href="#" className="hover:text-blue-300">
-                  Berlina
+                  {t("dashboard.category.Sedan")}
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-blue-300">
-                  Compatta
+                  {t("dashboard.category.Hatchback")}
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-blue-300">
-                  SUV
+                  {t("dashboard.category.SUV")}
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-blue-300">
-                  Ibrido
+                  {t("dashboard.category.Hybrid")}
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-blue-300">
-                  Elettrica
+                  {t("dashboard.fuelType.Electric")}
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-blue-300">
-                  Coupé
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-blue-300">
-                  Camion
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-blue-300">
-                  Cabrio
+                  {t("dashboard.category.Coupe")}
                 </a>
               </li>
             </ul>
@@ -137,7 +132,7 @@ const Footer: React.FC = () => {
 
           {/* Contact Section */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Contact Us</h3>
+            <h3 className="text-xl font-bold mb-4">{t("footer.contact")}</h3>
             <div className="space-y-4 text-gray-400">
               <div className="flex items-center">
                 <Phone className="h-4 w-4 mr-2" />
@@ -155,7 +150,9 @@ const Footer: React.FC = () => {
                 </a>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">Connect With Us</h4>
+                <h4 className="font-semibold mb-2">
+                  {t("footer.connectWithUs")}
+                </h4>
                 <div className="flex space-x-4">
                   <a href="#" className="hover:text-blue-300">
                     <Facebook className="h-5 w-5" />
@@ -179,15 +176,14 @@ const Footer: React.FC = () => {
         <div className="mt-8 pt-6 border-t border-gray-700">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 text-sm mb-4 md:mb-0">
-              &copy; {new Date().getFullYear()} Boxcars.com. All rights
-              reserved.
+              &copy; {new Date().getFullYear()} {t("footer.copyright")}
             </div>
             <div className="flex space-x-4 text-gray-400 text-sm">
               <Link to="/terms-conditions" className="hover:text-blue-300">
-                Terms & Conditions
+                {t("terms.title")}
               </Link>
               <Link to="/privacy-notice" className="hover:text-blue-300">
-                Privacy Notice
+                {t("privacy.title")}
               </Link>
             </div>
           </div>

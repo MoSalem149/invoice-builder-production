@@ -1,7 +1,9 @@
 // components/Landing/Carousel.tsx
 import React, { useState, useEffect, useCallback } from "react";
 import { Car } from "../../types";
+import { getPlaceholderImage } from "../../utils/placeholders";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useLanguage } from "../../hooks/useLanguage";
 
 interface CarouselProps {
   cars: Car[];
@@ -11,6 +13,7 @@ interface CarouselProps {
 const Carousel: React.FC<CarouselProps> = ({ cars, onCarSelect }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoScroll, setAutoScroll] = useState(true);
+  const { t } = useLanguage();
 
   const cardsToShow = 3;
   const totalCards = cars?.length || 0;
@@ -63,21 +66,24 @@ const Carousel: React.FC<CarouselProps> = ({ cars, onCarSelect }) => {
           <div
             key={`${car._id}-${index}`}
             className="bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-shadow border border-gray-100 h-[400px] flex flex-col"
-            onClick={() => handleCardClick(car)} // Using the click handler here
+            onClick={() => handleCardClick(car)}
           >
             <div className="relative h-[200px] w-full overflow-hidden">
               <img
                 src={
                   car.images?.[0]
                     ? `${import.meta.env.VITE_API_URL}${car.images[0]}`
-                    : "/images/default-car.jpg"
+                    : getPlaceholderImage(800, 600, "Car+Image")
                 }
                 alt={`${car.brand} ${car.model}`}
                 className="absolute inset-0 w-full h-full object-contain"
                 crossOrigin="anonymous"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    "/images/default-car.jpg";
+                  (e.target as HTMLImageElement).src = getPlaceholderImage(
+                    800,
+                    600,
+                    "Car+Image"
+                  );
                 }}
               />
               <div className="absolute bottom-2 right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded">
@@ -96,7 +102,7 @@ const Carousel: React.FC<CarouselProps> = ({ cars, onCarSelect }) => {
                   </p>
                   <div className="flex space-x-2">
                     <span className="text-xs bg-gray-100 px-2 py-1 rounded">
-                      {car.mileage?.toLocaleString() || "0"} km
+                      {car.mileage?.toLocaleString() || "0"} {t("carousel.km")}
                     </span>
                     <span className="text-xs bg-gray-100 px-2 py-1 rounded">
                       {car.transmission || "Automatic"}

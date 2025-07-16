@@ -136,10 +136,11 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({
           {invoice.client ? (
             <div className="text-gray-700 text-sm sm:text-base">
               <p className="font-medium">{invoice.client.name}</p>
+              {invoice.client.email && <p>{invoice.client.email}</p>}
               <p className="whitespace-pre-line break-words">
                 {invoice.client.address}
               </p>
-              <p>{invoice.client.phone}</p>
+              {invoice.client.phone && <p>{invoice.client.phone}</p>}
             </div>
           ) : (
             <p className="text-gray-400 italic print:hidden text-sm sm:text-base">
@@ -154,7 +155,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({
             isRTL
               ? "text-left order-1 lg:order-1"
               : "text-right order-2 lg:order-2"
-          } cursor-pointer hover:bg-blue-50 p-2 rounded transition-colors print:hover:bg-transparent print:cursor-default print:p-0`}
+          } cursor-pointer hover:bg-blue-50 rounded transition-colors print:hover:bg-transparent print:cursor-default print:p-0 border border-gray-300 p-4`} // Added border and padding here
           onClick={onDetailsClick}
         >
           <div className="mb-4">
@@ -174,11 +175,9 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({
             </p>
           </div>
           <div className="mb-4">
-            <p className="text-xs sm:text-sm text-gray-600">
-              {t("invoice.dueDate")}
-            </p>
+            <p className="text-xs sm:text-sm text-gray-600">Status</p>
             <p className="font-medium text-gray-900 text-sm sm:text-base">
-              {invoice.dueDate || t("invoice.selectDate")}
+              {invoice.paid ? t("invoice.paid") : t("invoice.unpaid")}
             </p>
           </div>
         </div>

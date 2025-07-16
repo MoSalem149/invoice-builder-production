@@ -159,18 +159,6 @@ router.post("/", authenticate, authorize("admin"), async (req, res) => {
       });
     }
 
-    // Check for duplicate chassis number
-    const existingCar = await Car.findOne({
-      chassisNumber: req.body.chassisNumber,
-    });
-
-    if (existingCar) {
-      return res.status(400).json({
-        success: false,
-        message: "Car with this chassis number already exists",
-      });
-    }
-
     const car = new Car(req.body);
     await car.save();
 

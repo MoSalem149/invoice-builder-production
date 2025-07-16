@@ -186,7 +186,7 @@ const History: React.FC = () => {
                       isRTL ? "text-right" : "text-left"
                     }`}
                   >
-                    {t("invoice.dueDate")}
+                    {t("invoice.status")}
                   </th>
                   <th
                     className={`px-4 sm:px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider ${
@@ -248,7 +248,7 @@ const History: React.FC = () => {
                         isRTL ? "text-right" : "text-left"
                       }`}
                     >
-                      {new Date(invoice.dueDate).toLocaleDateString()}
+                      {invoice.paid ? t("invoice.paid") : t("invoice.unpaid")}
                     </td>
                     <td
                       className={`px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ${

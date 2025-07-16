@@ -4,6 +4,7 @@ import { useNotificationContext } from "../../hooks/useNotificationContext";
 import { useLanguage } from "../../hooks/useLanguage";
 import { useAuth } from "../../hooks/useAuth";
 import { Car } from "../../types";
+import { getPlaceholderImage } from "../../utils/placeholders";
 import { Plus, Trash2, Edit, X, Save, RefreshCw } from "lucide-react";
 
 const UpdateCars: React.FC = () => {
@@ -19,7 +20,6 @@ const UpdateCars: React.FC = () => {
     year: new Date().getFullYear(),
     price: 0,
     images: [],
-    // Default values for optional fields
     category: "Sedan",
     condition: "New",
     transmission: "Automatic",
@@ -59,7 +59,7 @@ const UpdateCars: React.FC = () => {
     } catch (error) {
       console.error("Error fetching cars:", error);
       showError(t("notifications.error"), t("notifications.failedToFetchCars"));
-      setCars([]); // Set empty array on error
+      setCars([]);
     } finally {
       setLoading(false);
     }
@@ -95,7 +95,7 @@ const UpdateCars: React.FC = () => {
       });
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/cars/upload`, // Updated endpoint
+        `${import.meta.env.VITE_API_URL}/api/cars/upload`,
         {
           method: "POST",
           headers: {
@@ -156,14 +156,13 @@ const UpdateCars: React.FC = () => {
       newCar.images.length === 0
     ) {
       showError(
-        t("notifications.error"),
-        t("notifications.fillRequiredFields")
+        t("notifications.validationFailed"),
+        t("notifications.requiredFieldsMissing")
       );
       return;
     }
 
     try {
-      // Convert numeric fields to numbers
       const carData = {
         ...newCar,
         price: Number(newCar.price),
@@ -212,8 +211,8 @@ const UpdateCars: React.FC = () => {
     } catch (error) {
       console.error("Error adding car:", error);
       showError(
-        t("notifications.error"),
-        error instanceof Error ? error.message : "Failed to add car"
+        t("notifications.errorAddingCar"),
+        error instanceof Error ? error.message : t("notifications.error")
       );
     }
   };
@@ -244,8 +243,8 @@ const UpdateCars: React.FC = () => {
     } catch (error) {
       console.error("Error updating car:", error);
       showError(
-        t("notifications.error"),
-        error instanceof Error ? error.message : "Failed to update car"
+        t("notifications.errorUpdatingCar"),
+        error instanceof Error ? error.message : t("notifications.error")
       );
     }
   };
@@ -271,16 +270,36 @@ const UpdateCars: React.FC = () => {
     } catch (error) {
       console.error("Error deleting car:", error);
       showError(
-        t("notifications.error"),
-        error instanceof Error ? error.message : "Failed to delete car"
+        t("notifications.errorDeletingCar"),
+        error instanceof Error ? error.message : t("notifications.error")
       );
     }
   };
 
-  const categories = ["Sedan", "SUV", "Hatchback", "Coupe", "Crossover"];
-  const conditions = ["New", "Used"];
-  const transmissions = ["Automatic", "Manual"];
-  const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid"];
+  const categories = [
+    t("dashboard.category.Sedan"),
+    t("dashboard.category.SUV"),
+    t("dashboard.category.Hatchback"),
+    t("dashboard.category.Coupe"),
+    t("dashboard.category.Crossover"),
+  ];
+
+  const conditions = [
+    t("dashboard.condition.New"),
+    t("dashboard.condition.Used"),
+  ];
+
+  const transmissions = [
+    t("dashboard.transmission.Automatic"),
+    t("dashboard.transmission.Manual"),
+  ];
+
+  const fuelTypes = [
+    t("dashboard.fuelType.Petrol"),
+    t("dashboard.fuelType.Diesel"),
+    t("dashboard.fuelType.Electric"),
+    t("dashboard.fuelType.Hybrid"),
+  ];
 
   if (loading) {
     return (
@@ -311,13 +330,21 @@ const UpdateCars: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Add/Edit Car Form */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-xl font-semibold mb-4">
+          <h2
+            className={`text-xl font-semibold mb-4 ${
+              isRTL ? "text-right" : "text-left"
+            }`}
+          >
             {editingCar ? t("dashboard.editCar") : t("dashboard.addNewCar")}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label
+                className={`block text-sm font-medium text-gray-600 mb-1 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
                 {t("dashboard.brand")}
                 <span className="text-red-500"> *</span>
               </label>
@@ -326,13 +353,20 @@ const UpdateCars: React.FC = () => {
                 name="brand"
                 value={editingCar ? editingCar.brand : newCar.brand || ""}
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
                 required
+                dir={isRTL ? "rtl" : "ltr"}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label
+                className={`block text-sm font-medium text-gray-600 mb-1 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
                 {t("dashboard.model")} <span className="text-red-500"> *</span>
               </label>
               <input
@@ -340,13 +374,20 @@ const UpdateCars: React.FC = () => {
                 name="model"
                 value={editingCar ? editingCar.model : newCar.model || ""}
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
                 required
+                dir={isRTL ? "rtl" : "ltr"}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label
+                className={`block text-sm font-medium text-gray-600 mb-1 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
                 {t("dashboard.year")} <span className="text-red-500"> *</span>
               </label>
               <input
@@ -358,12 +399,19 @@ const UpdateCars: React.FC = () => {
                     : newCar.year || new Date().getFullYear()
                 }
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+                dir={isRTL ? "rtl" : "ltr"}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label
+                className={`block text-sm font-medium text-gray-600 mb-1 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
                 {t("dashboard.price")} (CHF){" "}
                 <span className="text-red-500"> *</span>
               </label>
@@ -372,56 +420,88 @@ const UpdateCars: React.FC = () => {
                 name="price"
                 value={editingCar ? editingCar.price : newCar.price || 0}
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+                dir={isRTL ? "rtl" : "ltr"}
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label
+                className={`block text-sm font-medium text-gray-600 mb-1 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
                 {t("dashboard.images")} <span className="text-red-500"> *</span>
               </label>
               <div className="flex flex-wrap gap-2 mb-2">
-                {newCar.images?.map((img, index) => (
-                  <div
-                    key={index}
-                    className="relative h-24 w-24 bg-gray-100 rounded-md overflow-hidden"
-                  >
-                    <img
-                      src={
-                        img
-                          ? `${import.meta.env.VITE_API_URL}${img}`
-                          : "/images/default-car.jpg"
-                      }
-                      alt={`Car preview ${index}`}
-                      className="absolute inset-0 w-full h-full object-contain"
-                      crossOrigin="anonymous"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src =
-                          "/images/default-car.jpg";
-                      }}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => removeImage(index)}
-                      className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5"
+                {(editingCar ? editingCar.images : newCar.images || []).map(
+                  (img, index) => (
+                    <div
+                      key={index}
+                      className="relative h-24 w-24 bg-gray-100 rounded-md overflow-hidden"
                     >
-                      <X size={12} />
-                    </button>
-                  </div>
-                ))}
+                      <img
+                        src={
+                          img
+                            ? `${import.meta.env.VITE_API_URL}${img}`
+                            : getPlaceholderImage(400, 300, "Car+Image")
+                        }
+                        alt={`Car preview ${index}`}
+                        className="absolute inset-0 w-full h-full object-contain"
+                        crossOrigin="anonymous"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src =
+                            getPlaceholderImage(400, 300, "Car+Image");
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5"
+                      >
+                        <X size={12} />
+                      </button>
+                    </div>
+                  )
+                )}
               </div>
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-              />
+              <div className="relative">
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  id="file-upload"
+                />
+                <label
+                  htmlFor="file-upload"
+                  className={`block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 bg-white cursor-pointer ${
+                    isRTL ? "text-right" : "text-left"
+                  }`}
+                >
+                  <span className="text-gray-700">
+                    {t("dashboard.chooseFile")}
+                  </span>
+                  <span
+                    className={`text-gray-500 ${isRTL ? "mr-2" : "ml-2"}`}
+                    id="file-chosen"
+                  >
+                    {t("dashboard.noFileChosen")}
+                  </span>
+                </label>
+              </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
-                {t("dashboard.category")}
+              <label
+                className={`block text-sm font-medium text-gray-600 mb-1 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
+                {t("dashboard.categoryHeader")}
               </label>
               <select
                 name="category"
@@ -429,7 +509,10 @@ const UpdateCars: React.FC = () => {
                   editingCar ? editingCar.category : newCar.category || "Sedan"
                 }
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+                dir={isRTL ? "rtl" : "ltr"}
               >
                 {categories.map((cat) => (
                   <option key={cat} value={cat}>
@@ -440,8 +523,12 @@ const UpdateCars: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
-                {t("dashboard.condition")}
+              <label
+                className={`block text-sm font-medium text-gray-600 mb-1 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
+                {t("dashboard.conditionHeader")}
               </label>
               <select
                 name="condition"
@@ -449,7 +536,10 @@ const UpdateCars: React.FC = () => {
                   editingCar ? editingCar.condition : newCar.condition || "New"
                 }
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+                dir={isRTL ? "rtl" : "ltr"}
               >
                 {conditions.map((cond) => (
                   <option key={cond} value={cond}>
@@ -460,8 +550,12 @@ const UpdateCars: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
-                {t("dashboard.transmission")}
+              <label
+                className={`block text-sm font-medium text-gray-600 mb-1 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
+                {t("dashboard.transmissionHeader")}
               </label>
               <select
                 name="transmission"
@@ -471,7 +565,10 @@ const UpdateCars: React.FC = () => {
                     : newCar.transmission || "Automatic"
                 }
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+                dir={isRTL ? "rtl" : "ltr"}
               >
                 {transmissions.map((trans) => (
                   <option key={trans} value={trans}>
@@ -482,8 +579,12 @@ const UpdateCars: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
-                {t("dashboard.fuelType")}
+              <label
+                className={`block text-sm font-medium text-gray-600 mb-1 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
+                {t("dashboard.fuelTypeHeader")}
               </label>
               <select
                 name="fuelType"
@@ -491,7 +592,10 @@ const UpdateCars: React.FC = () => {
                   editingCar ? editingCar.fuelType : newCar.fuelType || "Petrol"
                 }
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+                dir={isRTL ? "rtl" : "ltr"}
               >
                 {fuelTypes.map((fuel) => (
                   <option key={fuel} value={fuel}>
@@ -502,7 +606,11 @@ const UpdateCars: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label
+                className={`block text-sm font-medium text-gray-600 mb-1 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
                 {t("dashboard.mileage")} (km)
               </label>
               <input
@@ -510,12 +618,19 @@ const UpdateCars: React.FC = () => {
                 name="mileage"
                 value={editingCar ? editingCar.mileage : newCar.mileage || 0}
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+                dir={isRTL ? "rtl" : "ltr"}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label
+                className={`block text-sm font-medium text-gray-600 mb-1 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
                 {t("dashboard.color")}
               </label>
               <input
@@ -523,12 +638,19 @@ const UpdateCars: React.FC = () => {
                 name="color"
                 value={editingCar ? editingCar.color || "" : newCar.color || ""}
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+                dir={isRTL ? "rtl" : "ltr"}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label
+                className={`block text-sm font-medium text-gray-600 mb-1 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
                 {t("dashboard.engineSize")}
               </label>
               <input
@@ -540,12 +662,19 @@ const UpdateCars: React.FC = () => {
                     : newCar.engineSize || ""
                 }
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+                dir={isRTL ? "rtl" : "ltr"}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label
+                className={`block text-sm font-medium text-gray-600 mb-1 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
                 {t("dashboard.cylinders")}
               </label>
               <input
@@ -555,12 +684,19 @@ const UpdateCars: React.FC = () => {
                   editingCar ? editingCar.cylinders : newCar.cylinders || 4
                 }
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+                dir={isRTL ? "rtl" : "ltr"}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label
+                className={`block text-sm font-medium text-gray-600 mb-1 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
                 {t("dashboard.doors")}
               </label>
               <input
@@ -568,12 +704,19 @@ const UpdateCars: React.FC = () => {
                 name="doors"
                 value={editingCar ? editingCar.doors : newCar.doors || 4}
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+                dir={isRTL ? "rtl" : "ltr"}
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label
+                className={`block text-sm font-medium text-gray-600 mb-1 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
                 {t("dashboard.chassisNumber")}{" "}
               </label>
               <input
@@ -585,13 +728,19 @@ const UpdateCars: React.FC = () => {
                     : newCar.chassisNumber || ""
                 }
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                required
+                className={`w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+                dir={isRTL ? "rtl" : "ltr"}
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-600 mb-1">
+              <label
+                className={`block text-sm font-medium text-gray-600 mb-1 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
                 {t("dashboard.description")}
               </label>
               <textarea
@@ -602,13 +751,20 @@ const UpdateCars: React.FC = () => {
                     : newCar.description || ""
                 }
                 onChange={handleInputChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
                 rows={3}
+                dir={isRTL ? "rtl" : "ltr"}
               />
             </div>
 
             <div>
-              <label className="flex items-center space-x-2">
+              <label
+                className={`flex items-center space-x-2 ${
+                  isRTL ? "flex-row-reverse" : ""
+                }`}
+              >
                 <input
                   type="checkbox"
                   name="isFeatured"
@@ -636,14 +792,20 @@ const UpdateCars: React.FC = () => {
             </div>
           </div>
 
-          <div className="mt-6 flex justify-end space-x-3">
+          <div
+            className={`mt-6 flex justify-end space-x-3 ${
+              isRTL ? "space-x-reverse" : ""
+            }`}
+          >
             {editingCar && (
               <button
                 type="button"
                 onClick={() => setEditingCar(null)}
-                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-colors"
+                className={`px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-colors flex items-center ${
+                  isRTL ? "flex-row-reverse" : ""
+                }`}
               >
-                <X size={18} className="inline mr-1" />
+                <X size={18} className={isRTL ? "ml-1" : "mr-1"} />
                 {t("dashboard.cancel")}
               </button>
             )}
@@ -651,16 +813,18 @@ const UpdateCars: React.FC = () => {
             <button
               type="button"
               onClick={editingCar ? handleUpdateCar : handleAddCar}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              className={`px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center ${
+                isRTL ? "flex-row-reverse" : ""
+              }`}
             >
               {editingCar ? (
                 <>
-                  <Save size={18} className="inline mr-1" />
+                  <Save size={18} className={isRTL ? "ml-1" : "mr-1"} />
                   {t("dashboard.updateCar")}
                 </>
               ) : (
                 <>
-                  <Plus size={18} className="inline mr-1" />
+                  <Plus size={18} className={isRTL ? "ml-1" : "mr-1"} />
                   {t("dashboard.addCar")}
                 </>
               )}
@@ -670,12 +834,20 @@ const UpdateCars: React.FC = () => {
 
         {/* Cars List */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-xl font-semibold mb-4">
+          <h2
+            className={`text-xl font-semibold mb-4 ${
+              isRTL ? "text-right" : "text-left"
+            }`}
+          >
             {t("dashboard.carList")}
           </h2>
 
           {cars.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div
+              className={`text-center py-8 text-gray-500 ${
+                isRTL ? "text-right" : "text-left"
+              }`}
+            >
               {t("dashboard.noCarsFound")}
             </div>
           ) : (
@@ -685,8 +857,16 @@ const UpdateCars: React.FC = () => {
                   key={car._id}
                   className="border rounded-lg p-4 hover:bg-gray-50 transition-colors"
                 >
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-start space-x-4">
+                  <div
+                    className={`flex justify-between items-start ${
+                      isRTL ? "flex-row-reverse" : ""
+                    }`}
+                  >
+                    <div
+                      className={`flex items-start space-x-4 ${
+                        isRTL ? "space-x-reverse" : ""
+                      }`}
+                    >
                       {car.images?.length > 0 ? (
                         <div className="h-16 w-16 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
                           <img
@@ -695,25 +875,25 @@ const UpdateCars: React.FC = () => {
                                 ? `${import.meta.env.VITE_API_URL}${
                                     car.images[0]
                                   }`
-                                : "/images/default-car.jpg"
+                                : getPlaceholderImage(400, 300, "Car+Image")
                             }
                             alt={`${car.brand} ${car.model}`}
                             className="w-full h-full object-contain"
                             crossOrigin="anonymous"
                             onError={(e) => {
                               (e.target as HTMLImageElement).src =
-                                "/images/default-car.jpg";
+                                getPlaceholderImage(400, 300, "Car+Image");
                             }}
                           />
                         </div>
                       ) : (
                         <div className="h-16 w-16 bg-gray-200 rounded-md flex items-center justify-center">
                           <span className="text-xs text-gray-500">
-                            No Image
+                            {t("dashboard.noFileChosen")}
                           </span>
                         </div>
                       )}
-                      <div>
+                      <div className={isRTL ? "text-right" : "text-left"}>
                         <h3 className="font-medium">
                           {car.brand} {car.model} ({car.year})
                         </h3>
@@ -723,12 +903,16 @@ const UpdateCars: React.FC = () => {
                         </p>
                         {car.isFeatured && (
                           <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
-                            Featured
+                            {t("dashboard.featured")}
                           </span>
                         )}
                       </div>
                     </div>
-                    <div className="flex space-x-2">
+                    <div
+                      className={`flex space-x-2 ${
+                        isRTL ? "space-x-reverse" : ""
+                      }`}
+                    >
                       <button
                         onClick={() => setEditingCar(car)}
                         className="p-1 text-blue-600 hover:text-blue-800 transition-colors"

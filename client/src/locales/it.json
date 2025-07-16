@@ -21,7 +21,27 @@
     "archive": "Archivia",
     "unarchive": "Ripristina",
     "archived": "Archiviato",
-    "active": "Attivo"
+    "active": "Attivo",
+    "retry": "Riprova"
+  },
+  "errors": {
+    "dashboardLoadFailed": "Caricamento dashboard fallito",
+    "sliderLoadFailed": "Caricamento immagini slider fallito",
+    "tryAgainLater": "Per favore riprova più tardi",
+    "uploadFailed": "Caricamento fallito",
+    "failedToUploadImage": "Impossibile caricare l'immagine",
+    "deleteFailed": "Eliminazione fallita",
+    "failedToDeleteImage": "Impossibile eliminare l'immagine",
+    "saveFailed": "Salvataggio fallito",
+    "failedToSaveSettings": "Impossibile salvare le impostazioni"
+  },
+  "success": {
+    "imageUploaded": "Immagine caricata con successo",
+    "imageAddedToSlider": "Immagine aggiunta allo slider",
+    "imageDeleted": "Immagine eliminata con successo",
+    "imageRemovedFromSlider": "Immagine rimossa dallo slider",
+    "settingsSaved": "Impostazioni salvate con successo",
+    "sliderSettingsUpdated": "Impostazioni slider aggiornate"
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -30,7 +50,12 @@
     "history": "Cronologia",
     "invoiceBuilder": "Generatore di fatture",
     "carRentalTitle": "Noleggio Auto - Said Trasporto Gordola",
-    "login": "Accesso"
+    "login": "Accesso",
+    "about": "Chi Siamo",
+    "services": "Servizi",
+    "faqs": "Domande Frequenti",
+    "contact": "Contattaci",
+    "home": "Home"
   },
   "auth": {
     "login": "Accedi",
@@ -105,10 +130,10 @@
     "year": "Anno",
     "price": "Prezzo",
     "imageUrl": "URL Immagine",
-    "category": "Categoria",
-    "condition": "Condizione",
-    "transmission": "Cambio",
-    "fuelType": "Tipo di Carburante",
+    "categoryHeader": "Categoria",
+    "conditionHeader": "Condizione",
+    "transmissionHeader": "Cambio",
+    "fuelTypeHeader": "Tipo di Carburante",
     "bodyType": "Tipo di Carrozzeria",
     "mileage": "Chilometraggio",
     "color": "Colore",
@@ -118,7 +143,38 @@
     "updateCar": "Aggiorna Auto",
     "cancel": "Annulla",
     "edit": "Modifica",
-    "delete": "Elimina"
+    "delete": "Elimina",
+    "manageSlider": "Gestisci immagini slider",
+    "manageSliderDesc": "Aggiorna le immagini visualizzate nello slider della pagina principale",
+    "images": "Immagini",
+    "chooseFile": "Scegli File",
+    "noFileChosen": "Nessun file selezionato",
+    "category": {
+      "Sedan": "Berlina",
+      "SUV": "SUV",
+      "Hatchback": "Utilitaria",
+      "Coupe": "Coupé",
+      "Crossover": "Crossover",
+      "Hybrid": "Ibrido"
+    },
+    "condition": {
+      "New": "Nuovo",
+      "Used": "Usato"
+    },
+    "transmission": {
+      "Automatic": "Automatico",
+      "Manual": "Manuale"
+    },
+    "fuelType": {
+      "Petrol": "Benzina",
+      "Diesel": "Diesel",
+      "Electric": "Elettrico",
+      "Hybrid": "Ibrido"
+    },
+    "description": "Descrizione",
+    "cylinders": "Cilindri",
+    "featured": "In evidenza",
+    "doors": "Porte"
   },
   "invoice": {
     "invoice": "FATTURA",
@@ -144,7 +200,10 @@
     "clickToAddNotes": "Clicca per aggiungere note",
     "clickToAddTerms": "Clicca per aggiungere termini e condizioni",
     "editInvoice": "Modifica Fattura {number}",
-    "updateInvoice": "Aggiorna Fattura"
+    "updateInvoice": "Aggiorna Fattura",
+    "paid": "Pagato",
+    "unpaid": "Non pagato",
+    "status": "Stato"
   },
   "create": {
     "title": "Crea Fattura",
@@ -214,7 +273,9 @@
     "clientArchived": "Cliente archiviato",
     "clientArchivedMessage": "Il cliente è stato archiviato",
     "clientUnarchived": "Cliente ripristinato",
-    "clientUnarchivedMessage": "Il cliente è stato ripristinato"
+    "clientUnarchivedMessage": "Il cliente è stato ripristinato",
+    "email": "Email",
+    "enterEmail": "Inserisci email"
   },
   "product": {
     "name": "Nome Prodotto",
@@ -266,11 +327,6 @@
     "addNotesPlaceholder": "Aggiungi eventuali note o commenti per questa fattura...",
     "updateNotes": "Aggiorna Note"
   },
-  "terms": {
-    "termsConditions": "Termini & Condizioni",
-    "addTermsPlaceholder": "Inserisci i tuoi termini e condizioni, termini di pagamento, ecc...",
-    "updateTerms": "Aggiorna Termini"
-  },
   "settings": {
     "title": "Impostazioni Fattura",
     "subtitle": "Configura le informazioni e le preferenze della tua azienda",
@@ -301,7 +357,13 @@
     "noLogo": "Nessun logo",
     "changeLogo": "Cambia Logo",
     "taxRate": "Aliquota fiscale",
-    "enterTaxRate": "Inserisci la percentuale dell'aliquota fiscale"
+    "enterTaxRate": "Inserisci la percentuale dell'aliquota fiscale",
+    "authRequired": "Autenticazione richiesta",
+    "loginToSave": "Accedi per salvare le impostazioni",
+    "saveFailed": "Salvataggio fallito",
+    "tryAgain": "Per favore riprova",
+    "networkError": "Errore di rete",
+    "connectionFailed": "Connessione al server fallita"
   },
   "history": {
     "title": "Cronologia Fatture",
@@ -311,7 +373,11 @@
     "client": "Cliente",
     "actions": "Azioni",
     "download": "Scarica",
-    "noInvoicesFound": "Nessuna fattura trovata"
+    "noInvoicesFound": "Nessuna fattura trovata",
+    "invoiceNumber": "Fattura N°",
+    "invoiceDate": "Data Fattura",
+    "dueDate": "Scadenza",
+    "total": "Totale"
   },
   "languages": {
     "italian": "Italiano",
@@ -326,12 +392,21 @@
   "notifications": {
     "carAdded": "Auto aggiunta con successo!",
     "carUpdated": "Auto aggiornata con successo!",
-    "carDeleted": "Auto eliminata con successo!"
+    "carDeleted": "Auto eliminata con successo!",
+    "failedToFetchCars": "Impossibile recuperare le auto",
+    "failedToUploadImages": "Caricamento immagini fallito",
+    "fillRequiredFields": "Compila tutti i campi obbligatori",
+    "featured": "In evidenza",
+    "errorAddingCar": "Errore nell'aggiunta dell'auto",
+    "errorUpdatingCar": "Errore nell'aggiornamento dell'auto",
+    "errorDeletingCar": "Errore nell'eliminazione dell'auto",
+    "validationFailed": "Validazione fallita",
+    "requiredFieldsMissing": "Campi obbligatori mancanti",
+    "success": "Successo",
+    "error": "errore"
   },
   "hero": {
-    "subtitle": "Scopri la migliore selezione di veicoli di lusso e ad alte prestazioni in Svizzera",
     "ctaText": "Contattaci",
-    "sliderSettings": "Impostazioni Slider Hero",
     "sliderType": "Tipo di Slider",
     "sliderTypes": {
       "default": "Predefinito",
@@ -347,7 +422,22 @@
     "slideSubtitle": "Sottotitolo Slide",
     "ctaLink": "Link Bottone",
     "saveChanges": "Salva Modifiche",
-    "slidesUpdated": "Slide aggiornate con successo"
+    "slidesUpdated": "Slide aggiornate con successo",
+    "manageSlider": "Gestisci Slider",
+    "sliderSettings": "Impostazioni Slider",
+    "sliderConfiguration": "Configurazione Slider",
+    "uploadNewImage": "Carica Nuova Immagine",
+    "selectImage": "Seleziona Immagine",
+    "uploadImage": "Carica Immagine",
+    "currentSliderImages": "Immagini Slider Correnti",
+    "noSliderImages": "Nessuna immagine caricata nello slider",
+    "loadingImages": "Caricamento immagini in corso...",
+    "chooseFile": "Scegli File",
+    "noFileChosen": "Nessun file selezionato",
+    "fade": "Dissolvenza",
+    "cube": "Cubo",
+    "coverflow": "Copertina",
+    "flip": "Capovolgi"
   },
   "footer": {
     "companyName": "Said Trasporto - Gordola",
@@ -356,6 +446,156 @@
     "aboutText": "Servizi professionali di noleggio auto e trasporti con oltre 20 anni di esperienza nel Ticino.",
     "contact": "Contatti",
     "privacy": "Privacy",
-    "copyright": "Tutti i diritti riservati a Said Trasporto"
+    "copyright": "Tutti i diritti riservati a Said Trasporto",
+    "company": "Azienda",
+    "ourBrands": "I Nostri Marchi",
+    "vehiclesType": "Tipi di Veicoli",
+    "connectWithUs": "Connettiti con Noi"
+  },
+  "about": {
+    "title": "Chi Siamo",
+    "ourStory": "La Nostra Storia",
+    "storyText": "Fondata nel 2005, Said Auto è cresciuta da un piccolo concessionario locale a uno dei nomi più affidabili nel settore automobilistico in Svizzera. Il nostro impegno per veicoli di qualità e un servizio clienti eccezionale è stata la forza trainante del nostro successo.",
+    "ourMission": "La Nostra Missione",
+    "missionText": "Ci impegniamo a offrire ai nostri clienti la migliore selezione di veicoli a prezzi competitivi, insieme a un'esperienza di acquisto trasparente e senza problemi. Il nostro team di esperti è dedicato ad aiutarti a trovare il veicolo perfetto che soddisfi le tue esigenze e il tuo budget.",
+    "ourTeam": "Il Nostro Team",
+    "teamText": "Il nostro personale esperto vanta decenni di esperienza combinata nel settore automobilistico. Dalle vendite al servizio, ogni membro del team è impegnato per la tua completa soddisfazione."
+  },
+  "carFilters": {
+    "brand": "Marca",
+    "allBrands": "Tutte le Marche",
+    "price": "Prezzo (CHF)",
+    "maxPrice": "Prezzo massimo",
+    "transmission": "Cambio",
+    "anyTransmission": "Qualsiasi",
+    "fuelType": "Tipo di Carburante",
+    "anyFuelType": "Qualsiasi Tipo di Carburante",
+    "condition": "Condizione",
+    "anyCondition": "Qualsiasi Condizione",
+    "category": "Categoria",
+    "anyCategory": "Qualsiasi Categoria",
+    "bodyType": "Tipo di Carrozzeria",
+    "anyBodyType": "Qualsiasi Tipo di Carrozzeria",
+    "search": "Cerca"
+  },
+  "brandSlider": {
+    "ourPartners": "I Nostri Partner"
+  },
+  "carousel": {
+    "condition": "Condizione",
+    "km": "km"
+  },
+  "carDetails": {
+    "transmission": "Cambio",
+    "fuelType": "Tipo di Carburante",
+    "mileage": "Chilometraggio",
+    "color": "Colore",
+    "engineSize": "Cilindrata",
+    "cylinders": "Cilindri",
+    "doors": "Porte",
+    "chassisNumber": "Numero di Telaio",
+    "bodyType": "Tipo di Carrozzeria",
+    "description": "Descrizione",
+    "contactSales": "Contatta Vendite",
+    "getInTouch": "Mettiti in Contatto",
+    "address": "Indirizzo",
+    "phone": "Telefono",
+    "email": "Email",
+    "businessHours": "Orari di Apertura",
+    "mondayFriday": "Lunedì-Venerdì",
+    "saturday": "Sabato",
+    "sunday": "Domenica",
+    "closed": "Chiuso",
+    "close": "Chiudi"
+  },
+  "contact": {
+    "title": "Contattaci",
+    "getInTouch": "Mettiti in Contatto",
+    "address": "Indirizzo",
+    "phone": "Telefono",
+    "email": "Email",
+    "businessHours": "Orari di Apertura",
+    "mondayFriday": "Lunedì-Venerdì",
+    "saturday": "Sabato",
+    "sunday": "Domenica",
+    "closed": "Chiuso",
+    "sendMessage": "Inviaci un Messaggio",
+    "name": "Nome",
+    "subject": "Oggetto",
+    "message": "Messaggio",
+    "send": "Invia Messaggio"
+  },
+  "faqs": {
+    "title": "Domande Frequenti",
+    "paymentMethods": "Quali metodi di pagamento accettate?",
+    "paymentAnswer": "Accettiamo contanti, bonifici bancari e tutte le principali carte di credito. Sono disponibili anche opzioni di finanziamento attraverso le nostre banche partner.",
+    "testDrives": "Offrite test drive?",
+    "testDrivesAnswer": "Sì, incoraggiamo tutti i potenziali acquirenti a provare i veicoli. Basta contattarci per fissare un appuntamento.",
+    "returnPolicy": "Qual è la vostra politica di reso?",
+    "returnPolicyAnswer": "Offriamo una garanzia di rimborso di 7 giorni su tutti i veicoli, soggetta a determinate condizioni e limiti di chilometraggio.",
+    "vehicleHistory": "Fornite rapporti sulla storia del veicolo?",
+    "vehicleHistoryAnswer": "Sì, forniamo rapporti Carfax gratuiti per tutti i veicoli usati nel nostro inventario.",
+    "tradeIn": "Posso fare un trade-in del mio veicolo attuale?",
+    "tradeInAnswer": "Assolutamente! Offriamo valutazioni competitive per il trade-in. Porta il tuo veicolo per una valutazione o inviaci i dettagli online."
+  },
+  "privacy": {
+    "title": "Informativa sulla Privacy",
+    "informationWeCollect": "1. Informazioni che Raccogliamo",
+    "informationWeCollectText": "Raccogliamo informazioni personali che ci fornisci quando utilizzi i nostri servizi, inclusi nome, dettagli di contatto e preferenze sui veicoli. Raccogliamo anche dati tecnici come indirizzi IP e informazioni sul browser per analisi.",
+    "howWeUse": "2. Come Utilizziamo le Tue Informazioni",
+    "howWeUseText": "Le tue informazioni vengono utilizzate per fornire e migliorare i nostri servizi, elaborare richieste, comunicare con te e (con il tuo consenso) per scopi di marketing. Potremmo utilizzare dati aggregati per analisi aziendali.",
+    "dataSharing": "3. Condivisione dei Dati",
+    "dataSharingText": "Potremmo condividere le tue informazioni con fornitori di servizi di terze parti fidati che ci assistono nella gestione della nostra attività, ma solo nella misura necessaria. Non vendiamo le tue informazioni personali a terzi.",
+    "dataSecurity": "4. Sicurezza dei Dati",
+    "dataSecurityText": "Implementiamo misure di sicurezza appropriate per proteggere le tue informazioni personali da accessi non autorizzati, alterazioni o distruzioni. Tuttavia, nessuna trasmissione via Internet è completamente sicura.",
+    "yourRights": "5. I Tuoi Diritti",
+    "yourRightsText": "Hai il diritto di accedere, correggere o cancellare le tue informazioni personali. Puoi anche opporti o limitare determinate attività di elaborazione. Per esercitare questi diritti, contattaci a info@saidauto.ch.",
+    "cookies": "6. Cookie",
+    "cookiesText": "Il nostro sito web utilizza cookie per migliorare la tua esperienza. Puoi controllare i cookie attraverso le impostazioni del browser, ma disabilitarli potrebbe influire sulla funzionalità del sito.",
+    "changes": "7. Modifiche a Questa Informativa",
+    "changesText": "Potremmo aggiornare periodicamente questa Informativa sulla Privacy. Le modifiche significative verranno comunicate attraverso il nostro sito web o via email quando appropriato."
+  },
+  "services": {
+    "title": "I Nostri Servizi",
+    "vehicleSales": "Vendita di Veicoli",
+    "vehicleSalesText": "Ampia selezione di veicoli nuovi e usati dei migliori marchi.",
+    "maintenance": "Manutenzione e Riparazioni",
+    "maintenanceText": "Servizio esperto per tutte le marche e modelli utilizzando pezzi originali.",
+    "warranties": "Garanzie Estese",
+    "warrantiesText": "Piani di protezione completi per la tua tranquillità.",
+    "financing": "Opzioni di Finanziamento",
+    "financingText": "Piani di pagamento flessibili adattati al tuo budget.",
+    "roadsideAssistance": "Assistenza Stradale 24/7",
+    "roadsideAssistanceText": "Aiuto ogni volta che ne hai bisogno, giorno e notte."
+  },
+  "terms": {
+    "title": "Termini e Condizioni",
+    "introduction": "1. Introduzione",
+    "introductionText": "Benvenuto su Boxcars.com. Questi Termini e Condizioni regolano il tuo utilizzo del nostro sito web e dei nostri servizi. Accedendo o utilizzando i nostri servizi, accetti di essere vincolato da questi Termini.",
+    "useOfWebsite": "2. Utilizzo del Sito Web",
+    "useOfWebsiteText": "Accetti di utilizzare questo sito web solo per scopi legali e in modo da non violare i diritti di, limitare o inibire l'utilizzo e il godimento del sito web da parte di chiunque altro.",
+    "intellectualProperty": "3. Proprietà Intellettuale",
+    "intellectualPropertyText": "Tutti i contenuti su questo sito web, inclusi testi, grafica, loghi e immagini, sono di proprietà di Boxcars.com o dei suoi fornitori di contenuti e sono protetti dalle leggi internazionali sul copyright.",
+    "vehicleListings": "4. Elenchi di Veicoli",
+    "vehicleListingsText": "Sebbene ci sforziamo per l'accuratezza, non garantiamo che le descrizioni dei veicoli o altri contenuti su questo sito siano accurati, completi, affidabili, attuali o privi di errori.",
+    "liability": "5. Limitazione di Responsabilità",
+    "liabilityText": "Boxcars.com non sarà responsabile per eventuali danni indiretti, incidentali, speciali o consequenziali derivanti dall'uso o dall'impossibilità di utilizzare i nostri servizi.",
+    "changesToTerms": "6. Modifiche ai Termini",
+    "changesToTermsText": "Ci riserviamo il diritto di modificare questi Termini in qualsiasi momento. Il tuo continuo utilizzo del sito web dopo tali modifiche costituisce la tua accettazione dei nuovi Termini.",
+    "governingLaw": "7. Legge Applicabile",
+    "governingLawText": "Questi Termini saranno regolati e interpretati in conformità con le leggi della Svizzera, senza riguardo alle disposizioni sul conflitto di leggi.",
+    "termsConditions": "Termini & Condizioni",
+    "addTermsPlaceholder": "Inserisci i tuoi termini e condizioni...",
+    "updateTerms": "Aggiorna Termini"
+  },
+  "landing": {
+    "premiumVehicles": "Veicoli Premium",
+    "exceptionalValue": "Valore Eccezionale",
+    "discoverSelection": "Scopri la migliore selezione di veicoli di lusso e ad alte prestazioni in Svizzera",
+    "featuredVehicles": "Veicoli in Evidenza",
+    "loadingCars": "Caricamento auto in corso..."
+  },
+  "imageSlider": {
+    "noImages": "Nessuna immagine da visualizzare"
   }
 }
