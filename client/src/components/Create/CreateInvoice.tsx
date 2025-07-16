@@ -180,7 +180,7 @@ const CreateInvoice: React.FC = () => {
         _id: Date.now().toString(),
         number: invoice.number!,
         date: invoice.date!,
-        paid: invoice.paid!, // Include paid status
+        paid: invoice.paid!,
         client: {
           _id: invoice.client._id,
           id: invoice.client._id,

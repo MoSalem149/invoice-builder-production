@@ -1,10 +1,9 @@
-// components/Landing/FAQs.tsx
 import React, { useState } from "react";
 import { useLanguage } from "../../hooks/useLanguage";
 
 const FAQs: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
 
   const faqs = [
     {
@@ -34,7 +33,12 @@ const FAQs: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 mt-20">
+    <div
+      className={`container mx-auto px-4 py-8 mt-20 ${
+        isRTL ? "text-right" : "text-left"
+      }`}
+      dir={isRTL ? "rtl" : "ltr"}
+    >
       <div className="flex items-center mb-8">
         <h1 className="text-3xl font-bold">{t("faqs.title")}</h1>
       </div>

@@ -1,0 +1,70 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# IDE and editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Debug
+debug.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temp files
+*.tmp
+*.temp
+
+# Uploads (if storing locally)
+uploads/
+public/uploads/
+
+# MongoDB
+data/db/
+*.pid
+
+# Testing
+test-results.xml
+
+# Cloudinary (if used)
+cloudinary.json
+
+# Docker
+docker-compose.override.yml
+
+# Build directories
+dist/
+build/

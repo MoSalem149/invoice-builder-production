@@ -1,13 +1,19 @@
-// components/Landing/TermsConditions.tsx
-import React, { useContext } from "react";
-import { LanguageContext } from "../../context/LanguageContext";
+import React from "react";
+import { useLanguage } from "../../hooks/useLanguage";
 
 const TermsConditions: React.FC = () => {
-  const { t } = useContext(LanguageContext)!;
+  const { t, isRTL } = useLanguage();
 
   return (
-    <div className="container mx-auto px-4 py-8 mt-20">
-      <div className="flex items-center mb-8">
+    <div
+      className={`container mx-auto px-4 py-8 mt-20 ${
+        isRTL ? "text-right" : "text-left"
+      }`}
+      dir={isRTL ? "rtl" : "ltr"}
+    >
+      <div
+        className={`flex items-center mb-8 ${isRTL ? "flex-row-reverse" : ""}`}
+      >
         <h1 className="text-3xl font-bold">{t("terms.title")}</h1>
       </div>
 

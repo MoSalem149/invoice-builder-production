@@ -22,16 +22,19 @@ A modern, responsive invoice management system built with React, TypeScript, and
 ## 📦 Installation
 
 1. Navigate to the client directory:
+
 ```bash
 cd client
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Create environment file:
+
 ```bash
 cp .env.example .env
 ```
@@ -50,6 +53,7 @@ VITE_APP_NAME=Invoice Builder
 ## 🚀 Development
 
 Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -59,6 +63,7 @@ The application will be available at `http://localhost:3000`
 ## 🏗️ Build
 
 Build for production:
+
 ```bash
 npm run build
 ```
@@ -68,13 +73,18 @@ npm run build
 ```
 client/
 ├── src/
-│   ├── components/          # React components
+│   ├── assets/             # assets files
+│   ├── components/         # React components
+│   │   ├── Auth/           # Auth components
+│   │   ├── Cars/           # Cars creation components
 │   │   ├── Create/         # Invoice creation components
 │   │   ├── Dashboard/      # Dashboard components
 │   │   ├── History/        # Invoice history components
+│   │   ├── Landing/        # Landing page components
 │   │   ├── Layout/         # Layout components
 │   │   ├── Settings/       # Settings components
-│   │   └── UI/            # Reusable UI components
+│   │   ├── Slider/         # Slider components
+│   │   └── UI/             # Reusable UI components
 │   ├── context/            # React context providers
 │   ├── hooks/              # Custom React hooks
 │   ├── locales/            # Translation files
@@ -88,10 +98,12 @@ client/
 ## 🌐 Internationalization
 
 The app supports multiple languages:
+
 - English (en)
 - Arabic (ar) with RTL support
 
 To add a new language:
+
 1. Create a new JSON file in `src/locales/`
 2. Add the language option in the settings component
 3. Update the language context
@@ -99,6 +111,7 @@ To add a new language:
 ## 📱 Responsive Design
 
 The application is fully responsive with breakpoints:
+
 - Mobile: < 640px
 - Tablet: 640px - 1024px
 - Desktop: > 1024px
@@ -112,6 +125,7 @@ The application is fully responsive with breakpoints:
 ## 🔗 API Integration
 
 The frontend communicates with the backend through RESTful APIs:
+
 - Base URL configured via `VITE_API_URL` environment variable
 - Axios for HTTP requests
 - Error handling and loading states

@@ -1,4 +1,3 @@
-// components/Cars/UpdateCars.tsx
 import React, { useState, useEffect, useCallback } from "react";
 import { useNotificationContext } from "../../hooks/useNotificationContext";
 import { useLanguage } from "../../hooks/useLanguage";

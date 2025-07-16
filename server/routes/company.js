@@ -58,7 +58,7 @@ router.put(
       .default("CHF"),
     body("language")
       .optional()
-      .isIn(["it", "en", "gr"])
+      .isIn(["it", "en", "de", "ar"])
       .withMessage("Invalid language")
       .default("it"),
     body("watermark")

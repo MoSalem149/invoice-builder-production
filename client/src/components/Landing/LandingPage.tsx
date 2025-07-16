@@ -1,26 +1,34 @@
-// components/Landing/LandingPage.tsx
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import Carousel from "./Carousel";
 import CarFilters from "./CarFilters";
 import BrandSlider from "./BrandSlider";
 import CarDetails from "./CarDetails";
 import ImageSlider from "./ImageSlider";
+import { useLanguage } from "../../hooks/useLanguage";
 import { Car, SliderImage, SliderSettings } from "../../types";
 import { RefreshCw } from "lucide-react";
-import { LanguageContext } from "../../context/LanguageContext";
+import hero from "../../assets/hero.jpg";
+import { getPlaceholderImage } from "../../utils/placeholders";
 
 interface LandingPageProps {
   onCarSelect?: (car: Car) => void;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
-  const { t } = useContext(LanguageContext)!;
+  const { t, isRTL } = useLanguage();
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
   const [cars, setCars] = useState<Car[]>([]);
   const [filteredCars, setFilteredCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
   const [sliderImages, setSliderImages] = useState<string[]>([]);
-  const [sliderSettings, setSliderSettings] = useState<SliderSettings>({});
+  const [sliderSettings, setSliderSettings] = useState<SliderSettings>({
+    autoplay: true,
+    autoplayDelay: 5000,
+    loop: true,
+    navigation: true,
+    pagination: true,
+    effect: "slide",
+  });
 
   useEffect(() => {
     const fetchCars = async () => {
@@ -53,19 +61,23 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
         const data = await response.json();
         if (data.success) {
           setSliderImages(data.data.map((img: SliderImage) => img.imageUrl));
+        } else {
+          // If API call fails but returns success: false
+          setSliderImages([]);
         }
       } catch (error) {
         console.error("Error fetching slider images:", error);
+        // Use placeholder images when API fails
         setSliderImages([
-          "/images/car1.jpg",
-          "/images/car2.jpg",
-          "/images/car3.jpg",
+          getPlaceholderImage(1200, 400, t("landing.sliderImage1")),
+          getPlaceholderImage(1200, 400, t("landing.sliderImage2")),
+          getPlaceholderImage(1200, 400, t("landing.sliderImage3")),
         ]);
       }
     };
 
     fetchSliderImages();
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     const fetchSliderData = async () => {
@@ -79,6 +91,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
         }
       } catch (error) {
         console.error("Error fetching slider settings:", error);
+        // Use default settings if API fails
+        setSliderSettings({
+          autoplay: true,
+          autoplayDelay: 5000,
+          loop: true,
+          navigation: true,
+          pagination: true,
+          effect: "slide",
+        });
       }
     };
 
@@ -147,18 +168,22 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative" dir={isRTL ? "rtl" : "ltr"}>
       {/* Hero Section */}
       <div className="relative h-screen max-h-[800px] overflow-hidden">
         {/* Background Image */}
         <img
-          src="/images/hero.jpg"
+          src={hero}
           alt="Showcase vehicle"
           className="w-full h-full object-cover absolute top-0 left-0 min-h-[400px]"
         />
 
         {/* Content */}
-        <div className="container mx-auto px-4 h-full flex items-center relative z-10">
+        <div
+          className={`container mx-auto px-4 h-full flex items-center relative z-10 ${
+            isRTL ? "text-right" : "text-left"
+          }`}
+        >
           <div className="max-w-2xl text-white">
             <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
               {t("landing.premiumVehicles")} <br />
@@ -193,6 +218,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
         />
       </div>
 
+      {/* Image Slider Section */}
       <div className="relative w-full" style={{ height: "600px" }}>
         <ImageSlider
           images={sliderImages}

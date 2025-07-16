@@ -14,6 +14,6 @@ export default defineConfig({
       "/uploads": "http://localhost:5000", // Proxy image requests
     },
     port: 3000, // Custom dev server port
-    // open: true, // Auto-open browser
+    open: true, // Auto-open browser
   },
 });

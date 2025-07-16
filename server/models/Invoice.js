@@ -116,10 +116,9 @@ const invoiceSchema = new mongoose.Schema(
   }
 );
 
-// Indexes for better query performance
 invoiceSchema.index({ userId: 1, number: 1 });
 invoiceSchema.index({ userId: 1, date: -1 });
 invoiceSchema.index({ userId: 1, "client.id": 1 });
-invoiceSchema.index({ userId: 1, paid: 1 }); // Add index for paid status
+invoiceSchema.index({ userId: 1, paid: 1 });
 
 export default mongoose.model("Invoice", invoiceSchema);

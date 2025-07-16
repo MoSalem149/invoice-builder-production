@@ -1,4 +1,3 @@
-// components/Landing/ImageSlider.tsx
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Swiper from "swiper";
@@ -19,6 +18,7 @@ import "swiper/css/effect-cube";
 import "swiper/css/effect-coverflow";
 import "swiper/css/effect-flip";
 import { useLanguage } from "../../hooks/useLanguage";
+import { getPlaceholderImage } from "../../utils/placeholders";
 
 type SwiperModule =
   | typeof Autoplay
@@ -88,6 +88,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
   const sliderRef = useRef<HTMLDivElement>(null);
   const [autoScroll, setAutoScroll] = useState(settings.autoplay ?? true);
   const { t } = useLanguage();
+  const [errorImages, setErrorImages] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     if (!sliderRef.current || images.length === 0) return;
@@ -144,12 +145,29 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
     swiperRef.current?.slidePrev();
   };
 
+  const handleImageError = (index: number) => {
+    setErrorImages((prev) => {
+      const newSet = new Set(prev);
+      newSet.add(index);
+      return newSet;
+    });
+  };
+
   if (images.length === 0) {
+    const placeholderUrl = getPlaceholderImage(
+      1200,
+      800,
+      t("imageSlider.noImages")
+    );
     return (
       <div
         className={`relative w-full ${height} bg-gray-100 flex items-center justify-center`}
       >
-        <p className="text-gray-500">{t("imageSlider.noImages")}</p>
+        <img
+          src={placeholderUrl}
+          alt={t("imageSlider.noImages")}
+          className="w-full h-full object-cover"
+        />
       </div>
     );
   }
@@ -162,18 +180,26 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
       ref={sliderRef}
     >
       <div className="swiper-wrapper h-full w-full">
-        {images.map((image, index) => (
-          <div key={index} className="swiper-slide h-full w-full">
-            <div className="w-full h-full flex items-center justify-center">
-              <img
-                src={image}
-                alt={`Slider image ${index + 1}`}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
+        {images.map((image, index) => {
+          const isError = errorImages.has(index);
+          const imageUrl = isError
+            ? getPlaceholderImage(1200, 400, t("imageSlider.imageLoadError"))
+            : image;
+
+          return (
+            <div key={index} className="swiper-slide h-full w-full">
+              <div className="w-full h-full flex items-center justify-center">
+                <img
+                  src={imageUrl}
+                  alt={`Slider image ${index + 1}`}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                  onError={() => handleImageError(index)}
+                />
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {settings.navigation && (

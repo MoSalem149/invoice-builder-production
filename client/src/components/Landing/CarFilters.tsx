@@ -1,4 +1,3 @@
-// components/Landing/CarFilters.tsx
 import React, { useState } from "react";
 import { Car } from "../../types";
 import { useLanguage } from "../../hooks/useLanguage";
@@ -26,7 +25,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
     category: "",
     bodyType: "",
   });
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
 
   const handleFilterChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -64,7 +63,12 @@ const CarFilters: React.FC<CarFiltersProps> = ({ cars, onFilterChange }) => {
   );
 
   return (
-    <div className="container mx-auto px-4 -mt-16 relative z-20">
+    <div
+      className={`container mx-auto px-4 -mt-16 relative z-20 ${
+        isRTL ? "text-right" : "text-left"
+      }`}
+      dir={isRTL ? "rtl" : "ltr"}
+    >
       <form
         onSubmit={handleSubmit}
         className="bg-white rounded-xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-4 gap-4 items-end"

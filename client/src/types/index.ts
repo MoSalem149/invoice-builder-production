@@ -1,4 +1,3 @@
-// Notification Types
 export interface NotificationInput {
   type: "success" | "error" | "warning" | "info";
   title: string;
@@ -11,7 +10,6 @@ export interface NotificationProps extends NotificationInput {
   onClose: () => void;
 }
 
-// components/Landing/types.ts
 export interface Car {
   _id: string;
   images: string[];
@@ -54,7 +52,6 @@ export type SliderSettings = {
   effect?: "slide" | "fade" | "cube" | "coverflow" | "flip";
 };
 
-// User and Auth Types
 export interface User {
   _id: string;
   name: string;
@@ -84,7 +81,6 @@ export interface AuthContextType {
   logout: () => void;
 }
 
-// App Types
 export interface Company {
   logo: string;
   name: string;
@@ -92,7 +88,7 @@ export interface Company {
   email?: string;
   phone?: string;
   currency: "CHF" | "USD" | "EGP";
-  language: "it" | "en" | "gr" | "ar";
+  language: "it" | "en" | "de" | "ar";
   watermark?: string;
   showNotes?: boolean;
   showTerms?: boolean;
@@ -123,7 +119,7 @@ export interface Product {
 }
 
 export interface InvoiceItem {
-  id: string; // Can keep 'id' if not stored in DB
+  id: string;
   name: string;
   description: string;
   price: number;
@@ -151,7 +147,7 @@ export interface Invoice {
   subtotal: number;
   tax: number;
   total: number;
-  paid: boolean; // Changed from status to simple boolean
+  paid: boolean;
   notes?: string;
   terms?: string;
   createdAt?: string;
@@ -190,15 +186,13 @@ export interface AppContextType {
   updateInvoice: (invoice: Partial<Invoice>) => Promise<boolean>;
 }
 
-// Language Types
 export interface LanguageContextType {
   t: (key: string) => string;
   isRTL: boolean;
-  language: "it" | "en" | "gr" | "ar";
-  setLanguage: (lang: "it" | "en" | "gr" | "ar") => void;
+  language: "it" | "en" | "de" | "ar";
+  setLanguage: (lang: "it" | "en" | "de" | "ar") => void;
 }
 
-// Notification Context Type
 export interface NotificationContextType {
   notifications: NotificationProps[];
   addNotification: (notification: NotificationInput) => string;

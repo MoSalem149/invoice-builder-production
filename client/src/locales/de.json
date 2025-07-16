@@ -22,7 +22,8 @@
     "unarchive": "Entarchivieren",
     "archived": "Archiviert",
     "active": "Aktiv",
-    "retry": "Erneut versuchen"
+    "retry": "Erneut versuchen",
+    "loop": "Schleife"
   },
   "errors": {
     "dashboardLoadFailed": "Dashboard konnte nicht geladen werden",
@@ -594,7 +595,10 @@
     "exceptionalValue": "Außergewöhnlicher Wert",
     "discoverSelection": "Entdecken Sie die feinste Auswahl an Luxus- und Hochleistungsfahrzeugen in der Schweiz",
     "featuredVehicles": "Vorgestellte Fahrzeuge",
-    "loadingCars": "Fahrzeuge werden geladen..."
+    "loadingCars": "Fahrzeuge werden geladen...",
+    "sliderImage1": "Text für das erste Platzhalterbild",
+    "sliderImage2": "Text für das zweite Platzhalterbild",
+    "sliderImage3": "Text für das dritte Platzhalterbild"
   },
   "imageSlider": {
     "noImages": "Keine Bilder zum Anzeigen"

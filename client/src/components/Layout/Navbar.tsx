@@ -1,4 +1,3 @@
-// components/Layout/Navbar.tsx
 import React, { useState, useEffect } from "react";
 import {
   FileText,

@@ -1,4 +1,3 @@
-// models/Car.js
 import mongoose from "mongoose";
 
 const carSchema = new mongoose.Schema(
@@ -44,7 +43,6 @@ const carSchema = new mongoose.Schema(
   }
 );
 
-// Indexes for better performance
 carSchema.index({ brand: 1, model: 1 });
 carSchema.index({ price: 1 });
 carSchema.index({ isFeatured: 1 });

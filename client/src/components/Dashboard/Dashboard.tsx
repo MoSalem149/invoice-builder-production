@@ -4,8 +4,8 @@ import {
   Users,
   Package,
   DollarSign,
-  FilePlus, // For creating new invoice
-  Car, // For car data
+  FilePlus,
+  Car,
   History,
   Image,
   RefreshCw,

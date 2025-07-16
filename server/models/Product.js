@@ -46,7 +46,6 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-// Indexes for better query performance
 productSchema.index({ userId: 1, archived: 1 });
 
 export default mongoose.model("Product", productSchema);

@@ -1,13 +1,17 @@
-// components/Landing/Contact.tsx
 import React from "react";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { useLanguage } from "../../hooks/useLanguage";
 
 const Contact: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
 
   return (
-    <div className="container mx-auto px-4 py-8 mt-20">
+    <div
+      className={`container mx-auto px-4 py-8 mt-20 ${
+        isRTL ? "text-right" : "text-left"
+      }`}
+      dir={isRTL ? "rtl" : "ltr"}
+    >
       <h1 className="text-3xl font-bold mb-8">{t("contact.title")}</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

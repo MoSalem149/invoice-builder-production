@@ -22,7 +22,8 @@
     "unarchive": "Ripristina",
     "archived": "Archiviato",
     "active": "Attivo",
-    "retry": "Riprova"
+    "retry": "Riprova",
+    "loop": "Ciclo"
   },
   "errors": {
     "dashboardLoadFailed": "Caricamento dashboard fallito",
@@ -594,7 +595,10 @@
     "exceptionalValue": "Valore Eccezionale",
     "discoverSelection": "Scopri la migliore selezione di veicoli di lusso e ad alte prestazioni in Svizzera",
     "featuredVehicles": "Veicoli in Evidenza",
-    "loadingCars": "Caricamento auto in corso..."
+    "loadingCars": "Caricamento auto in corso...",
+    "sliderImage1": "Testo per la prima immagine segnaposto",
+    "sliderImage2": "Testo per la seconda immagine segnaposto",
+    "sliderImage3": "Testo per la terza immagine segnaposto"
   },
   "imageSlider": {
     "noImages": "Nessuna immagine da visualizzare"

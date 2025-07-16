@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
       set: (email) => {
-        // Normalize Gmail addresses by removing dots and everything after +
         if (email.includes("@gmail.com")) {
           const [local, domain] = email.split("@");
           const normalizedLocal = local.replace(/\./g, "").split("+")[0];
@@ -22,7 +21,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       minlength: 8,
-      select: false, // Never return password in queries
+      select: false,
     },
     name: {
       type: String,
@@ -31,8 +30,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["admin"], // Only admin role exists now
-      default: "admin", // All users are admins
+      enum: ["admin"],
+      default: "admin",
       required: true,
     },
     isActive: {
@@ -67,7 +66,7 @@ const userSchema = new mongoose.Schema(
       email: { type: String, default: "Info@saidauto.ch" },
       phone: { type: String, default: "" },
       currency: { type: String, enum: ["CHF", "USD", "EGY"], default: "CHF" },
-      language: { type: String, enum: ["it", "en", "gr", "ar"], default: "it" },
+      language: { type: String, enum: ["it", "en", "de", "ar"], default: "it" },
       watermark: { type: String, default: "" },
       showNotes: { type: Boolean, default: false },
       showTerms: { type: Boolean, default: false },
@@ -79,16 +78,16 @@ const userSchema = new mongoose.Schema(
     toJSON: {
       virtuals: true,
       transform: function (doc, ret) {
-        delete ret.password; // Never return password
-        delete ret.__v; // Remove version key
+        delete ret.password;
+        delete ret.__v;
         return ret;
       },
     },
     toObject: {
       virtuals: true,
       transform: function (doc, ret) {
-        delete ret.password; // Never return password
-        delete ret.__v; // Remove version key
+        delete ret.password;
+        delete ret.__v;
         return ret;
       },
     },

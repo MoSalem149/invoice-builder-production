@@ -136,7 +136,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
       if (response.ok) {
         const data = await response.json();
         const client: Client = {
-          _id: data.data._id, // Only use _id
+          _id: data.data._id, 
           name: data.data.name,
           email: data.data.email,
           address: data.data.address,
@@ -280,7 +280,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
 
       dispatch({
         type: isArchived ? "UNARCHIVE_CLIENT" : "ARCHIVE_CLIENT",
-        payload: updatedClient._id, // Make sure to use _id here
+        payload: updatedClient._id, 
       });
 
       showSuccess(

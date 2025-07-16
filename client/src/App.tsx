@@ -1,4 +1,3 @@
-// App.tsx
 import React, { useState, useEffect, useCallback } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import { AppProvider } from "./context/AppContext";
@@ -251,7 +250,6 @@ const AppContent: React.FC = () => {
               )
             }
           />
-
           <Route
             path="/update-cars"
             element={
@@ -264,7 +262,6 @@ const AppContent: React.FC = () => {
               )
             }
           />
-
           <Route
             path="/manage-slider"
             element={

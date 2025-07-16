@@ -1,4 +1,3 @@
-// components/Landing/Carousel.tsx
 import React, { useState, useEffect, useCallback } from "react";
 import { Car } from "../../types";
 import { getPlaceholderImage } from "../../utils/placeholders";
@@ -13,7 +12,7 @@ interface CarouselProps {
 const Carousel: React.FC<CarouselProps> = ({ cars, onCarSelect }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoScroll, setAutoScroll] = useState(true);
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
 
   const cardsToShow = 3;
   const totalCards = cars?.length || 0;
@@ -91,7 +90,11 @@ const Carousel: React.FC<CarouselProps> = ({ cars, onCarSelect }) => {
               </div>
             </div>
             <div className="p-4 pt-2 flex-1 flex flex-col">
-              <h3 className="text-lg font-bold">
+              <h3
+                className={`text-lg font-bold ${
+                  isRTL ? "text-right" : "text-left"
+                }`}
+              >
                 {car.brand} {car.model}
               </h3>
               <p className="text-gray-600 text-sm mb-1">{car.year}</p>

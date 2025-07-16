@@ -508,7 +508,7 @@ const Settings: React.FC = () => {
             >
               <option value="it">{t("languages.italian")}</option>
               <option value="en">{t("languages.english")}</option>
-              <option value="gr">{t("languages.german")}</option>
+              <option value="de">{t("languages.german")}</option>
               {/* <option value="ar">{t("languages.arabic")}</option> */}
             </select>
           </div>

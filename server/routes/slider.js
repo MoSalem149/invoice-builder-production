@@ -257,8 +257,6 @@ router.delete("/:id", authenticate, authorize("admin"), async (req, res) => {
         filename
       );
 
-      console.log("Deletion path:", filePath); // Debug log
-
       try {
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);

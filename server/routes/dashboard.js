@@ -1,5 +1,4 @@
 import express from "express";
-import User from "../models/User.js";
 import Client from "../models/Client.js";
 import Product from "../models/Product.js";
 import Invoice from "../models/Invoice.js";
@@ -82,17 +81,22 @@ router.get("/stats", authenticate, async (req, res) => {
           {
             title: "Create New Invoice",
             description: "Generate a new invoice for your clients",
-            path: "/invoices/new",
-          },
-          {
-            title: "Settings",
-            description: "Configure your company details and preferences",
-            path: "/settings",
+            path: "/create",
           },
           {
             title: "View Invoice History",
             description: "Browse and manage your past invoices",
-            path: "/invoices",
+            path: "/history",
+          },
+          {
+            title: "Update Car Data",
+            description: "Manage and update vehicle information",
+            path: "/update-cars",
+          },
+          {
+            title: "Manage Slider",
+            description: "Configure homepage slider images",
+            path: "/manage-slider",
           },
         ],
       },

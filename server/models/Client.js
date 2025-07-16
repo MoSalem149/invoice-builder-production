@@ -38,7 +38,6 @@ const clientSchema = new mongoose.Schema(
   }
 );
 
-// Indexes for better query performance
 clientSchema.index({ userId: 1, name: 1 });
 clientSchema.index({ userId: 1, phone: 1 }, { sparse: true });
 clientSchema.index({ userId: 1, email: 1 }, { sparse: true });

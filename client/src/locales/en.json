@@ -22,7 +22,8 @@
     "unarchive": "Unarchive",
     "archived": "Archived",
     "active": "Active",
-    "retry": "Retry"
+    "retry": "Retry",
+    "loop": "Loop"
   },
   "errors": {
     "dashboardLoadFailed": "Failed to load dashboard",
@@ -594,7 +595,10 @@
     "exceptionalValue": "Exceptional Value",
     "discoverSelection": "Discover Switzrland's finest selection of luxury and performance vehicles",
     "featuredVehicles": "Featured Vehicles",
-    "loadingCars": "Loading cars..."
+    "loadingCars": "Loading cars...",
+    "sliderImage1": "Text for first placeholder image",
+    "sliderImage2": "Text for second placeholder image",
+    "sliderImage3": "Text for third placeholder image"
   },
   "imageSlider": {
     "noImages": "No images to display"

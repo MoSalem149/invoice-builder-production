@@ -22,7 +22,8 @@
     "unarchive": "إلغاء الأرشفة",
     "archived": "مؤرشف",
     "active": "نشط",
-    "retry": "إعادة المحاولة"
+    "retry": "إعادة المحاولة",
+    "loop": "حلقة"
   },
   "errors": {
     "dashboardLoadFailed": "فشل تحميل لوحة التحكم",
@@ -173,7 +174,8 @@
     "featured": "مميز",
     "cancel": "إلغاء",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "doors": "أبواب"
   },
   "invoice": {
     "invoice": "فاتورة",
@@ -593,7 +595,10 @@
     "exceptionalValue": "قيمة استثنائية",
     "discoverSelection": "اكتشف أفضل مجموعة من السيارات الفاخرة والعالية الأداء في سويسرا",
     "featuredVehicles": "المركبات المميزة",
-    "loadingCars": "جاري تحميل السيارات..."
+    "loadingCars": "جاري تحميل السيارات...",
+    "sliderImage1": "نص للصورة النائبة الأولى",
+    "sliderImage2": "نص للصورة النائبة الثانية",
+    "sliderImage3": "نص للصورة النائبة الثالثة"
   },
   "imageSlider": {
     "noImages": "لا توجد صور لعرضها"

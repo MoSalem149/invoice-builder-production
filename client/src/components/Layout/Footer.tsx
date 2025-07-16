@@ -1,4 +1,3 @@
-// components/Layout/Footer.tsx
 import React from "react";
 import { Mail, Phone } from "lucide-react";
 import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
