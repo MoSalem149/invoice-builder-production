@@ -100,6 +100,14 @@ const invoiceSchema = new mongoose.Schema(
       required: true,
       default: false,
     },
+    hideStatus: {
+      type: Boolean,
+      default: false,
+    },
+    showStatusWatermark: {
+      type: Boolean,
+      default: false,
+    },
     notes: {
       type: String,
       default: "",

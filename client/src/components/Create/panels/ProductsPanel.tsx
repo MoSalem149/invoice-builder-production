@@ -267,7 +267,9 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
   };
 
   const handleInputChange = (field: string, value: string | number) => {
-    setNewProduct({ ...newProduct, [field]: value });
+    const newValue =
+      (field === "price" || field === "discount") && value === "" ? 0 : value;
+    setNewProduct({ ...newProduct, [field]: newValue });
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: "" }));
     }
@@ -758,14 +760,13 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
                   type="number"
                   step="0.01"
                   min="0"
-                  value={newProduct.price}
-                  onChange={(e) =>
-                    handleInputChange("price", parseFloat(e.target.value) || 0)
-                  }
+                  value={newProduct.price || ""}
+                  onChange={(e) => handleInputChange("price", e.target.value)}
+                  onFocus={(e) => (e.target.value = "")}
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                     isRTL ? "text-right" : "text-left"
                   } ${errors.price ? "border-red-500" : "border-gray-300"}`}
-                  placeholder="0.00"
+                  placeholder="0"
                 />
                 {errors.price && (
                   <p
@@ -790,10 +791,11 @@ const ProductsPanel: React.FC<ProductsPanelProps> = ({
                   type="number"
                   min="0"
                   max="100"
-                  value={newProduct.discount}
+                  value={newProduct.discount || ""}
                   onChange={(e) =>
-                    handleInputChange("discount", parseInt(e.target.value) || 0)
+                    handleInputChange("discount", e.target.value)
                   }
+                  onFocus={(e) => (e.target.value = "")}
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
                     isRTL ? "text-right" : "text-left"
                   } ${errors.discount ? "border-red-500" : "border-gray-300"}`}

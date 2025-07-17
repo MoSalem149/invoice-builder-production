@@ -9,7 +9,6 @@ import {
   validateEmail,
   validatePhoneNumber,
   validateCompanyAddress,
-  validateWatermark,
   validateTaxRate,
 } from "../../utils/validation";
 
@@ -29,7 +28,6 @@ const Settings: React.FC = () => {
     email: state.company.email || "",
     phone: state.company.phone || "",
     address: state.company.address || "",
-    watermark: state.company.watermark || "",
     showNotes: state.company.showNotes || false,
     showTerms: state.company.showTerms || false,
     taxRate: state.company.taxRate || 0,
@@ -117,11 +115,6 @@ const Settings: React.FC = () => {
       if (addressError) newErrors.address = addressError;
     }
 
-    if (formData.watermark) {
-      const watermarkError = validateWatermark(formData.watermark, t);
-      if (watermarkError) newErrors.watermark = watermarkError;
-    }
-
     // Tax Rate validation (always validate if it exists)
     const taxRateError = validateTaxRate(formData.taxRate || 0, t);
     if (taxRateError) newErrors.taxRate = taxRateError;
@@ -166,7 +159,6 @@ const Settings: React.FC = () => {
             phone: formData.phone,
             currency: formData.currency,
             language: formData.language,
-            watermark: formData.watermark,
             showNotes: formData.showNotes,
             showTerms: formData.showTerms,
             taxRate: formData.taxRate,
@@ -220,7 +212,6 @@ const Settings: React.FC = () => {
       email: state.company.email || "",
       phone: state.company.phone || "",
       address: state.company.address || "",
-      watermark: state.company.watermark || "",
       showNotes: state.company.showNotes || false,
       showTerms: state.company.showTerms || false,
       taxRate: state.company.taxRate || 0,
@@ -535,47 +526,6 @@ const Settings: React.FC = () => {
               <option value="USD">{t("currencies.usd")}</option>
               {/* <option value="EGP">{t("currencies.egp")}</option> */}
             </select>
-          </div>
-
-          {/* Watermark */}
-          <div>
-            <label
-              className={`block text-sm font-medium text-gray-700 mb-2 ${
-                isRTL ? "text-right" : "text-left"
-              }`}
-            >
-              {t("settings.watermark")}
-            </label>
-            <input
-              type="text"
-              name="watermark"
-              value={formData.watermark}
-              onChange={handleInputChange}
-              disabled={!isEditing}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                isRTL ? "text-right" : "text-left"
-              } ${!isEditing ? "bg-gray-50 cursor-not-allowed" : ""} ${
-                errors.watermark ? "border-red-500" : "border-gray-300"
-              }`}
-              placeholder={t("settings.watermarkPlaceholder")}
-              dir={isRTL ? "rtl" : "ltr"}
-            />
-            {errors.watermark && (
-              <p
-                className={`text-red-500 text-sm mt-1 ${
-                  isRTL ? "text-right" : "text-left"
-                }`}
-              >
-                {errors.watermark}
-              </p>
-            )}
-            <p
-              className={`text-gray-500 text-xs mt-1 ${
-                isRTL ? "text-right" : "text-left"
-              }`}
-            >
-              {t("settings.watermarkHint")}
-            </p>
           </div>
 
           {/* Tax Rate */}

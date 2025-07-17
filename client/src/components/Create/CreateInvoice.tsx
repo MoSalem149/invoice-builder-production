@@ -195,6 +195,7 @@ const CreateInvoice: React.FC = () => {
         total: invoice.total!,
         notes: invoice.notes || "",
         terms: invoice.terms || "",
+        showStatusWatermark: invoice.showStatusWatermark,
       };
 
       downloadInvoicePDF(
@@ -218,7 +219,6 @@ const CreateInvoice: React.FC = () => {
       );
     }
   };
-
   const renderPanel = () => {
     if (!activePanel) return null;
 

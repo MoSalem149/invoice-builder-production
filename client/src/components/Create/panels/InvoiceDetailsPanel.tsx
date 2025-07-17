@@ -19,6 +19,8 @@ const InvoiceDetailsPanel: React.FC<InvoiceDetailsPanelProps> = ({
     number: invoice.number || "",
     date: invoice.date || new Date().toISOString().split("T")[0],
     paid: invoice.paid || false,
+    hideStatus: invoice.hideStatus || false,
+    showStatusWatermark: invoice.showStatusWatermark || false,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -28,6 +30,16 @@ const InvoiceDetailsPanel: React.FC<InvoiceDetailsPanelProps> = ({
 
   const handlePaidStatusChange = (isPaid: boolean) => {
     setFormData({ ...formData, paid: isPaid });
+  };
+
+  const toggleCheckbox = (field: keyof typeof formData) => {
+    const newValue = !formData[field];
+    setFormData({ ...formData, [field]: newValue });
+
+    // If hiding status, also hide the watermark
+    if (field === "hideStatus" && newValue) {
+      setFormData((prev) => ({ ...prev, showStatusWatermark: false }));
+    }
   };
 
   return (
@@ -102,54 +114,104 @@ const InvoiceDetailsPanel: React.FC<InvoiceDetailsPanelProps> = ({
             />
           </div>
 
-          {/* Paid Status */}
-          <div className="space-y-3">
-            <div className="flex items-center">
-              <button
-                type="button"
-                onClick={() => handlePaidStatusChange(true)}
-                className={`flex items-center justify-center h-6 w-6 rounded border-2 ${
-                  formData.paid
-                    ? "bg-green-500 border-green-500"
-                    : "border-gray-300"
-                } transition-colors`}
-              >
-                {formData.paid && (
-                  <Check className="h-4 w-4 text-white" strokeWidth={3} />
-                )}
-              </button>
-              <label
-                className={`${
-                  isRTL ? "mr-3" : "ml-3"
-                } text-sm font-medium text-gray-700`}
-              >
-                {t("invoice.paid")}
-              </label>
-            </div>
-
-            <div className="flex items-center">
-              <button
-                type="button"
-                onClick={() => handlePaidStatusChange(false)}
-                className={`flex items-center justify-center h-6 w-6 rounded border-2 ${
-                  !formData.paid
-                    ? "bg-red-500 border-red-500"
-                    : "border-gray-300"
-                } transition-colors`}
-              >
-                {!formData.paid && (
-                  <Check className="h-4 w-4 text-white" strokeWidth={3} />
-                )}
-              </button>
-              <label
-                className={`${
-                  isRTL ? "mr-3" : "ml-3"
-                } text-sm font-medium text-gray-700`}
-              >
-                {t("invoice.unpaid")}
-              </label>
-            </div>
+          {/* Hide Status Checkbox */}
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={() => toggleCheckbox("hideStatus")}
+              className={`flex items-center justify-center h-6 w-6 rounded border-2 ${
+                formData.hideStatus
+                  ? "bg-blue-500 border-blue-500"
+                  : "border-gray-300"
+              } transition-colors`}
+            >
+              {formData.hideStatus && (
+                <Check className="h-4 w-4 text-white" strokeWidth={3} />
+              )}
+            </button>
+            <label
+              className={`${
+                isRTL ? "mr-3" : "ml-3"
+              } text-sm font-medium text-gray-700`}
+            >
+              {t("details.hideStatus")}
+            </label>
           </div>
+
+          {/* Paid Status - Only shown when hideStatus is false */}
+          {!formData.hideStatus && (
+            <div className="space-y-3">
+              <div className="flex items-center">
+                <button
+                  type="button"
+                  onClick={() => handlePaidStatusChange(true)}
+                  className={`flex items-center justify-center h-6 w-6 rounded border-2 ${
+                    formData.paid
+                      ? "bg-green-500 border-green-500"
+                      : "border-gray-300"
+                  } transition-colors`}
+                >
+                  {formData.paid && (
+                    <Check className="h-4 w-4 text-white" strokeWidth={3} />
+                  )}
+                </button>
+                <label
+                  className={`${
+                    isRTL ? "mr-3" : "ml-3"
+                  } text-sm font-medium text-gray-700`}
+                >
+                  {t("invoice.paid")}
+                </label>
+              </div>
+
+              <div className="flex items-center">
+                <button
+                  type="button"
+                  onClick={() => handlePaidStatusChange(false)}
+                  className={`flex items-center justify-center h-6 w-6 rounded border-2 ${
+                    !formData.paid
+                      ? "bg-red-500 border-red-500"
+                      : "border-gray-300"
+                  } transition-colors`}
+                >
+                  {!formData.paid && (
+                    <Check className="h-4 w-4 text-white" strokeWidth={3} />
+                  )}
+                </button>
+                <label
+                  className={`${
+                    isRTL ? "mr-3" : "ml-3"
+                  } text-sm font-medium text-gray-700`}
+                >
+                  {t("invoice.unpaid")}
+                </label>
+              </div>
+
+              {/* Show Status Watermark Checkbox - Only shown when hideStatus is false */}
+              <div className="flex items-center pt-4">
+                <button
+                  type="button"
+                  onClick={() => toggleCheckbox("showStatusWatermark")}
+                  className={`flex items-center justify-center h-6 w-6 rounded border-2 ${
+                    formData.showStatusWatermark
+                      ? "bg-blue-500 border-blue-500"
+                      : "border-gray-300"
+                  } transition-colors`}
+                >
+                  {formData.showStatusWatermark && (
+                    <Check className="h-4 w-4 text-white" strokeWidth={3} />
+                  )}
+                </button>
+                <label
+                  className={`${
+                    isRTL ? "mr-3" : "ml-3"
+                  } text-sm font-medium text-gray-700`}
+                >
+                  {t("details.showStatusWatermark")}
+                </label>
+              </div>
+            </div>
+          )}
 
           {/* Submit Button */}
           <button

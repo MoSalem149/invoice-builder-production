@@ -23,7 +23,6 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({
   const { state } = useApp();
   const { t, isRTL } = useLanguage();
 
-  // Updated currency symbol logic
   const currencySymbol = () => {
     switch (state.company.currency) {
       case "CHF":
@@ -45,8 +44,8 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({
       style={{ minHeight: "11in", maxWidth: "8.5in", margin: "0 auto" }}
       dir={isRTL ? "rtl" : "ltr"}
     >
-      {/* Watermark - visible in both preview and print */}
-      {state.company.watermark && (
+      {/* Status Watermark */}
+      {invoice.showStatusWatermark && (
         <div
           className="fixed inset-0 flex items-center justify-center pointer-events-none z-0 opacity-10 print:opacity-20"
           style={{
@@ -60,77 +59,62 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({
               : "Arial, sans-serif",
           }}
         >
-          {state.company.watermark}
+          {invoice.paid ? t("invoice.paid") : t("invoice.unpaid")}
         </div>
       )}
 
-      {/* Header - NOT CLICKABLE */}
-      <div
-        className={`flex ${
-          isRTL ? "flex-row-reverse" : ""
-        } justify-between items-start mb-6 sm:mb-8`}
-      >
-        {/* Left side - INVOICE title */}
-        <div className={`${isRTL ? "text-right" : "text-left"}`}>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            {t("invoice.invoice")}
-          </h1>
-        </div>
+      {/* Centered Invoice Title */}
+      <div className="text-center mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+          {t("invoice.invoice")}
+        </h1>
+      </div>
 
-        {/* Right side - Company Logo */}
-        <div
-          className={`flex ${
-            isRTL ? "flex-row-reverse" : ""
-          } items-center justify-end`}
-        >
-          {state.company.logo && (
-            <img
-              src={state.company.logo}
-              alt="Company Logo"
-              className="object-contain h-auto w-auto 
-                        max-h-[80px] max-w-[160px] 
-                        md:max-h-[120px] md:max-w-[240px] 
-                        lg:max-h-[150px] lg:max-w-[300px]
-                        print:max-h-[150px] print:max-w-[300px]"
-            />
+      {/* Logo above company info */}
+      {state.company.logo && (
+        <div className="mb-4">
+          <img
+            src={state.company.logo}
+            alt="Company Logo"
+            className="object-contain h-auto w-auto 
+                      max-h-[80px] max-w-[160px] 
+                      md:max-h-[120px] md:max-w-[240px] 
+                      lg:max-h-[150px] lg:max-w-[300px]
+                      print:max-h-[150px] print:max-w-[300px]"
+          />
+        </div>
+      )}
+
+      {/* Company and Client info in same row */}
+      <div className="flex flex-col sm:flex-row justify-between mb-6 sm:mb-8">
+        {/* Company Info - Left */}
+        <div className={`${isRTL ? "text-right" : "text-left"} mb-4 sm:mb-0`}>
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+            {state.company.name}
+          </h2>
+          <p className="text-gray-600 whitespace-pre-line text-sm sm:text-base">
+            {state.company.address}
+          </p>
+          {state.company.email && (
+            <p className="text-gray-600 text-sm sm:text-base">
+              {state.company.email}
+            </p>
+          )}
+          {state.company.phone && (
+            <p className="text-gray-600 text-sm sm:text-base">
+              {state.company.phone}
+            </p>
           )}
         </div>
-      </div>
 
-      {/* Company Info - NOT CLICKABLE */}
-      <div className={`mb-6 sm:mb-8 ${isRTL ? "text-right" : "text-left"}`}>
-        <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
-          {state.company.name}
-        </h2>
-        <p className="text-gray-600 whitespace-pre-line text-sm sm:text-base">
-          {state.company.address}
-        </p>
-        {state.company.email && (
-          <p className="text-gray-600 text-sm sm:text-base">
-            {state.company.email}
-          </p>
-        )}
-        {state.company.phone && (
-          <p className="text-gray-600 text-sm sm:text-base">
-            {state.company.phone}
-          </p>
-        )}
-      </div>
-
-      {/* Invoice Details and Bill To */}
-      <div
-        className={`grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-6 sm:mb-8 ${
-          isRTL ? "text-right" : ""
-        }`}
-      >
-        {/* Bill To Section - CLICKABLE */}
+        {/* Client Info - Right */}
         <div
           className={`${
-            isRTL ? "order-2 lg:order-2" : "order-1 lg:order-1"
+            isRTL ? "text-right" : "text-left"
           } cursor-pointer hover:bg-blue-50 p-2 rounded transition-colors print:hover:bg-transparent print:cursor-default print:p-0`}
           onClick={onClientClick}
         >
-          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
             {t("invoice.billTo")}
           </h3>
           {invoice.client ? (
@@ -148,42 +132,48 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({
             </p>
           )}
         </div>
+      </div>
 
-        {/* Invoice Details Section - CLICKABLE */}
+      {/* Centered Invoice Details with equal spacing */}
+      <div
+        className={`flex justify-center mb-6 sm:mb-8 ${
+          isRTL ? "text-left" : "text-right"
+        }`}
+      >
         <div
-          className={`${
-            isRTL
-              ? "text-left order-1 lg:order-1"
-              : "text-right order-2 lg:order-2"
-          } cursor-pointer hover:bg-blue-50 rounded transition-colors print:hover:bg-transparent print:cursor-default print:p-0 border border-gray-300 p-4`} // Added border and padding here
+          className="cursor-pointer hover:bg-blue-50 rounded transition-colors print:hover:bg-transparent print:cursor-default print:p-0 border border-gray-300 p-4 w-full max-w-2xl"
           onClick={onDetailsClick}
         >
-          <div className="mb-4">
-            <p className="text-xs sm:text-sm text-gray-600">
-              {t("invoice.invoiceNumber")}
-            </p>
-            <p className="font-medium text-gray-900 text-sm sm:text-base">
-              {invoice.number || "INV-0001"}
-            </p>
-          </div>
-          <div className="mb-4">
-            <p className="text-xs sm:text-sm text-gray-600">
-              {t("invoice.invoiceDate")}
-            </p>
-            <p className="font-medium text-gray-900 text-sm sm:text-base">
-              {invoice.date || t("invoice.selectDate")}
-            </p>
-          </div>
-          <div className="mb-4">
-            <p className="text-xs sm:text-sm text-gray-600">Status</p>
-            <p className="font-medium text-gray-900 text-sm sm:text-base">
-              {invoice.paid ? t("invoice.paid") : t("invoice.unpaid")}
-            </p>
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <p className="text-xs sm:text-sm text-gray-600">
+                {t("invoice.invoiceNumber")}
+              </p>
+              <p className="font-medium text-gray-900 text-sm sm:text-base">
+                {invoice.number || "INV-0001"}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs sm:text-sm text-gray-600">
+                {t("invoice.invoiceDate")}
+              </p>
+              <p className="font-medium text-gray-900 text-sm sm:text-base">
+                {invoice.date || t("invoice.selectDate")}
+              </p>
+            </div>
+            {!invoice.hideStatus && (
+              <div>
+                <p className="text-xs sm:text-sm text-gray-600">Status</p>
+                <p className="font-medium text-gray-900 text-sm sm:text-base">
+                  {invoice.paid ? t("invoice.paid") : t("invoice.unpaid")}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Items Table - CLICKABLE */}
+      {/* Items Table */}
       <div
         className="mb-6 sm:mb-8 cursor-pointer hover:bg-blue-50 p-2 rounded transition-colors print:hover:bg-transparent print:cursor-default print:p-0 overflow-x-auto"
         onClick={onProductsClick}
@@ -259,12 +249,12 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({
         </table>
       </div>
 
+      {/* Totals */}
       <div
         className={`flex ${
           isRTL ? "justify-start" : "justify-end"
         } mb-6 sm:mb-8`}
       >
-        {/* Totals - NOT CLICKABLE */}
         <div className="w-full sm:w-64">
           <div className="flex justify-between mb-2 text-sm sm:text-base">
             <span className="text-gray-700">{t("invoice.subtotal")}</span>
@@ -292,7 +282,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({
         </div>
       </div>
 
-      {/* Notes - CLICKABLE - Only show if showNotes is true or there are notes */}
+      {/* Notes */}
       {(state.company.showNotes || invoice.notes) && (
         <div
           className={`mb-4 sm:mb-6 ${
@@ -313,7 +303,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({
         </div>
       )}
 
-      {/* Terms - CLICKABLE - Only show if showTerms is true or there are terms */}
+      {/* Terms */}
       {(state.company.showTerms || invoice.terms) && (
         <div
           className={`${

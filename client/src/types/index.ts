@@ -148,6 +148,8 @@ export interface Invoice {
   tax: number;
   total: number;
   paid: boolean;
+  hideStatus?: boolean;
+  showStatusWatermark?: boolean;
   notes?: string;
   terms?: string;
   createdAt?: string;

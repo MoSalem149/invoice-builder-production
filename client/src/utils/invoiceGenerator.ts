@@ -132,7 +132,7 @@ const translations = {
     de: "Klicken Sie, um Produkte hinzuzufügen",
   },
   clickToAddNotes: {
-    it: "Clicca per aggiungere note",
+    it: "Clicca per aggiungere nota",
     en: "Click to add notes",
     ar: "انقر لإضافة ملاحظات",
     de: "Klicken Sie, um Notizen hinzuzufügen",
@@ -208,15 +208,12 @@ export const generateInvoicePDF = (
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
           }
           
-          .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+          .invoice-title {
+            text-align: center;
             margin-bottom: 24px;
-            flex-direction: ${isRTL ? "row-reverse" : "row"};
           }
           
-          .invoice-title {
+          .invoice-title h1 {
             font-size: 24px;
             font-weight: bold;
             color: #111827;
@@ -228,6 +225,7 @@ export const generateInvoicePDF = (
             width: auto;
             max-height: 80px;
             max-width: 160px;
+            margin-bottom: 16px;
           }
           
           @media (min-width: 640px) {
@@ -262,37 +260,29 @@ export const generateInvoicePDF = (
             white-space: pre-line;
           }
           
-          .invoice-details {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 24px;
+          .flex-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             margin-bottom: 24px;
           }
           
-          @media (min-width: 1024px) {
-            .invoice-details {
-              grid-template-columns: 1fr 1fr;
+          @media (min-width: 640px) {
+            .flex-container {
+              flex-direction: row;
             }
           }
           
           .bill-to {
             text-align: ${isRTL ? "right" : "left"};
-            order: ${isRTL ? "2" : "1"};
-          }
-          
-          .invoice-info {
-            text-align: ${isRTL ? "left" : "right"};
-            order: ${isRTL ? "1" : "2"};
-            border: 1px solid #d1d5db;
-            padding: 16px;
-            border-radius: 4px;
-          }
-          
-          .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #111827;
             margin-bottom: 16px;
+            cursor: pointer;
+          }
+          
+          @media (min-width: 640px) {
+            .bill-to {
+              margin-bottom: 0;
+            }
           }
           
           .client-name {
@@ -309,8 +299,26 @@ export const generateInvoicePDF = (
             font-size: 14px;
           }
           
+          .invoice-meta-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+          }
+          
           .invoice-meta {
-            margin-bottom: 16px;
+            cursor: pointer;
+            border: 1px solid #d1d5db;
+            padding: 16px;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 640px;
+          }
+          
+          .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            text-align: center;
           }
           
           .meta-label {
@@ -326,55 +334,97 @@ export const generateInvoicePDF = (
           }
           
           .items-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 24px;
-            border: 1px solid #d1d5db;
-            font-size: 12px;
-            min-width: 100%;
-          }
-          
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 24px;
+          border: 1px solid #d1d5db;
+          min-width: 100%;
+          cursor: pointer;
+        }
+
+        .items-table th {
+          background-color: #f9fafb;
+          border: 1px solid #d1d5db;
+          padding: 8px 8px;
+          text-align: ${isRTL ? "right" : "left"};
+          font-size: 12px;
+          font-weight: normal;
+        }
+
+        @media (min-width: 640px) {
           .items-table th {
-            background-color: #f9fafb;
-            border: 1px solid #d1d5db;
             padding: 8px 16px;
-            text-align: ${isRTL ? "right" : "left"};
-            font-weight: normal;
+            font-size: 14px;
           }
-          
+        }
+
+        .items-table td {
+          border: 1px solid #d1d5db;
+          padding: 8px 8px;
+          font-size: 12px;
+        }
+
+        @media (min-width: 640px) {
           .items-table td {
-            border: 1px solid #d1d5db;
             padding: 8px 16px;
+            font-size: 14px;
           }
-          
-          .items-table th:nth-child(2),
-          .items-table td:nth-child(2),
-          .items-table th:nth-child(3),
-          .items-table td:nth-child(3),
-          .items-table th:nth-child(4),
-          .items-table td:nth-child(4) {
-            width: 96px;
-            text-align: center;
-          }
-          
-          .items-table td:nth-child(4) {
-            text-align: ${isRTL ? "left" : "right"};
-          }
-          
+        }
+
+        .items-table th:nth-child(1),
+        .items-table td:nth-child(1) {
+          text-align: ${isRTL ? "right" : "left"};
+          max-width: 300px;
+        }
+
+        .items-table th:nth-child(2),
+        .items-table td:nth-child(2),
+        .items-table th:nth-child(3),
+        .items-table td:nth-child(3),
+        .items-table th:nth-child(4),
+        .items-table td:nth-child(4) {
+          width: 96px;
+          text-align: center;
+        }
+
+        .product-name {
+          font-weight: 500;
+          color: #111827;
+          font-size: 12px;
+        }
+
+        @media (min-width: 640px) {
           .product-name {
-            font-weight: 500;
-            margin-bottom: 4px;
-            font-size: 12px;
-            color: #111827;
+            font-size: 16px;
           }
-          
+        }
+
+        .product-description {
+          font-size: 11px;
+          color: #6b7280;
+          white-space: pre-wrap;
+          word-wrap: break-word;
+          margin-left: -60px;
+        }
+
+        @media (min-width: 640px) {
           .product-description {
-            font-size: 11px;
-            color: #6b7280;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            margin-top: 4px;
+            font-size: 12px;
           }
+        }
+
+        /* Add hover effect container */
+        .items-table-container {
+          margin-bottom: 24px;
+          cursor: pointer;
+          overflow-x: auto;
+        }
+
+        @media (min-width: 640px) {
+          .items-table-container {
+            margin-bottom: 32px;
+          }
+        }
           
           .totals {
             display: flex;
@@ -406,6 +456,14 @@ export const generateInvoicePDF = (
           .terms-section {
             margin-bottom: 16px;
             text-align: ${isRTL ? "right" : "left"};
+            cursor: pointer;
+          }
+          
+          .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 8px;
           }
           
           .section-content {
@@ -448,6 +506,10 @@ export const generateInvoicePDF = (
             color: #9ca3af;
           }
           
+          .print-hidden {
+            display: none;
+          }
+          
           @media print {
             body {
               padding: 0;
@@ -473,50 +535,58 @@ export const generateInvoicePDF = (
             }
           }
         </style>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
       </head>
       <body>
         <div class="invoice-container">
           <!-- Watermark -->
           ${
-            companyInfo.watermark
+            invoice.showStatusWatermark
+              ? `<div class="watermark">${
+                  invoice.paid ? t("paid") : t("unpaid")
+                }</div>`
+              : companyInfo.watermark
               ? `<div class="watermark">${companyInfo.watermark}</div>`
               : ""
           }
           
-          <!-- Header -->
-          <div class="header">
-            <div class="invoice-title">${t("invoice")}</div>
-            ${
-              companyInfo.logo
-                ? `<img src="${companyInfo.logo}" alt="Company Logo" class="company-logo">`
-                : ""
-            }
+          <!-- Centered Invoice Title -->
+          <div class="invoice-title">
+            <h1>${t("invoice")}</h1>
           </div>
           
-          <!-- Company Info -->
-          <div class="company-info">
-            <div class="company-name">${companyInfo.name}</div>
-            ${
-              companyInfo.address
-                ? `<div class="company-address">${companyInfo.address}</div>`
-                : ""
-            }
-            ${
-              companyInfo.email
-                ? `<div class="company-contact">${companyInfo.email}</div>`
-                : ""
-            }
-            ${
-              companyInfo.phone
-                ? `<div class="company-contact">${companyInfo.phone}</div>`
-                : ""
-            }
-          </div>
+          <!-- Logo -->
+          ${
+            companyInfo.logo
+              ? `<img src="${companyInfo.logo}" alt="Company Logo" class="company-logo">`
+              : ""
+          }
           
-          <!-- Invoice Details -->
-          <div class="invoice-details">
+          <!-- Company and Client Info -->
+          <div class="flex-container">
+            <!-- Company Info -->
+            <div class="company-info">
+              <h2 class="company-name">${companyInfo.name}</h2>
+              ${
+                companyInfo.address
+                  ? `<p class="company-address">${companyInfo.address}</p>`
+                  : ""
+              }
+              ${
+                companyInfo.email
+                  ? `<p class="company-contact">${companyInfo.email}</p>`
+                  : ""
+              }
+              ${
+                companyInfo.phone
+                  ? `<p class="company-contact">${companyInfo.phone}</p>`
+                  : ""
+              }
+            </div>
+            
+            <!-- Client Info -->
             <div class="bill-to">
-              <div class="section-title">${t("billTo")}</div>
+              <h3 class="section-title">${t("billTo")}</h3>
               ${
                 invoice.client
                   ? `
@@ -542,79 +612,91 @@ export const generateInvoicePDF = (
                     )}</p>`
               }
             </div>
-            
-            <div class="invoice-info">
-              <div class="invoice-meta">
-                <div class="meta-label">${t("invoiceNumber")}</div>
-                <div class="meta-value">${invoice.number || "INV-0001"}</div>
-              </div>
-              <div class="invoice-meta">
-                <div class="meta-label">${t("invoiceDate")}</div>
-                <div class="meta-value">${
-                  invoice.date.split("T")[0] || t("selectDate")
-                }</div>
-              </div>
-              <div class="invoice-meta">
-                <div class="meta-label">${t("status")}</div>
-                <div class="meta-value">${
-                  invoice.paid ? t("paid") : t("unpaid")
-                }</div>
+          </div>
+          
+          <!-- Invoice Details -->
+          <div class="invoice-meta-container">
+            <div class="invoice-meta">
+              <div class="meta-grid">
+                <div>
+                  <div class="meta-label">${t("invoiceNumber")}</div>
+                  <div class="meta-value">${invoice.number || "INV-0001"}</div>
+                </div>
+                <div>
+                  <div class="meta-label">${t("invoiceDate")}</div>
+                  <div class="meta-value">${
+                    invoice.date.split("T")[0] || t("selectDate")
+                  }</div>
+                </div>
+                <div>
+                  <div class="meta-label">${t("status")}</div>
+                  <div class="meta-value">${
+                    invoice.paid ? t("paid") : t("unpaid")
+                  }</div>
+                </div>
               </div>
             </div>
           </div>
           
           <!-- Items Table -->
-          <table class="items-table">
-            <thead>
-              <tr>
-                <th>${t("product")}</th>
-                <th>${t("price")}</th>
-                <th>${t("discount")}</th>
-                <th>${t("amount")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${
-                invoice.items && invoice.items.length > 0
-                  ? invoice.items
-                      .map(
-                        (item) => `
-                    <tr>
-                      <td style="max-width: 300px; word-wrap: break-word;">
-                        <div class="product-name" style="font-weight: 500; margin-bottom: 4px;">
-                          ${item.name}${
-                          item.quantity !== 1 ? ` × ${item.quantity}` : ""
-                        }
-                        </div>
-                        ${
-                          item.description
-                            ? `<div class="product-description" style="color: #6b7280; font-size: 11px; margin-top: 4px; white-space: pre-wrap; word-wrap: break-word;">
-                                ${item.description}
-                              </div>`
-                            : ""
-                        }
-                      </td>
-                      <td>${currencySymbol}${(
-                          item.amount /
-                          item.quantity /
-                          (1 - item.discount / 100)
-                        ).toFixed(2)}</td>
-                      <td>${item.discount}%</td>
-                      <td>${currencySymbol}${item.amount.toFixed(2)}</td>
-                    </tr>
-                  `
-                      )
-                      .join("")
-                  : `
-                    <tr class="print-hidden">
-                      <td colspan="4" class="text-gray-400 italic" style="text-align: center; padding: 24px 16px;">
-                        ${t("clickToAddProducts")}
-                      </td>
-                    </tr>
-                  `
-              }
-            </tbody>
-          </table>
+<div class="items-table-container">
+  <table class="items-table">
+    <thead>
+      <tr>
+        <th>${t("product")}</th>
+        <th>${t("price")}</th>
+        <th>${t("discount")}</th>
+        <th>${t("amount")}</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${
+        invoice.items && invoice.items.length > 0
+          ? invoice.items
+              .map(
+                (item) => `
+            <tr>
+              <td>
+                <div class="product-name">
+                  ${item.name}${
+                  item.quantity !== 1 ? ` × ${item.quantity}` : ""
+                }
+                </div>
+                ${
+                  item.description
+                    ? `<div class="product-description">
+                        ${item.description}
+                      </div>`
+                    : ""
+                }
+              </td>
+              <td>${currencySymbol}${
+                  // Ensure all values are numbers before calculation
+                  item.amount && item.quantity && item.discount
+                    ? (
+                        item.amount /
+                        item.quantity /
+                        (1 - (item.discount || 0) / 100)
+                      ).toFixed(2)
+                    : "0.00"
+                }</td>
+              <td>${item.discount || 0}%</td>
+              <td>${currencySymbol}${(item.amount || 0).toFixed(2)}</td>
+            </tr>
+          `
+              )
+              .join("")
+          : `
+      <tr class="print-hidden">
+        <td colspan="4" style="text-align: center; padding: 24px 16px;" class="text-gray-400 italic">
+          ${t("clickToAddProducts")}
+        </td>
+      </tr>
+          `
+      }
+    </tbody>
+  </table>
+</div>
           
           <!-- Totals -->
           <div class="totals">

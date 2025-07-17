@@ -61,11 +61,6 @@ router.put(
       .isIn(["it", "en", "de", "ar"])
       .withMessage("Invalid language")
       .default("it"),
-    body("watermark")
-      .optional()
-      .trim()
-      .isLength({ max: 10 })
-      .withMessage("Watermark must be 10 characters or less"),
     body("taxRate")
       .optional()
       .isFloat({ min: 0, max: 100 })

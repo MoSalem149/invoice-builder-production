@@ -320,7 +320,9 @@
   },
   "details": {
     "invoiceDetails": "تفاصيل الفاتورة",
-    "updateDetails": "تحديث التفاصيل"
+    "updateDetails": "تحديث التفاصيل",
+    "hideStatus": "إخفاء الحالة",
+    "showStatusWatermark": "عرض علامة مائية للحالة"
   },
   "notes": {
     "notes": "ملاحظات",

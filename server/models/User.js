@@ -67,7 +67,6 @@ const userSchema = new mongoose.Schema(
       phone: { type: String, default: "" },
       currency: { type: String, enum: ["CHF", "USD", "EGY"], default: "CHF" },
       language: { type: String, enum: ["it", "en", "de", "ar"], default: "it" },
-      watermark: { type: String, default: "" },
       showNotes: { type: Boolean, default: false },
       showTerms: { type: Boolean, default: false },
       taxRate: { type: Number, default: 0, min: 0, max: 100 },

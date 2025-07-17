@@ -320,7 +320,9 @@
   },
   "details": {
     "invoiceDetails": "Invoice Details",
-    "updateDetails": "Update Details"
+    "updateDetails": "Update Details",
+    "hideStatus": "Hide status",
+    "showStatusWatermark": "Show status watermark"
   },
   "notes": {
     "notes": "Notes",

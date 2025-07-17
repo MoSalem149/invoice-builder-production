@@ -193,12 +193,12 @@
     "subtotal": "Subtotale:",
     "totalTax": "IVA:",
     "total": "Totale:",
-    "notes": "Note:",
+    "notes": "Nota:",
     "terms": "Termini & Condizioni:",
     "clickToSelectClient": "Clicca per selezionare il cliente",
     "selectDate": "Seleziona data",
     "clickToAddProducts": "Clicca \"Aggiungi Prodotti\" per aggiungere articoli",
-    "clickToAddNotes": "Clicca per aggiungere note",
+    "clickToAddNotes": "Clicca per aggiungere nota",
     "clickToAddTerms": "Clicca per aggiungere termini e condizioni",
     "editInvoice": "Modifica Fattura {number}",
     "updateInvoice": "Aggiorna Fattura",
@@ -320,13 +320,15 @@
   },
   "details": {
     "invoiceDetails": "Dettagli Fattura",
-    "updateDetails": "Aggiorna Dettagli"
+    "updateDetails": "Aggiorna Dettagli",
+    "hideStatus": "Nascondi stato",
+    "showStatusWatermark": "Mostra filigrana di stato"
   },
   "notes": {
-    "notes": "Note",
-    "additionalNotes": "Note Aggiuntive",
-    "addNotesPlaceholder": "Aggiungi eventuali note o commenti per questa fattura...",
-    "updateNotes": "Aggiorna Note"
+    "notes": "Nota",
+    "additionalNotes": "Nota Aggiuntive",
+    "addNotesPlaceholder": "Aggiungi eventuali Nota o commenti per questa fattura...",
+    "updateNotes": "Aggiorna Nota"
   },
   "settings": {
     "title": "Impostazioni Fattura",
@@ -345,7 +347,7 @@
     "watermark": "Filigrana",
     "watermarkPlaceholder": "Inserisci testo per filigrana",
     "watermarkHint": "Testo opzionale da mostrare come filigrana sulle fatture",
-    "showNotes": "Mostra sezione Note",
+    "showNotes": "Mostra sezione Nota",
     "showTerms": "Mostra sezione Termini & Condizioni",
     "enterCompanyName": "Inserisci il nome della tua azienda",
     "enterCompanyAddress": "Inserisci l'indirizzo della tua azienda",

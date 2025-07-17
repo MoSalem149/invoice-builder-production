@@ -320,7 +320,9 @@
   },
   "details": {
     "invoiceDetails": "Rechnungsdetails",
-    "updateDetails": "Details aktualisieren"
+    "updateDetails": "Details aktualisieren",
+    "hideStatus": "Status ausblenden",
+    "showStatusWatermark": "Status-Wasserzeichen anzeigen"
   },
   "notes": {
     "notes": "Notizen",
