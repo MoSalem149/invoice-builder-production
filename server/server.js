@@ -59,7 +59,7 @@ app.use("/uploads", (req, res, next) => {
 });
 
 // ✅ Serve static files from /public/uploads
-app.use("/uploads", express.static(join(__dirname, "public", "uploads")));
+app.use("/uploads", express.static(join(process.cwd(), "public", "uploads")));
 
 // CORS for API
 app.use(

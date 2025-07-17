@@ -190,7 +190,11 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
             <div key={index} className="swiper-slide h-full w-full">
               <div className="w-full h-full flex items-center justify-center">
                 <img
-                  src={imageUrl}
+                  src={
+                    imageUrl.startsWith("http")
+                      ? imageUrl
+                      : `${import.meta.env.VITE_API_URL}${imageUrl}`
+                  }
                   alt={`Slider image ${index + 1}`}
                   className="w-full h-full object-cover"
                   loading="lazy"

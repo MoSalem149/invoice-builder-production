@@ -59,15 +59,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ onCarSelect }) => {
           `${import.meta.env.VITE_API_URL}/api/slider-images`
         );
         const data = await response.json();
+
         if (data.success) {
-          setSliderImages(data.data.map((img: SliderImage) => img.imageUrl));
+          // Ensure absolute URLs
+          setSliderImages(
+            data.data.map((img: SliderImage) =>
+              img.imageUrl.startsWith("http")
+                ? img.imageUrl
+                : `${import.meta.env.VITE_API_URL}${img.imageUrl}`
+            )
+          );
         } else {
-          // If API call fails but returns success: false
           setSliderImages([]);
         }
       } catch (error) {
         console.error("Error fetching slider images:", error);
-        // Use placeholder images when API fails
         setSliderImages([
           getPlaceholderImage(1200, 400, t("landing.sliderImage1")),
           getPlaceholderImage(1200, 400, t("landing.sliderImage2")),

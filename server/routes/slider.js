@@ -164,7 +164,10 @@ router.post(
         });
       }
 
-      const imageUrl = `/uploads/slider/${req.file.filename}`;
+      const imageUrl =
+        process.env.NODE_ENV === "production"
+          ? `${process.env.CLIENT_URL}/uploads/slider/${req.file.filename}`
+          : `/uploads/slider/${req.file.filename}`;
 
       // Get current settings
       const currentSettings =
