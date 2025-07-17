@@ -1,0 +1,24 @@
+{
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@railway/node",
+      "config": {
+        "runtime": "nodejs",
+        "installCommand": "npm install",
+        "buildCommand": "npm run build",
+        "startCommand": "node server.js"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "NODE_OPTIONS": "--max-old-space-size=1024"
+  }
+}

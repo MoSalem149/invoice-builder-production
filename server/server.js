@@ -19,6 +19,16 @@ import dashboardRoutes from "./routes/dashboard.js";
 import carRoutes from "./routes/cars.js";
 import sliderRoutes from "./routes/slider.js";
 
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("Unhandled Rejection:", err);
+  process.exit(1);
+});
+
 dotenv.config();
 
 // Setup __dirname
@@ -47,19 +57,20 @@ app.use(helmet());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-// ✅ FIX: Add CORS headers BEFORE serving static images
-app.use("/uploads", (req, res, next) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    process.env.CLIENT_URL || "http://localhost:3000"
-  );
-  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");
-  next();
-});
-
-// ✅ Serve static files from /public/uploads
-app.use("/uploads", express.static(join(process.cwd(), "public", "uploads")));
+const uploadsPath = join(process.cwd(), "public", "uploads");
+app.use(
+  "/uploads",
+  express.static(uploadsPath, {
+    setHeaders: (res) => {
+      res.setHeader(
+        "Access-Control-Allow-Origin",
+        process.env.CLIENT_URL || "*"
+      );
+      res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+      res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+    },
+  })
+);
 
 // CORS for API
 app.use(
@@ -81,13 +92,17 @@ app.use("/api/", limiter);
 
 // MongoDB connection
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URI, {
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000,
+    connectTimeoutMS: 30000,
+  })
   .then(() => {
     console.log("✅ Connected to MongoDB");
     createAdminUser();
   })
   .catch((err) => {
-    console.error("❌ MongoDB error:", err);
+    console.error("❌ MongoDB connection error:", err);
     process.exit(1);
   });
 
@@ -156,6 +171,8 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+const server = app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
+
+server.keepAliveTimeout = 60000;
