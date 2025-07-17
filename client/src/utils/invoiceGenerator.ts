@@ -550,7 +550,9 @@ export const generateInvoicePDF = (
               </div>
               <div class="invoice-meta">
                 <div class="meta-label">${t("invoiceDate")}</div>
-                <div class="meta-value">${invoice.date || t("selectDate")}</div>
+                <div class="meta-value">${
+                  invoice.date.split("T")[0] || t("selectDate")
+                }</div>
               </div>
               <div class="invoice-meta">
                 <div class="meta-label">${t("status")}</div>

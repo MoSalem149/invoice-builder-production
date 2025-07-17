@@ -15,7 +15,7 @@ router.get("/", authenticate, async (req, res) => {
     const filter = { userId: req.user._id };
 
     if (status) {
-      filter.paid = status === "paid"; // Convert status query to boolean
+      filter.paid = status === "paid";
     }
 
     // Add search functionality
@@ -38,12 +38,18 @@ router.get("/", authenticate, async (req, res) => {
       .skip((options.page - 1) * options.limit)
       .lean();
 
+    // Format dates to YYYY-MM-DD
+    const formattedInvoices = invoices.map((invoice) => ({
+      ...invoice,
+      date: invoice.date.toISOString().split("T")[0],
+    }));
+
     const total = await Invoice.countDocuments(filter);
 
     res.json({
       success: true,
       data: {
-        invoices,
+        invoices: formattedInvoices,
         pagination: {
           page: options.page,
           limit: options.limit,
@@ -77,6 +83,8 @@ router.get("/:id", authenticate, async (req, res) => {
         message: "Invoice not found",
       });
     }
+
+    invoice.date = invoice.date.toISOString().split("T")[0];
 
     res.json({
       success: true,
@@ -334,10 +342,16 @@ router.put(
         });
       }
 
+      // Format date to YYYY-MM-DD
+      const formattedInvoice = {
+        ...invoice.toObject(),
+        date: invoice.date.toISOString().split("T")[0],
+      };
+
       res.json({
         success: true,
         message: "Invoice updated successfully",
-        data: invoice,
+        data: formattedInvoice,
       });
     } catch (error) {
       console.error("Update invoice error:", error);
@@ -380,10 +394,16 @@ router.put(
         });
       }
 
+      // Format date to YYYY-MM-DD
+      const formattedInvoice = {
+        ...invoice.toObject(),
+        date: invoice.date.toISOString().split("T")[0],
+      };
+
       res.json({
         success: true,
         message: "Invoice status updated successfully",
-        data: invoice,
+        data: formattedInvoice,
       });
     } catch (error) {
       console.error("Update invoice status error:", error);

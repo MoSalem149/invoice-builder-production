@@ -27,7 +27,7 @@ const CreateInvoice: React.FC = () => {
   const [invoice, setInvoice] = useState<Partial<Invoice>>({
     number: `INV-${String(state.invoices.length + 1).padStart(4, "0")}`,
     date: new Date().toISOString().split("T")[0],
-    paid: false, // Added paid status with default false
+    paid: false,
     items: [],
     subtotal: 0,
     tax: 0,
@@ -111,7 +111,7 @@ const CreateInvoice: React.FC = () => {
       const invoiceData: Partial<Invoice> = {
         number: invoice.number!,
         date: invoice.date!,
-        paid: invoice.paid!, // Include paid status
+        paid: invoice.paid!,
         client: invoiceClient,
         items: invoice.items.map((item) => ({
           id: item.id || Date.now().toString(),
@@ -151,7 +151,7 @@ const CreateInvoice: React.FC = () => {
           setInvoice({
             number: `INV-${String(state.invoices.length + 2).padStart(4, "0")}`,
             date: new Date().toISOString().split("T")[0],
-            paid: false, // Reset paid status for new invoices
+            paid: false,
             items: [],
             subtotal: 0,
             tax: 0,

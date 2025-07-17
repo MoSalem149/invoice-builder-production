@@ -17,7 +17,7 @@ const InvoiceDetailsPanel: React.FC<InvoiceDetailsPanelProps> = ({
   const { t, isRTL } = useLanguage();
   const [formData, setFormData] = useState({
     number: invoice.number || "",
-    date: invoice.date || "",
+    date: invoice.date || new Date().toISOString().split("T")[0],
     paid: invoice.paid || false,
   });
 
