@@ -74,13 +74,13 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({
       {state.company.logo && (
         <div className="mb-4">
           <img
-            src={state.company.logo}
+            src={state.company.logo || "/images/default-logo.png"}
             alt="Company Logo"
             className="object-contain h-auto w-auto 
-                      max-h-[80px] max-w-[160px] 
-                      md:max-h-[120px] md:max-w-[240px] 
-                      lg:max-h-[150px] lg:max-w-[300px]
-                      print:max-h-[150px] print:max-w-[300px]"
+              max-h-[80px] max-w-[160px] 
+              md:max-h-[120px] md:max-w-[240px] 
+              lg:max-h-[150px] lg:max-w-[300px]
+              print:max-h-[150px] print:max-w-[300px]"
           />
         </div>
       )}
