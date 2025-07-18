@@ -451,7 +451,12 @@ router.post(
         });
       }
 
-      const invoiceHtml = req.file.buffer.toString("utf8");
+      const invoiceHtml = req.file.buffer
+        .toString("utf8")
+        .replace(
+          /src="\//g,
+          `src="${process.env.BASE_URL || "http://localhost:5000"}/`
+        );
 
       const pdfBuffer = await htmlToPdf(invoiceHtml);
 

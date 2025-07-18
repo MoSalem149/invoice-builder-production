@@ -577,8 +577,12 @@ export const generateInvoicePDF = (
           
           <!-- Logo -->
           ${
-            companyInfo.logo || companyInfo.logo === "/images/default-logo.png"
-              ? `<img src="${companyInfo.logo}" alt="Company Logo" class="company-logo">`
+            companyInfo.logo
+              ? `<img src="${
+                  companyInfo.logo === "/images/default-logo.png"
+                    ? "${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/images/default-logo.png"
+                    : companyInfo.logo
+                }" alt="Company Logo" class="company-logo">`
               : ""
           }
           
