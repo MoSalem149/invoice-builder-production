@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Save, Eye, Printer as Print, RefreshCw } from "lucide-react";
+import { Save, Eye, Printer as Print, RefreshCw, Mail } from "lucide-react";
 import { useApp } from "../../hooks/useApp";
 import { useLanguage } from "../../hooks/useLanguage";
 import { useNotificationContext } from "../../hooks/useNotificationContext";
 import { Invoice, InvoiceItem, Client, InvoiceClient } from "../../types";
-import { downloadInvoicePDF } from "../../utils/invoiceGenerator";
+import {
+  generateInvoicePDF,
+  downloadInvoicePDF,
+} from "../../utils/invoiceGenerator";
 import InvoicePreview from "./InvoicePreview";
 import ClientPanel from "./panels/ClientPanel";
 import InvoiceDetailsPanel from "./panels/InvoiceDetailsPanel";
@@ -169,6 +172,104 @@ const CreateInvoice: React.FC = () => {
       showError(
         t("create.cannotSaveInvoice"),
         t("create.cannotSaveMessage"),
+        5000
+      );
+    }
+  };
+
+  const handleShareViaEmail = async () => {
+    try {
+      if (!invoice.client || !invoice.items?.length) {
+        throw new Error(t("create.cannotSaveMessage"));
+      }
+
+      if (!invoice.client.email) {
+        showError(t("create.noEmailTitle"), t("create.noEmailMessage"), 5000);
+        return;
+      }
+
+      const token = JSON.parse(localStorage.getItem("auth_token") || "null");
+      if (!token) {
+        showError(t("create.authError"), t("create.authErrorMessage"), 5000);
+        return;
+      }
+
+      // Build a complete Invoice object
+      const fullInvoice: Invoice = {
+        _id: Date.now().toString(),
+        number: invoice.number!,
+        date: invoice.date!,
+        paid: invoice.paid!,
+        client: {
+          _id: invoice.client._id,
+          id: invoice.client._id,
+          name: invoice.client.name,
+          address: invoice.client.address || "",
+          phone: invoice.client.phone || "",
+          email: invoice.client.email || "",
+        },
+        items: invoice.items,
+        subtotal: invoice.subtotal!,
+        tax: invoice.tax!,
+        total: invoice.total!,
+        notes: invoice.notes || "",
+        terms: invoice.terms || "",
+        showStatusWatermark: invoice.showStatusWatermark,
+      };
+
+      const htmlContent = generateInvoicePDF(
+        fullInvoice,
+        {
+          ...state.company,
+          address: state.company.address || "",
+          email: state.company.email || "",
+          phone: state.company.phone || "",
+          watermark: state.company.watermark || "",
+          showNotes: state.company.showNotes || false,
+          showTerms: state.company.showTerms || false,
+          taxRate: state.company.taxRate || 0,
+        },
+        isRTL
+      );
+
+      // Create a Blob with proper type
+      const blob = new Blob([htmlContent], { type: "text/html" });
+
+      const formData = new FormData();
+      formData.append("invoice", blob, `invoice_${invoice.number!}.html`);
+      formData.append("clientEmail", invoice.client.email);
+      formData.append("invoiceNumber", invoice.number!);
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/invoices/send-email`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+
+      const responseData = await response.json();
+      if (!response.ok) {
+        throw new Error(
+          responseData.message || t("create.emailSendErrorMessage")
+        );
+      }
+
+      showSuccess(
+        t("create.emailSentSuccess"),
+        t("create.emailSentMessage").replace("{email}", invoice.client.email),
+        4000
+      );
+    } catch (error) {
+      console.error("Email send error:", error);
+      showError(
+        t("create.emailSendError"),
+        error instanceof Error
+          ? error.message
+          : t("create.emailSendErrorMessage"),
         5000
       );
     }
@@ -384,6 +485,15 @@ const CreateInvoice: React.FC = () => {
               >
                 <Save className="h-4 w-4" />
                 <span>{t("create.saveInvoice")}</span>
+              </button>
+              <button
+                onClick={handleShareViaEmail}
+                className={`flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors ${
+                  isRTL ? "space-x-reverse flex-row-reverse" : ""
+                }`}
+              >
+                <Mail className="h-4 w-4" />
+                <span>{t("create.share")}</span>
               </button>
             </div>
           </div>

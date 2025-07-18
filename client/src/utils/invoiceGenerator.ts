@@ -245,6 +245,14 @@ export const generateInvoicePDF = (
           .company-info {
             margin-bottom: 24px;
             text-align: ${isRTL ? "right" : "left"};
+            width: 100%;
+          }
+
+          @media (min-width: 640px) {
+            .company-info {
+              width: 50%;
+              margin-bottom: 0;
+            }
           }
           
           .company-name {
@@ -265,6 +273,7 @@ export const generateInvoicePDF = (
             flex-direction: column;
             justify-content: space-between;
             margin-bottom: 24px;
+            width: 100%;
           }
           
           @media (min-width: 640px) {
@@ -277,11 +286,14 @@ export const generateInvoicePDF = (
             text-align: ${isRTL ? "right" : "left"};
             margin-bottom: 16px;
             cursor: pointer;
+            width: 100%;
           }
           
           @media (min-width: 640px) {
             .bill-to {
+              width: 50%;
               margin-bottom: 0;
+              padding-left: 16px;
             }
           }
           
@@ -424,6 +436,13 @@ export const generateInvoicePDF = (
           .items-table-container {
             margin-bottom: 32px;
           }
+        }
+        
+        .meta-value[dir="ltr"],
+        .client-details[dir="ltr"] {
+          direction: ltr !important;
+          text-align: left !important;
+          unicode-bidi: isolate !important;
         }
           
           .totals {
@@ -623,10 +642,14 @@ export const generateInvoicePDF = (
                   <div class="meta-value">${invoice.number || "INV-0001"}</div>
                 </div>
                 <div>
-                  <div class="meta-label">${t("invoiceDate")}</div>
-                  <div class="meta-value">${
-                    invoice.date.split("T")[0] || t("selectDate")
-                  }</div>
+                <div class="meta-label">${t("invoiceDate")}</div>
+                  <div class="meta-value" dir="ltr" style="direction: ltr; display: flex; justify-content: center; unicode-bidi: isolate;">
+                    ${
+                      invoice.date
+                        ? new Date(invoice.date).toLocaleDateString("en-GB")
+                        : t("selectDate")
+                    }
+                  </div>
                 </div>
                 <div>
                   <div class="meta-label">${t("status")}</div>

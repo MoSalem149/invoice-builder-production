@@ -71,7 +71,9 @@ const Carousel: React.FC<CarouselProps> = ({ cars, onCarSelect }) => {
               <img
                 src={
                   car.images?.[0]
-                    ? `${import.meta.env.VITE_API_URL}${car.images[0]}`
+                    ? car.images[0].startsWith("http")
+                      ? car.images[0]
+                      : `${import.meta.env.VITE_API_URL}${car.images[0]}`
                     : getPlaceholderImage(800, 600, "Car+Image")
                 }
                 alt={`${car.brand} ${car.model}`}

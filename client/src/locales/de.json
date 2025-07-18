@@ -216,7 +216,16 @@
     "invoiceSavedSuccess": "Rechnung erfolgreich gespeichert!",
     "invoiceSavedMessage": "Rechnung {number} wurde erstellt und in Ihrem Verlauf gespeichert.",
     "cannotSaveInvoice": "Rechnung kann nicht gespeichert werden",
-    "cannotSaveMessage": "Bitte fügen Sie einen Kunden und mindestens einen Artikel hinzu, bevor Sie die Rechnung speichern."
+    "cannotSaveMessage": "Bitte fügen Sie einen Kunden und mindestens einen Artikel hinzu, bevor Sie die Rechnung speichern.",
+    "share": "Teilen",
+    "emailSentSuccess": "E-Mail gesendet",
+    "emailSentMessage": "Rechnung wurde an {email} gesendet",
+    "emailSendError": "E-Mail-Fehler",
+    "emailSendErrorMessage": "Rechnung konnte nicht per E-Mail gesendet werden",
+    "noEmailTitle": "Keine E-Mail",
+    "noEmailMessage": "Der Kunde hat keine E-Mail-Adresse",
+    "authError": "Authentifizierung erforderlich",
+    "authErrorMessage": "Bitte melden Sie sich an, um Rechnungen per E-Mail zu teilen"
   },
   "validation": {
     "clientNameRequired": "Kundenname ist erforderlich",

@@ -216,7 +216,16 @@
     "invoiceSavedSuccess": "Fattura Salvata con Successo!",
     "invoiceSavedMessage": "La fattura {number} è stata creata e salvata nella tua cronologia.",
     "cannotSaveInvoice": "Impossibile Salvare la Fattura",
-    "cannotSaveMessage": "Aggiungi un cliente e almeno un articolo prima di salvare la fattura."
+    "cannotSaveMessage": "Aggiungi un cliente e almeno un articolo prima di salvare la fattura.",
+    "share": "Condividi",
+    "emailSentSuccess": "Email Inviata",
+    "emailSentMessage": "Fattura inviata a {email}",
+    "emailSendError": "Errore Email",
+    "emailSendErrorMessage": "Invio fattura via email fallito",
+    "noEmailTitle": "Nessuna Email",
+    "noEmailMessage": "Il cliente non ha un indirizzo email",
+    "authError": "Autenticazione richiesta",
+    "authErrorMessage": "Accedi per condividere fatture via email"
   },
   "validation": {
     "clientNameRequired": "Il nome del cliente è obbligatorio",

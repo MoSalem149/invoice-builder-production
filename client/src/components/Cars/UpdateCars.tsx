@@ -444,7 +444,9 @@ const UpdateCars: React.FC = () => {
                       <img
                         src={
                           img
-                            ? `${import.meta.env.VITE_API_URL}${img}`
+                            ? img.startsWith("http")
+                              ? img
+                              : `${import.meta.env.VITE_API_URL}${img}`
                             : getPlaceholderImage(400, 300, "Car+Image")
                         }
                         alt={`Car preview ${index}`}
@@ -871,9 +873,11 @@ const UpdateCars: React.FC = () => {
                           <img
                             src={
                               car.images?.[0]
-                                ? `${import.meta.env.VITE_API_URL}${
-                                    car.images[0]
-                                  }`
+                                ? car.images[0].startsWith("http")
+                                  ? car.images[0]
+                                  : `${import.meta.env.VITE_API_URL}${
+                                      car.images[0]
+                                    }`
                                 : getPlaceholderImage(400, 300, "Car+Image")
                             }
                             alt={`${car.brand} ${car.model}`}

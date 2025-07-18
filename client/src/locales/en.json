@@ -216,7 +216,16 @@
     "invoiceSavedSuccess": "Invoice Saved Successfully!",
     "invoiceSavedMessage": "Invoice {number} has been created and saved to your history.",
     "cannotSaveInvoice": "Cannot Save Invoice",
-    "cannotSaveMessage": "Please add a client and at least one item before saving the invoice."
+    "cannotSaveMessage": "Please add a client and at least one item before saving the invoice.",
+    "share": "Share",
+    "emailSentSuccess": "Email Sent",
+    "emailSentMessage": "Invoice has been sent to {email}",
+    "emailSendError": "Email Error",
+    "emailSendErrorMessage": "Failed to send invoice via email",
+    "noEmailTitle": "No Email",
+    "noEmailMessage": "Client does not have an email address",
+    "authError": "Authentication Required",
+    "authErrorMessage": "Please login to share invoices via email"
   },
   "validation": {
     "clientNameRequired": "Client name is required",

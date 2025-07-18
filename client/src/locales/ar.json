@@ -216,7 +216,16 @@
     "invoiceSavedSuccess": "تم حفظ الفاتورة بنجاح!",
     "invoiceSavedMessage": "تم إنشاء الفاتورة {number} وحفظها في سجلك.",
     "cannotSaveInvoice": "لا يمكن حفظ الفاتورة",
-    "cannotSaveMessage": "يرجى إضافة عميل وعنصر واحد على الأقل قبل حفظ الفاتورة."
+    "cannotSaveMessage": "يرجى إضافة عميل وعنصر واحد على الأقل قبل حفظ الفاتورة.",
+    "share": "مشاركة",
+    "emailSentSuccess": "تم إرسال البريد الإلكتروني",
+    "emailSentMessage": "تم إرسال الفاتورة إلى {email}",
+    "emailSendError": "خطأ في البريد الإلكتروني",
+    "emailSendErrorMessage": "فشل إرسال الفاتورة عبر البريد الإلكتروني",
+    "noEmailTitle": "لا يوجد بريد إلكتروني",
+    "noEmailMessage": "العميل ليس لديه عنوان بريد إلكتروني",
+    "authError": "مطلوب مصادقة",
+    "authErrorMessage": "يرجى تسجيل الدخول لمشاركة الفواتير عبر البريد الإلكتروني"
   },
   "validation": {
     "clientNameRequired": "اسم العميل مطلوب",

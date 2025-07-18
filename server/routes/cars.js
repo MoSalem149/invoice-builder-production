@@ -39,7 +39,14 @@ router.post(
         });
       }
 
-      const urls = req.files.map((file) => `/uploads/cars/${file.filename}`);
+      const urls = req.files.map((file) =>
+        process.env.NODE_ENV === "production"
+          ? `${
+              process.env.BASE_URL ||
+              "https://invoice-builder-production-production.up.railway.app"
+            }/uploads/cars/${file.filename}`
+          : `/uploads/cars/${file.filename}`
+      );
 
       res.json({
         success: true,

@@ -88,7 +88,11 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({
       {/* Company and Client info in same row */}
       <div className="flex flex-col sm:flex-row justify-between mb-6 sm:mb-8">
         {/* Company Info - Left */}
-        <div className={`${isRTL ? "text-right" : "text-left"} mb-4 sm:mb-0`}>
+        <div
+          className={`${
+            isRTL ? "text-right" : "text-left"
+          } mb-4 sm:mb-0 w-full sm:w-[50%]`}
+        >
           <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
             {state.company.name}
           </h2>
@@ -111,7 +115,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({
         <div
           className={`${
             isRTL ? "text-right" : "text-left"
-          } cursor-pointer hover:bg-blue-50 p-2 rounded transition-colors print:hover:bg-transparent print:cursor-default print:p-0`}
+          } cursor-pointer hover:bg-blue-50 p-2 rounded transition-colors print:hover:bg-transparent print:cursor-default print:p-0 w-full sm:w-[50%]`}
           onClick={onClientClick}
         >
           <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
@@ -157,9 +161,21 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({
               <p className="text-xs sm:text-sm text-gray-600">
                 {t("invoice.invoiceDate")}
               </p>
-              <p className="font-medium text-gray-900 text-sm sm:text-base">
-                {invoice.date || t("invoice.selectDate")}
-              </p>
+              <div className="flex justify-center">
+                {" "}
+                <p
+                  className="font-medium text-gray-900 text-sm sm:text-base"
+                  dir="ltr"
+                  style={{
+                    direction: "ltr",
+                    unicodeBidi: "isolate",
+                  }}
+                >
+                  {invoice.date
+                    ? new Date(invoice.date).toLocaleDateString("en-GB")
+                    : t("invoice.selectDate")}
+                </p>
+              </div>
             </div>
             {!invoice.hideStatus && (
               <div>

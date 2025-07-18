@@ -196,7 +196,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
                       : `${import.meta.env.VITE_API_URL}${imageUrl}`
                   }
                   alt={`Slider image ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-fill"
                   loading="lazy"
                   onError={() => handleImageError(index)}
                 />
