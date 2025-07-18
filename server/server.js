@@ -8,7 +8,6 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import fs from "fs";
 import User from "./models/User.js";
-import fileUpload from "express-fileupload";
 
 // Import routes
 import companyRoutes from "./routes/company.js";
@@ -57,12 +56,6 @@ if (!fs.existsSync(sliderUploadsDir)) {
 app.use(helmet());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
-app.use(
-  fileUpload({
-    useTempFiles: true,
-    tempFileDir: "/tmp/",
-  })
-);
 
 const uploadsPath = join(process.cwd(), "public", "uploads");
 app.use(
