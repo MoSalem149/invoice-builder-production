@@ -35,6 +35,7 @@ import {
 } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const AppContent: React.FC = () => {
   const [currentPage, setCurrentPage] = useState("landing");
@@ -322,6 +323,7 @@ const AppContent: React.FC = () => {
         notifications={notifications}
         onClose={removeNotification}
       />
+      <SpeedInsights />
     </div>
   );
 };
