@@ -361,6 +361,7 @@ export const generateInvoicePDF = (
           text-align: ${isRTL ? "right" : "left"};
           font-size: 12px;
           font-weight: normal;
+          white-space: nowrap;
         }
 
         @media (min-width: 640px) {
@@ -576,7 +577,7 @@ export const generateInvoicePDF = (
           
           <!-- Logo -->
           ${
-            companyInfo.logo
+            companyInfo.logo || companyInfo.logo === "/images/default-logo.png"
               ? `<img src="${companyInfo.logo}" alt="Company Logo" class="company-logo">`
               : ""
           }

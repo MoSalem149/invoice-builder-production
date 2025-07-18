@@ -18,7 +18,7 @@ import { useLocation } from "react-router-dom";
 
 const CreateInvoice: React.FC = () => {
   const { state, saveInvoice, updateInvoice: updateInvoiceInApp } = useApp();
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL, language } = useLanguage();
   const { showSuccess, showError } = useNotificationContext();
   const [activePanel, setActivePanel] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -228,6 +228,7 @@ const CreateInvoice: React.FC = () => {
           showNotes: state.company.showNotes || false,
           showTerms: state.company.showTerms || false,
           taxRate: state.company.taxRate || 0,
+          language: language,
         },
         isRTL
       );
@@ -309,6 +310,8 @@ const CreateInvoice: React.FC = () => {
           watermark: state.company.watermark || "",
           showNotes: state.company.showNotes || false,
           showTerms: state.company.showTerms || false,
+          taxRate: state.company.taxRate || 0,
+          language: language, // Add this line
         },
         isRTL
       );
@@ -320,6 +323,7 @@ const CreateInvoice: React.FC = () => {
       );
     }
   };
+
   const renderPanel = () => {
     if (!activePanel) return null;
 

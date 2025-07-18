@@ -13,26 +13,30 @@ export const htmlToPdf = async (html) => {
     const page = await browser.newPage();
 
     const wrappedHtml = `
-      <!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-          <style>
-            @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic&display=swap');
-            body {
-              font-family: 'Noto Sans Arabic', sans-serif;
-              direction: rtl;
-              padding: 2rem;
-            }
-          </style>
-        </head>
-        <body>
-          ${html}
-        </body>
-      </html>
-    `;
+  <!DOCTYPE html>
+  <html lang="${html.includes('dir="rtl"') ? "ar" : "en"}" dir="${
+      html.includes('dir="rtl"') ? "rtl" : "ltr"
+    }">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
+      <style>
+        body {
+          font-family: ${
+            html.includes('dir="rtl"')
+              ? "'Noto Sans Arabic', sans-serif"
+              : "Arial, sans-serif"
+          };
+          direction: ${html.includes('dir="rtl"') ? "rtl" : "ltr"};
+        }
+      </style>
+    </head>
+    <body>
+      ${html}
+    </body>
+  </html>
+`;
 
     // Optional: save to a file to debug
     fs.writeFileSync("invoice-preview.html", wrappedHtml, "utf8");
