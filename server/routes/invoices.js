@@ -451,12 +451,16 @@ router.post(
         });
       }
 
-      const invoiceHtml = req.file.buffer
-        .toString("utf8")
-        .replace(
-          /src="\//g,
-          `src="${process.env.BASE_URL || "http://localhost:5000"}/`
+      let invoiceHtml = req.file.buffer.toString("utf8");
+
+      if (invoiceHtml.includes('src="/images/default-logo.png"')) {
+        invoiceHtml = invoiceHtml.replace(
+          'src="/images/default-logo.png"',
+          `src="${
+            process.env.BASE_URL || "http://localhost:5000"
+          }/images/default-logo.png"`
         );
+      }
 
       const pdfBuffer = await htmlToPdf(invoiceHtml);
 

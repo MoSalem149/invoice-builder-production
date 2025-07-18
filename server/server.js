@@ -72,6 +72,17 @@ app.use(
   })
 );
 
+const imagesPath = join(__dirname, "public", "images");
+app.use(
+  "/images",
+  express.static(imagesPath, {
+    setHeaders: (res) => {
+      res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+      res.setHeader("Cache-Control", "public, max-age=31536000");
+    },
+  })
+);
+
 // CORS for API
 app.use(
   cors({
