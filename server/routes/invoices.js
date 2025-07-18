@@ -5,8 +5,10 @@ import Client from "../models/Client.js";
 import { authenticate } from "../middleware/auth.js";
 import nodemailer from "nodemailer";
 import { htmlToPdf } from "../utils/pdfGenerator.js";
+import multer from "multer";
 
 const router = express.Router();
+const upload = multer();
 
 // @route   GET /api/invoices
 // @desc    Get all invoices for user
@@ -420,77 +422,78 @@ router.put(
 // @route   POST /api/invoices/send-email
 // @desc    Send invoice as PDF via email
 // @access  Private
-router.post("/send-email", authenticate, async (req, res) => {
-  try {
-    const { clientEmail, invoiceNumber } = req.body;
+router.post(
+  "/send-email",
+  authenticate,
+  upload.single("invoice"),
+  async (req, res) => {
+    try {
+      const { clientEmail, invoiceNumber } = req.body;
 
-    if (!clientEmail || !invoiceNumber) {
-      return res.status(400).json({
-        success: false,
-        message: "Client email and invoice number are required",
-      });
-    }
+      if (!clientEmail || !invoiceNumber) {
+        return res.status(400).json({
+          success: false,
+          message: "Client email and invoice number are required",
+        });
+      }
 
-    if (!req.files || !req.files.invoice) {
-      return res.status(400).json({
-        success: false,
-        message: "Invoice HTML file is required",
-      });
-    }
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: "Invoice HTML file is required",
+        });
+      }
 
-    // Ensure company email is set for sending
-    if (!req.user?.company?.email || !req.user?.company?.name) {
-      return res.status(400).json({
-        success: false,
-        message: "Company email or name not configured",
-      });
-    }
+      if (!req.user?.company?.email || !req.user?.company?.name) {
+        return res.status(400).json({
+          success: false,
+          message: "Company email or name not configured",
+        });
+      }
 
-    // Get HTML content directly from the file buffer
-    const invoiceHtml = req.files.invoice.data.toString("utf8");
+      const invoiceHtml = req.file.buffer.toString("utf8");
 
-    // Convert HTML to PDF using utility
-    const pdfBuffer = await htmlToPdf(invoiceHtml);
+      const pdfBuffer = await htmlToPdf(invoiceHtml);
 
-    // Configure mail transporter
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
-
-    const mailOptions = {
-      from: `"${req.user.company.name}" <${req.user.company.email}>`,
-      to: clientEmail,
-      subject: `Invoice ${invoiceNumber}`,
-      text: `Hello,\n\nPlease find attached invoice ${invoiceNumber}.\n\nThank you,\n${req.user.company.name}`,
-      attachments: [
-        {
-          filename: `invoice_${invoiceNumber}.pdf`,
-          content: pdfBuffer,
-          contentType: "application/pdf",
+      const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASSWORD,
         },
-      ],
-    };
+      });
 
-    await transporter.sendMail(mailOptions);
+      const mailOptions = {
+        from: `"${req.user.company.name}" <${req.user.company.email}>`,
+        to: clientEmail,
+        subject: `Invoice ${invoiceNumber}`,
+        text: `Hello,\n\nPlease find attached invoice ${invoiceNumber}.\n\nThank you,\n${req.user.company.name}`,
+        attachments: [
+          {
+            filename: `invoice_${invoiceNumber}.pdf`,
+            content: pdfBuffer,
+            contentType: "application/pdf",
+          },
+        ],
+      };
 
-    res.json({
-      success: true,
-      message: "Invoice sent successfully",
-    });
-  } catch (error) {
-    console.error("Send invoice email error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to send invoice via email",
-    });
+      await transporter.sendMail(mailOptions);
+
+      res.json({
+        success: true,
+        message: "Invoice sent successfully",
+      });
+    } catch (error) {
+      console.error("Send invoice email error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to send invoice via email",
+      });
+    }
   }
-});
+);
 
 // @route   DELETE /api/invoices/:id
 // @desc    Delete an invoice
