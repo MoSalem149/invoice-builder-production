@@ -136,7 +136,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
       if (response.ok) {
         const data = await response.json();
         const client: Client = {
-          _id: data.data._id, 
+          _id: data.data._id,
           name: data.data.name,
           email: data.data.email,
           address: data.data.address,
@@ -202,11 +202,31 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
           name: data.data.name,
           address: data.data.address,
           phone: data.data.phone,
+          email: data.data.email,
           archived: data.data.archived,
         };
 
         dispatch({ type: "UPDATE_CLIENT", payload: updatedClient });
-        setNewClient({ name: "", address: "", phone: "" });
+
+        state.invoices.forEach((invoice) => {
+          if (invoice.client._id === updatedClient._id) {
+            dispatch({
+              type: "UPDATE_INVOICE",
+              payload: {
+                ...invoice,
+                client: {
+                  ...invoice.client,
+                  name: updatedClient.name,
+                  address: updatedClient.address,
+                  phone: updatedClient.phone,
+                  email: updatedClient.email,
+                },
+              },
+            });
+          }
+        });
+
+        setNewClient({ name: "", address: "", phone: "", email: "" });
         setShowAddForm(false);
         setEditingClient(null);
         setErrors({});
@@ -280,7 +300,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
 
       dispatch({
         type: isArchived ? "UNARCHIVE_CLIENT" : "ARCHIVE_CLIENT",
-        payload: updatedClient._id, 
+        payload: updatedClient._id,
       });
 
       showSuccess(
