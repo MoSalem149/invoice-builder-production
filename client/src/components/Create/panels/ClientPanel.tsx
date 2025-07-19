@@ -188,9 +188,9 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
           },
           body: JSON.stringify({
             name: newClient.name,
-            address: newClient.address || undefined,
-            phone: newClient.phone || undefined,
-            email: newClient.email || undefined,
+            address: newClient.address,
+            phone: newClient.phone,
+            email: newClient.email,
           }),
         }
       );
