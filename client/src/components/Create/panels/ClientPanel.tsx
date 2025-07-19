@@ -210,19 +210,17 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
 
         state.invoices.forEach((invoice) => {
           if (invoice.client._id === updatedClient._id) {
-            dispatch({
-              type: "UPDATE_INVOICE",
-              payload: {
-                ...invoice,
-                client: {
-                  ...invoice.client,
-                  name: updatedClient.name,
-                  address: updatedClient.address,
-                  phone: updatedClient.phone,
-                  email: updatedClient.email,
-                },
+            const updatedInvoice = {
+              ...invoice,
+              client: {
+                ...invoice.client,
+                name: updatedClient.name,
+                address: updatedClient.address,
+                phone: updatedClient.phone,
+                email: updatedClient.email,
               },
-            });
+            };
+            dispatch({ type: "UPDATE_INVOICE", payload: updatedInvoice });
           }
         });
 
@@ -656,7 +654,7 @@ const ClientPanel: React.FC<ClientPanelProps> = ({
                   setShowAddForm(false);
                   setEditingClient(null);
                   setErrors({});
-                  setNewClient({ name: "", address: "", phone: "" });
+                  setNewClient({ name: "", address: "", phone: "", email: "" });
                 }}
                 className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
               >
